@@ -5,13 +5,15 @@
 
 <!-- badges: start -->
 
-[![Travis build
+[![CRAN/METACRAN](https://www.r-pkg.org/badges/version/giscoR)](https://CRAN.R-project.org/package=giscoR)
+![CRAN/METACRAN](https://img.shields.io/cran/l/giscoR) [![Travis build
 status](https://travis-ci.com/dieghernan/giscoR.svg?branch=master)](https://travis-ci.com/dieghernan/giscoR)
 [![R build
 status](https://github.com/dieghernan/giscoR/workflows/R-CMD-check/badge.svg)](https://github.com/dieghernan/giscoR/actions)
-[![License](https://img.shields.io/badge/license-GPL—3.0-blue)](https://github.com/dieghernan/giscoR/blob/master/LICENSE.md)
-[![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+[![AppVeyor build
+status](https://ci.appveyor.com/api/projects/status/github/dieghernan/giscoR?branch=master&svg=true)](https://ci.appveyor.com/project/dieghernan/giscoR)
 [![codecov](https://codecov.io/gh/dieghernan/giscoR/branch/master/graph/badge.svg)](https://codecov.io/gh/dieghernan/giscoR)
+[![lifecycle](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 <!-- badges: end -->
 
 [giscoR](https://dieghernan.github.io/giscoR/) is a API package that
@@ -36,6 +38,13 @@ webpage](https://gisco-services.ec.europa.eu/distribution/v2/).
 
 ## Installation
 
+Install `giscoR` from
+[**CRAN**](https://CRAN.R-project.org/package=giscoR):
+
+``` r
+install.packages("giscoR")
+```
+
 You can install the developing version of `giscoR` with:
 
 ``` r
@@ -46,79 +55,49 @@ install_github("dieghernan/giscoR")
 
 ## Usage
 
-This script quickly shows how the data retrieved with giscoR can be
-represented with a sample of complementary packages:
+This script highlights some features of `giscoR`:
 
 ``` r
 
 library(giscoR)
+library(sf)
 
-countries <- gisco_get_countries(epsg = "3035")
+# Different resolutions
+DNK_res60 <- gisco_get_countries(resolution = "60", country = "DNK")
+DNK_res20 <-
+  gisco_get_countries(resolution = "20", country = "DNK")
+DNK_res10 <-
+  gisco_get_countries(resolution = "10", country = "DNK")
+DNK_res03 <-
+  gisco_get_countries(resolution = "03", country = "DNK")
 
-nuts2 <- gisco_get_nuts(epsg = "3035", nuts_level = "2")
-
-# With ggplot2
-
-library(ggplot2)
-ggplot(countries) +
-  geom_sf(
-    colour = "grey50",
-    fill = "cornsilk",
-    size = 0.1
-  ) +
-  geom_sf(
-    data = nuts2,
-    colour = "darkblue",
-    fill = NA,
-    size = 0.05
-  ) +
-  coord_sf(
-    xlim = c(2200000, 7150000),
-    ylim = c(1380000, 5500000),
-    expand = TRUE
-  ) +
-  xlab("Longitude") +
-  ylab("Latitude") +
-  ggtitle("NUTS2 Regions (2016)") +
-  theme(
-    panel.grid.major = element_line(
-      color = gray(.5),
-      linetype = "dashed",
-      size = 0.5
-    ),
-    panel.background = element_rect(fill = "aliceblue")
-  ) +
-  labs(caption = gisco_attributions(copyright = FALSE))
+opar <- par(no.readonly = TRUE)
+par(mfrow = c(2, 2), mar = c(3, 0, 2, 0))
+plot(st_geometry(DNK_res60), main = "60M", col = "tomato")
+plot(st_geometry(DNK_res20), main = "20M", col = "tomato")
+plot(st_geometry(DNK_res10), main = "10M", col = "tomato")
+plot(st_geometry(DNK_res03), main = "03M", col = "tomato")
+title(sub = gisco_attributions(), line = 1)
 ```
 
 ![](man/figures/README-example-1.png)<!-- -->
 
 ``` r
+par(opar)
 
+# Different projections
+cntr_4326 <- gisco_get_countries(epsg = "4326")
+cntr_3857 <- gisco_get_countries(epsg = "3857")
+cntr_3035 <- gisco_get_countries(epsg = "3035")
 
-# With tmap
+opar <- par(no.readonly = TRUE)
+par(mar = c(3, 0, 0, 0))
 
-library(tmap)
+# epsg 4326
+g1 <- st_graticule(cntr_4326, lon = seq(-180, 180, 20), lat = seq(-90, 90, 20))
 
-cities <-
-  gisco_get_urban_audit(
-    year = "2020",
-    level = "GREATER_CITIES",
-    country = c("BEL", "NLD", "LUX")
-  )
-
-countries <- gisco_get_countries(country = c("BEL", "NLD", "LUX"), resolution = "01")
-
-tm_shape(countries) + tm_fill("black") + tm_borders("grey10") + tm_shape(cities) + tm_fill("chartreuse1") +
-  tm_credits(gisco_attributions(copyright = FALSE),
-    position = c("LEFT", "BOTTOM")
-  ) + tm_layout(
-    main.title = "Urban Audit 2020: Greater cities of Benelux",
-    frame = TRUE,
-    attr.outside = TRUE,
-    main.title.size = 0.75,
-    bg.color = "grey85"
-  )
+plot(st_geometry(cntr_4326), col = "bisque", graticule = g1)
+title(sub = gisco_attributions(), line = 1)
 ```
 
 ![](man/figures/README-example-2.png)<!-- -->
@@ -126,23 +105,48 @@ tm_shape(countries) + tm_fill("black") + tm_borders("grey10") + tm_shape(cities)
 ``` r
 
 
-# With cartography
-
-library(cartography)
-globe <- gisco_get_countries(epsg = "3035")
-globe <- merge(globe, gisco_countrycode, all.x = TRUE)
-opar <- par(no.readonly = TRUE)
-par(mar = c(2, 2, 2, 2))
-typoLayer(globe, var = "un.region.name", legend.pos = "n")
-layoutLayer(
-  "Regions of the World (UN)",
-  sources = gisco_attributions(copyright = FALSE),
-  scale = FALSE,
-  horiz = TRUE
+# epsg 3857
+g2 <- st_graticule(cntr_3857, lon = seq(-180, 180, 20), lat = seq(-90, 90, 20))
+plot(
+  st_geometry(cntr_3857),
+  col = "bisque",
+  graticule = g2,
+  ylim = c(-13000000, 13000000)
 )
+title(sub = gisco_attributions(), line = 1)
 ```
 
 ![](man/figures/README-example-3.png)<!-- -->
+
+``` r
+
+# epsg 3035
+g3 <- st_graticule(cntr_3035, lon = seq(-180, 180, 20), lat = seq(-90, 90, 20))
+plot(st_geometry(cntr_3035), col = "bisque", graticule = g3)
+title(sub = gisco_attributions(), line = 1)
+```
+
+![](man/figures/README-example-4.png)<!-- -->
+
+``` r
+par(opar)
+
+
+# Labels and Lines available
+labs <- gisco_get_countries(spatialtype = "LB", region = "Africa", epsg = "3857")
+coast <- gisco_get_countries(spatialtype = "COASTL", epsg = "3857")
+
+opar <- par(no.readonly = TRUE)
+par(mar = c(3, 0, 0, 0))
+plot(st_geometry(labs),
+  col = c("springgreen4", "darkgoldenrod1", "red2"), cex = 2,
+  pch = 19
+)
+plot(st_geometry(coast), col = "deepskyblue4", lwd = 6, add = TRUE)
+title(sub = gisco_attributions(), line = 1)
+```
+
+![](man/figures/README-example-5.png)<!-- -->
 
 ``` r
 par(opar)
@@ -169,13 +173,8 @@ them on your local directory.
 
 ### API data packages
 
-It is recommended to install the `eurostat` package
-(<https://ropengov.github.io/eurostat/>), that is another API package
-that queries [Eurostat](https://ec.europa.eu/eurostat/) for statistical
-information.
-
-`wbstats`(<https://nset-ornl.github.io/wbstats/>) is another interesting
-R API packages that provides access to [The World Bank
+`wbstats` (<https://nset-ornl.github.io/wbstats/>) is an interesting R
+API packages that provides access to [The World Bank
 Data](https://data.worldbank.org/) API.
 
 ### Plotting `sf` objects

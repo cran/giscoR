@@ -10,8 +10,6 @@ knitr::knit_hooks$set(margin = function(before, options, envir){
   } 
 })
 
-options(gisco_cache_dir = "./devel/")
-
 
 ## ----attributions-------------------------------------------------------------
 library(giscoR)
@@ -46,32 +44,51 @@ coast <- gisco_get_coastallines(resolution = "20",
 plot(
   st_geometry(africa_north),
   axes = TRUE,
-  border = "grey50"
+  col = "grey30",
+  border = "grey80"
 )
-plot(st_geometry(coast), border = "grey50", add = TRUE)
+plot(st_geometry(coast), lwd = 2, add = TRUE)
 title(sub = gisco_attributions(), cex.sub = 0.7)
 
 ## ----giscoR_eurostat, fig.width=6.5,fig.asp=0.9, message=FALSE, warning=FALSE----
-library(eurostat)
+
+
 library(cartography)
 library(colorspace)
 
+# Northen Europe
+
+neur <-
+  gisco_countrycode[gisco_countrycode$un.regionsub.name == "Northern Europe", ]
+
+iso3 <- neur[!is.na(neur$CNTR_CODE),]$ISO3_CODE
+
+# Add some more countries
+
+iso3 <-
+  c(iso3, "POL", "DEU", "AUT", 
+  "CZE", "BEL", "NLD", "LUX", 
+  "SVK", "HUN", "ROU")
+
 nuts2 <- gisco_get_nuts(
   year = "2016",
+  epsg = "4326",
+  resolution = "20",
   nuts_level = "2",
-  country = "Italy"
+  country = iso3
 )
 
-
 #Borders
-borders <- gisco_get_nuts(
-  nuts_level = "0",
-  year = "2016"
+borders <- gisco_get_countries(
+  epsg = "4326",
+  year = "2016",
+  resolution = "20",
+  region = c("Europe", "Africa")
 )
 
 # Eurostat data - Purchase parity power
-pps <- eurostat::tgs00026
-pps <- pps[grep("2016", pps$time),]
+pps <- giscoR::tgs00026
+pps <- pps[pps$time == 2016, ]
 
 nuts2.sf <- merge(nuts2,
                   pps,
@@ -80,33 +97,56 @@ nuts2.sf <- merge(nuts2,
                   all.x = TRUE)
 
 # Prepare mapping
-br <- getBreaks(nuts2.sf$values, method = "pretty")
+br <-
+  1000 * c(0,
+           10,
+           12.5,
+           15,
+           17.5,
+           20,
+           22.5,
+           25,
+           max(nuts2.sf$values, na.rm = TRUE) / 1000 + 1)
 
 # Palette
-pal <- sequential_hcl(n = (length(br) - 1),
-                      pal = "Inferno",
-                      rev = TRUE)
+pal <- sequential_hcl(
+  n = (length(br) - 1),
+  pal = "Inferno",
+  alpha = 0.8
+)
 
 
 opar <- par(no.readonly = TRUE)
 par(mar = c(2, 2, 2, 2))
 
+# Basemap
+plot(st_geometry(nuts2), col = "grey80")
+
+# Surrounding countries
+plot(
+  st_geometry(borders),
+  border = "black",
+  lwd = 3,
+  col = "grey80",
+  add = TRUE
+)
+
 choroLayer(
   nuts2.sf,
   var = "values",
-  border = "grey60",
+  border = "grey50",
   breaks = br,
   col = pal,
   legend.pos = "n",
-  colNA = "grey80"
+  colNA = "grey80",
+  add = TRUE
 )
 plot(st_geometry(borders),
      border = "black",
      col = NA,
      add = TRUE)
-     
-att <- paste0("Data extracted from package eurostat \n",
-              gisco_attributions(copyright = FALSE))
+
+att <- gisco_attributions()
 
 legendChoro(
   title.txt = NA,
@@ -115,10 +155,11 @@ legendChoro(
   nodata.col = "grey80",
   frame = TRUE
 )
-layoutLayer("Purchase Parity Power, Italy NUTS 2 regions (2016)",
-            scale = FALSE,
-            col = pal[3],
-            sources = att)
+layoutLayer(
+  "Purchase Parity Power, NUTS 2 regions of selected countries (2016)",
+  scale = FALSE,
+  col = pal[3],
+  sources = att
+)
 par(opar)
-
 
