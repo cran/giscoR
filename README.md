@@ -62,91 +62,43 @@ This script highlights some features of `giscoR`:
 library(giscoR)
 library(sf)
 
-# Different resolutions
-DNK_res60 <- gisco_get_countries(resolution = "60", country = "DNK")
-DNK_res20 <-
-  gisco_get_countries(resolution = "20", country = "DNK")
-DNK_res10 <-
-  gisco_get_countries(resolution = "10", country = "DNK")
-DNK_res03 <-
-  gisco_get_countries(resolution = "03", country = "DNK")
+ # Different resolutions
+ DNK_res60 <- gisco_get_countries(resolution = '60', country = 'DNK')
+ DNK_res20 <-
+   gisco_get_countries(resolution = '20', country = 'DNK')
+ DNK_res10 <-
+   gisco_get_countries(resolution = '10', country = 'DNK')
+ DNK_res03 <-
+   gisco_get_countries(resolution = '03', country = 'DNK')
 
-opar <- par(no.readonly = TRUE)
-par(mfrow = c(2, 2), mar = c(3, 0, 2, 0))
-plot(st_geometry(DNK_res60), main = "60M", col = "tomato")
-plot(st_geometry(DNK_res20), main = "20M", col = "tomato")
-plot(st_geometry(DNK_res10), main = "10M", col = "tomato")
-plot(st_geometry(DNK_res03), main = "03M", col = "tomato")
-title(sub = gisco_attributions(), line = 1)
+ opar <- par(no.readonly = TRUE)
+ par(mfrow = c(2, 2), mar = c(3, 0, 2, 0))
+ plot(st_geometry(DNK_res60), main = '60M', col = "tomato")
+ plot(st_geometry(DNK_res20), main = '20M', col = "tomato")
+ plot(st_geometry(DNK_res10), main = '10M', col = "tomato")
+ plot(st_geometry(DNK_res03), main = '03M', col = "tomato")
+ title(sub = gisco_attributions(), line = 1)
 ```
 
 ![](man/figures/README-example-1.png)<!-- -->
 
 ``` r
-par(opar)
+ par(opar)
 
-# Different projections
-cntr_4326 <- gisco_get_countries(epsg = "4326")
-cntr_3857 <- gisco_get_countries(epsg = "3857")
-cntr_3035 <- gisco_get_countries(epsg = "3035")
-
-opar <- par(no.readonly = TRUE)
-par(mar = c(3, 0, 0, 0))
-
-# epsg 4326
-g1 <- st_graticule(cntr_4326, lon = seq(-180, 180, 20), lat = seq(-90, 90, 20))
-
-plot(st_geometry(cntr_4326), col = "bisque", graticule = g1)
-title(sub = gisco_attributions(), line = 1)
+ # Labels and Lines available
+ labs <- gisco_get_countries(spatialtype = "LB", region = "Africa", epsg = "3857")
+ coast <- gisco_get_countries(spatialtype = "COASTL", epsg = "3857")
+ 
+ opar <- par(no.readonly = TRUE)
+ par(mar = c(3, 0, 0, 0))
+plot(st_geometry(labs),
+      col = c('springgreen4', 'darkgoldenrod1', 'red2'), cex =2,
+      pch = 19)
+ plot(st_geometry(coast), col = "deepskyblue4", lwd =6, add = TRUE)
+ title(sub = gisco_attributions(), line = 1)
 ```
 
 ![](man/figures/README-example-2.png)<!-- -->
-
-``` r
-
-
-# epsg 3857
-g2 <- st_graticule(cntr_3857, lon = seq(-180, 180, 20), lat = seq(-90, 90, 20))
-plot(
-  st_geometry(cntr_3857),
-  col = "bisque",
-  graticule = g2,
-  ylim = c(-13000000, 13000000)
-)
-title(sub = gisco_attributions(), line = 1)
-```
-
-![](man/figures/README-example-3.png)<!-- -->
-
-``` r
-
-# epsg 3035
-g3 <- st_graticule(cntr_3035, lon = seq(-180, 180, 20), lat = seq(-90, 90, 20))
-plot(st_geometry(cntr_3035), col = "bisque", graticule = g3)
-title(sub = gisco_attributions(), line = 1)
-```
-
-![](man/figures/README-example-4.png)<!-- -->
-
-``` r
-par(opar)
-
-
-# Labels and Lines available
-labs <- gisco_get_countries(spatialtype = "LB", region = "Africa", epsg = "3857")
-coast <- gisco_get_countries(spatialtype = "COASTL", epsg = "3857")
-
-opar <- par(no.readonly = TRUE)
-par(mar = c(3, 0, 0, 0))
-plot(st_geometry(labs),
-  col = c("springgreen4", "darkgoldenrod1", "red2"), cex = 2,
-  pch = 19
-)
-plot(st_geometry(coast), col = "deepskyblue4", lwd = 6, add = TRUE)
-title(sub = gisco_attributions(), line = 1)
-```
-
-![](man/figures/README-example-5.png)<!-- -->
 
 ``` r
 par(opar)

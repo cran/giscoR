@@ -42,7 +42,7 @@ options(gisco_cache_dir = "~/path/to/dir")
 
 When this option is set, `giscoR` just load first the requested shapefile from the local directory, speeding up the loading process. If the file is not available locally, it would be downloaded to that directory so the next time you need the corresponding data it would be loaded from the local directory. 
 
-If you experience any problems on downloading, you can also manually download the file from the [GISCO API website](https://gisco-services.ec.europa.eu/distribution/v2/) and stored it on your local directory.
+If you experience any problems on downloading, you can also manually download the file from the [GISCO API website](https://gisco-services.ec.europa.eu/distribution/v2/) and store it on your local directory.
 
 
 # Installation
@@ -126,28 +126,12 @@ Also `colorspace` and `rcartocolor` packages are recommended, as they provide gr
 
 
 library(cartography)
-library(colorspace)
-
-# Northen Europe
-
-neur <-
-  gisco_countrycode[gisco_countrycode$un.regionsub.name == "Northern Europe", ]
-
-iso3 <- neur[!is.na(neur$CNTR_CODE),]$ISO3_CODE
-
-# Add some more countries
-
-iso3 <-
-  c(iso3, "POL", "DEU", "AUT", 
-  "CZE", "BEL", "NLD", "LUX", 
-  "SVK", "HUN", "ROU")
 
 nuts2 <- gisco_get_nuts(
   year = "2016",
   epsg = "4326",
   resolution = "20",
-  nuts_level = "2",
-  country = iso3
+  nuts_level = "2"
 )
 
 #Borders
@@ -155,12 +139,12 @@ borders <- gisco_get_countries(
   epsg = "4326",
   year = "2016",
   resolution = "20",
-  region = c("Europe", "Africa")
+  region = c("Europe")
 )
 
 # Eurostat data - Purchase parity power
 pps <- giscoR::tgs00026
-pps <- pps[pps$time == 2016, ]
+pps <- pps[pps$time == 2016,]
 
 nuts2.sf <- merge(nuts2,
                   pps,
@@ -169,38 +153,22 @@ nuts2.sf <- merge(nuts2,
                   all.x = TRUE)
 
 # Prepare mapping
-br <-
-  1000 * c(0,
-           10,
-           12.5,
-           15,
-           17.5,
-           20,
-           22.5,
-           25,
-           max(nuts2.sf$values, na.rm = TRUE) / 1000 + 1)
+br <- getBreaks(nuts2.sf$values, method = "fisher")
+pal <-
+  hcl.colors(n = (length(br) - 1),
+             palette = "inferno",
+             alpha = 0.75)
 
-# Palette
-pal <- sequential_hcl(
-  n = (length(br) - 1),
-  pal = "Inferno",
-  alpha = 0.8
-)
-
-
+# Plot
 opar <- par(no.readonly = TRUE)
 par(mar = c(2, 2, 2, 2))
 
-# Basemap
-plot(st_geometry(nuts2), col = "grey80")
-
-# Surrounding countries
+# Basemap - BENELUX
 plot(
-  st_geometry(borders),
-  border = "black",
-  lwd = 3,
+  st_geometry(nuts2),
   col = "grey80",
-  add = TRUE
+  xlim = c(1, 9),
+  ylim = c(47, 55)
 )
 
 choroLayer(
@@ -213,25 +181,34 @@ choroLayer(
   colNA = "grey80",
   add = TRUE
 )
+
+# Add borders
 plot(st_geometry(borders),
      border = "black",
      col = NA,
      add = TRUE)
 
-att <- gisco_attributions()
+
+labs <- paste0(round((br / 1000), 1), "K EUR")
+labs[1] <- ""
+labs[length(labs)] <- ""
 
 legendChoro(
+  pos = "bottomright",
   title.txt = NA,
-  breaks = paste0(br / 1000, "K EUR"),
+  breaks = labs,
   col = pal,
   nodata.col = "grey80",
   frame = TRUE
 )
+
 layoutLayer(
-  "Purchase Parity Power, NUTS 2 regions of selected countries (2016)",
+  "Disposable Incoming Households 2016 (BENELUX focus)",
   scale = FALSE,
   col = pal[3],
-  sources = att
+  sources = gisco_attributions()
 )
 par(opar)
+
+
 ```
