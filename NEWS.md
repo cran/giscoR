@@ -1,4 +1,15 @@
-# giscoR 0.1.2.9601
+# giscoR 0.2.2
+
+- Remove vignette
+
+# giscoR 0.2.1
+
+- Remove CRAN notes.
+- Improve docs.
+- Fix cran checks.
+
+
+# giscoR 0.2.0
 
 - Remove `colorspace` as dependency.
 - Bump R minimal version to 3.6.0.

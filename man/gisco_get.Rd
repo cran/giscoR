@@ -87,7 +87,8 @@ gisco_get_urban_audit(
 \arguments{
 \item{year}{Release year. See Details.}
 
-\item{epsg}{projection of the map: 4-digit \href{https://epsg.io/}{EPSG code}. One of:
+\item{epsg}{projection of the map:
+4-digit \href{https://epsg.io/}{EPSG code}. One of:
 \itemize{
 \item \code{"4326"} - \href{https://epsg.io/4326}{WGS84}
 \item \code{"3035"} - \href{https://epsg.io/3035}{ETRS89 / ETRS-LAEA}
@@ -96,11 +97,19 @@ gisco_get_urban_audit(
 
 \item{cache}{a logical whether to do caching. Default is \code{TRUE}.}
 
-\item{update_cache}{a logical whether to update cache. Default is \code{FALSE}. When set to \code{TRUE} it would force a fresh download of the source \code{.geojson} file.}
+\item{update_cache}{a logical whether
+to update cache. Default is \code{FALSE}. When set
+to \code{TRUE} it would force a fresh download
+of the source \code{.geojson} file.}
 
-\item{cache_dir}{a path to a cache directory. The directory have to exist.  The \code{NULL} (default) uses and creates \code{/gisco} directory in the temporary directory from \code{\link{tempdir}}. The directory can also be set with \code{options(gisco_cache_dir = "path/to/dir")}.}
+\item{cache_dir}{a path to a cache directory.
+The directory have to exist.  The \code{NULL} (default) uses
+and creates \code{/gisco} directory in the temporary directory
+from \code{\link{tempdir}}. The directory can also be
+set with \code{options(gisco_cache_dir = "path/to/dir")}.}
 
-\item{verbose}{Display information. Useful for debugging, default if \code{FALSE}.}
+\item{verbose}{Display information. Useful
+for debugging, default if \code{FALSE}.}
 
 \item{resolution}{Resolution of the geospatial data. One of
 \itemize{
@@ -122,15 +131,21 @@ gisco_get_urban_audit(
 
 \item{country}{Optional. A character vector of country codes. See Details.}
 
-\item{region}{Optional. A character vector of UN M49 region codes. Possible values are "Africa", "Americas", "Asia", "Europe", "Oceania". See Details and \link{gisco_countrycode}}
+\item{region}{Optional. A character vector of UN M49 region codes.
+Possible values are "Africa", "Americas", "Asia", "Europe", "Oceania".
+ See Details and \link{gisco_countrycode}}
 
 \item{gisco_id}{Optional. A character vector of GISCO_ID LAU values.}
 
 \item{nuts_id}{Optional. A character vector of NUTS IDs.}
 
-\item{nuts_level}{NUTS level. One of \code{"0"} (Country-level), \code{"1", "2"} or \code{"3"}. See \url{https://ec.europa.eu/eurostat/web/nuts/background}.}
+\item{nuts_level}{NUTS level. One of \code{"0"} (Country-level),
+\code{"1", "2"} or \code{"3"}.
+See \url{https://ec.europa.eu/eurostat/web/nuts/background}.}
 
-\item{level}{Level of Urban Audit. Possible values are \code{"CITIES", "FUA", "GREATER_CITIES"} or \code{NULL}. \code{NULL} would download the full dataset.}
+\item{level}{Level of Urban Audit. Possible values are
+\code{"CITIES", "FUA", "GREATER_CITIES"} or \code{NULL}.
+\code{NULL} would download the full dataset.}
 }
 \value{
 \code{gisco_get_coastallines} returns a \code{POLYGON} object.
@@ -138,36 +153,51 @@ gisco_get_urban_audit(
 \code{gisco_get_lau} returns a \code{POLYGON} object.
 }
 \description{
-Loads a simple feature (\code{sf}) object from GISCO API entry point or your local library.
+Loads a simple feature (\code{sf})
+object from GISCO API entry point or your local library.
 }
 \details{
-\code{country} only available on specific datasets. Some \code{spatialtype} options (as \code{BN, COASTL, INLAND}) may not present country-level identifies.
+\code{country} only available on
+specific datasets. Some \code{spatialtype} options
+(as \code{BN, COASTL, INLAND}) may not present country-level identifies.
 
-\code{country} could be either a vector of country names, a vector of ISO3 country codes or a vector of Eurostat country codes. Mixed types (as \code{c("Turkey","US","FRA")}) would not work.
+\code{country} could be either a vector of country names, a vector of ISO3
+country codes or a vector of Eurostat country codes. Mixed types
+(as \code{c("Turkey","US","FRA")}) would not work.
 
-Sometimes cached files may be corrupt. On that case, try redownloading the data setting \code{update_cache = TRUE}.
+Sometimes cached files may be corrupt. On that case, try re-downloading
+the data setting \code{update_cache = TRUE}.
 
-If you experience any problem on download, try to download the corresponding \code{.geojson} file by any other method and set \code{cache_dir = "path/to/dir"} or \code{options(gisco_cache_dir = "path/to/dir)"}.
+If you experience any problem on download, try to download
+the corresponding \code{.geojson} file by any other method and
+set \code{cache_dir = "path/to/dir"} or
+\code{options(gisco_cache_dir = "path/to/dir)"}.
 
 For a complete list of files available check
 \link{gisco_db}.
 
 \strong{Release years available}
 
-\code{gisco_get_coastallines}: one of \code{"2006", "2010", "2013"} or \code{"2016"}.
+\code{gisco_get_coastallines}: one of
+\code{"2006", "2010", "2013"} or \code{"2016"}.
 
-\code{gisco_get_communes}: one of \code{"2001", "2004", "2006", "2008", "2010", "2013"} or \code{"2016"}.
+\code{gisco_get_communes}: one of
+\code{"2001", "2004", "2006", "2008", "2010", "2013"} or \code{"2016"}.
 
-\code{gisco_get_countries}: one of \code{"2001", "2006", "2010", "2013", "2016"} or \code{"2020"}.
+\code{gisco_get_countries}:
+one of \code{"2001", "2006", "2010", "2013", "2016"} or \code{"2020"}.
 
 \code{gisco_get_lau}: one of \code{"2016", "2017", "2018"} or \code{"2019"}.
 
-\code{gisco_get_nuts}: one of \code{"2003", "2006", "2010", "2013", "2016"} or \code{"2021"}.
+\code{gisco_get_nuts}: one of
+\code{"2003", "2006", "2010", "2013", "2016"} or \code{"2021"}.
 
-\code{gisco_get_urban_audit}: one of \code{"2001", "2004", "2014", "2018"} or \code{"2020"}.
+\code{gisco_get_urban_audit}:
+one of \code{"2001", "2004", "2014", "2018"} or \code{"2020"}.
 }
 \note{
-Please check the download and usage provisions on \link{gisco_attributions}.
+Please check the download and usage provisions
+on \link{gisco_attributions}.
 }
 \examples{
 library(sf)
@@ -261,7 +291,8 @@ legend(
 )
 }
 \seealso{
-\link{gisco_db}, \link{gisco_attributions}, \link{gisco_coastallines}
+\link{gisco_db}, \link{gisco_attributions},
+\link{gisco_coastallines}
 
 \link{gisco_countrycode}, \link{gisco_countries}
 

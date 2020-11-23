@@ -22,28 +22,12 @@ gisco_get_healthcare(
 A \code{POINT} object.
 }
 \description{
-The dataset contains information on main healthcare services considered to be 'hospitals' by Member States.
+The dataset contains information on main healthcare services
+considered to be 'hospitals' by Member States.
 }
 \details{
-Files are distributed on EPSG:4326. \href{https://gisco-services.ec.europa.eu/pub/healthcare/metadata.pdf}{Link to metadata}
-}
-\examples{
-library(sf)
-
-if (gisco_check_access()) {
-  HospitalBENELUX <- gisco_get_healthcare(country = c("BE", "NL", "LU"))
-  BENELUX <- gisco_get_countries(country = c("BE", "NL", "LU"))
-  plot(st_geometry(BENELUX))
-  plot(
-    st_geometry(HospitalBENELUX),
-    pch = 20,
-    col = "steelblue1",
-    add = TRUE
-  )
-  title(main = "Hospitals in Benelux",
-        sub = gisco_attributions(),
-        line = 1)
-}
+Files are distributed on EPSG:4326.
+\href{https://gisco-services.ec.europa.eu/pub/healthcare/metadata.pdf}{Link to metadata}
 }
 \seealso{
 \link{gisco_get}

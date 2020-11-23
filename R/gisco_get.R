@@ -1,17 +1,27 @@
 #' @title Get geospatial data from GISCO API
 #' @name gisco_get
-#' @description Loads a simple feature (\code{sf}) object from GISCO API entry point or your local library.
+#' @description Loads a simple feature (\code{sf})
+#' object from GISCO API entry point or your local library.
 #' @param year Release year. See Details.
-#' @param epsg projection of the map: 4-digit \href{https://epsg.io/}{EPSG code}. One of:
+#' @param epsg projection of the map:
+#' 4-digit \href{https://epsg.io/}{EPSG code}. One of:
 #' \itemize{
 #' \item \code{"4326"} - \href{https://epsg.io/4326}{WGS84}
 #' \item \code{"3035"} - \href{https://epsg.io/3035}{ETRS89 / ETRS-LAEA}
 #' \item \code{"3857"} - \href{https://epsg.io/3857}{Pseudo-Mercator}
 #' }
 #' @param cache a logical whether to do caching. Default is \code{TRUE}.
-#' @param update_cache a logical whether to update cache. Default is \code{FALSE}. When set to \code{TRUE} it would force a fresh download of the source \code{.geojson} file.
-#' @param cache_dir a path to a cache directory. The directory have to exist.  The \code{NULL} (default) uses and creates \code{/gisco} directory in the temporary directory from \code{\link{tempdir}}. The directory can also be set with \code{options(gisco_cache_dir = "path/to/dir")}.
-#' @param verbose Display information. Useful for debugging, default if \code{FALSE}.
+#' @param update_cache a logical whether
+#' to update cache. Default is \code{FALSE}. When set
+#' to \code{TRUE} it would force a fresh download
+#' of the source \code{.geojson} file.
+#' @param cache_dir a path to a cache directory.
+#' The directory have to exist.  The \code{NULL} (default) uses
+#' and creates \code{/gisco} directory in the temporary directory
+#' from \code{\link{tempdir}}. The directory can also be
+#' set with \code{options(gisco_cache_dir = "path/to/dir")}.
+#' @param verbose Display information. Useful
+#' for debugging, default if \code{FALSE}.
 #' @param resolution Resolution of the geospatial data. One of
 #' \itemize{
 #'    \item \code{"60"} (1:60million),
@@ -22,22 +32,32 @@
 #'    }
 #' @source \href{https://gisco-services.ec.europa.eu/distribution/v2/}{GISCO API}
 #' @author dieghernan, \url{https://github.com/dieghernan/}
-#' @details \code{country} only available on specific datasets. Some \code{spatialtype} options (as \code{BN, COASTL, INLAND}) may not present country-level identifies.
+#' @details \code{country} only available on
+#' specific datasets. Some \code{spatialtype} options
+#' (as \code{BN, COASTL, INLAND}) may not present country-level identifies.
 #'
-#' \code{country} could be either a vector of country names, a vector of ISO3 country codes or a vector of Eurostat country codes. Mixed types (as \code{c("Turkey","US","FRA")}) would not work.
+#' \code{country} could be either a vector of country names, a vector of ISO3
+#' country codes or a vector of Eurostat country codes. Mixed types
+#' (as \code{c("Turkey","US","FRA")}) would not work.
 #'
-#' Sometimes cached files may be corrupt. On that case, try redownloading the data setting \code{update_cache = TRUE}.
+#' Sometimes cached files may be corrupt. On that case, try re-downloading
+#' the data setting \code{update_cache = TRUE}.
 #'
-#' If you experience any problem on download, try to download the corresponding \code{.geojson} file by any other method and set \code{cache_dir = "path/to/dir"} or \code{options(gisco_cache_dir = "path/to/dir)"}.
+#' If you experience any problem on download, try to download
+#' the corresponding \code{.geojson} file by any other method and
+#' set \code{cache_dir = "path/to/dir"} or
+#' \code{options(gisco_cache_dir = "path/to/dir)"}.
 #'
 #' For a complete list of files available check
 #' \link{gisco_db}.
 #'
 #'\strong{Release years available}
 #'
-#' \code{gisco_get_coastallines}: one of \code{"2006", "2010", "2013"} or \code{"2016"}.
+#' \code{gisco_get_coastallines}: one of
+#' \code{"2006", "2010", "2013"} or \code{"2016"}.
 #' @return \code{gisco_get_coastallines} returns a \code{POLYGON} object.
-#' @note Please check the download and usage provisions on \link{gisco_attributions}.
+#' @note Please check the download and usage provisions
+#' on \link{gisco_attributions}.
 #' @examples
 #' library(sf)
 #'
@@ -51,7 +71,8 @@
 #'       sub = gisco_attributions(),
 #'       line = 1)
 #'
-#' @seealso \link{gisco_db}, \link{gisco_attributions}, \link{gisco_coastallines}
+#' @seealso \link{gisco_db}, \link{gisco_attributions},
+#' \link{gisco_coastallines}
 #' @export
 gisco_get_coastallines <- function(year = "2016",
                                    epsg = "4326",
@@ -81,7 +102,8 @@ gisco_get_coastallines <- function(year = "2016",
     data.sf <- giscoR::gisco_coastallines
     if (verbose)
       message(
-        "Loaded from gisco_coastallines dataset. Use update_cache = TRUE to load the shapefile from the .geojson file"
+        "Loaded from gisco_coastallines dataset. Use update_cache = TRUE",
+        " to load the shapefile from the .geojson file"
       )
   } else {
     dwnload <- TRUE
@@ -116,7 +138,8 @@ gisco_get_coastallines <- function(year = "2016",
 #'  \item \code{"INLAND"}: inland boundaries - \code{LINESTRING} object.
 #' }
 #' @param country Optional. A character vector of country codes. See Details.
-#' @details \code{gisco_get_communes}: one of \code{"2001", "2004", "2006", "2008", "2010", "2013"} or \code{"2016"}.
+#' @details \code{gisco_get_communes}: one of
+#' \code{"2001", "2004", "2006", "2008", "2010", "2013"} or \code{"2016"}.
 #' @export
 gisco_get_communes <- function(year = "2016",
                                epsg = "4326",
@@ -169,8 +192,11 @@ gisco_get_communes <- function(year = "2016",
 }
 
 #' @rdname gisco_get
-#' @param region Optional. A character vector of UN M49 region codes. Possible values are "Africa", "Americas", "Asia", "Europe", "Oceania". See Details and \link{gisco_countrycode}
-#' @details \code{gisco_get_countries}: one of \code{"2001", "2006", "2010", "2013", "2016"} or \code{"2020"}.
+#' @param region Optional. A character vector of UN M49 region codes.
+#' Possible values are "Africa", "Americas", "Asia", "Europe", "Oceania".
+#'  See Details and \link{gisco_countrycode}
+#' @details \code{gisco_get_countries}:
+#' one of \code{"2001", "2006", "2010", "2013", "2016"} or \code{"2020"}.
 #' @examples
 #'
 #' ###############################
@@ -225,7 +251,8 @@ gisco_get_countries <- function(year = "2016",
     data.sf <- giscoR::gisco_countries
     if (verbose)
       message(
-        "Loaded from gisco_countries dataset. Use update_cache = TRUE to load the shapefile from the .geojson file"
+        "Loaded from gisco_countries dataset. Use update_cache = TRUE
+        to load the shapefile from the .geojson file"
       )
   } else {
     dwnload <- TRUE
@@ -305,7 +332,7 @@ gisco_get_lau <- function(year = "2016",
     level = NULL,
     verbose = verbose
   )
-  
+
   # nocov start
   # There are not data file on this
   dwnload <- TRUE
@@ -332,12 +359,12 @@ gisco_get_lau <- function(year = "2016",
     country <- gsc_helper_countrynames(country, "eurostat")
     data.sf <- data.sf[data.sf$CNTR_CODE %in% country,]
   }
-  
+
   if (!is.null(country) & "CNTR_ID" %in% names(data.sf)) {
     country <- gsc_helper_countrynames(country, "eurostat")
     data.sf <- data.sf[data.sf$CNTR_ID %in% country, ]
   }
-  
+
   if (!is.null(gisco_id) & "GISCO_ID" %in% names(data.sf)) {
     data.sf <- data.sf[data.sf$GISCO_ID %in% gisco_id,]
   }
@@ -346,9 +373,12 @@ gisco_get_lau <- function(year = "2016",
 }
 
 #' @rdname gisco_get
-#' @param nuts_level NUTS level. One of \code{"0"} (Country-level), \code{"1", "2"} or \code{"3"}. See \url{https://ec.europa.eu/eurostat/web/nuts/background}.
+#' @param nuts_level NUTS level. One of \code{"0"} (Country-level),
+#' \code{"1", "2"} or \code{"3"}.
+#' See \url{https://ec.europa.eu/eurostat/web/nuts/background}.
 #' @param nuts_id Optional. A character vector of NUTS IDs.
-#' @details \code{gisco_get_nuts}: one of \code{"2003", "2006", "2010", "2013", "2016"} or \code{"2021"}.
+#' @details \code{gisco_get_nuts}: one of
+#' \code{"2003", "2006", "2010", "2013", "2016"} or \code{"2021"}.
 #' @examples
 #'
 #' ##########################
@@ -443,9 +473,10 @@ gisco_get_nuts <- function(year = "2016",
     data.sf <- giscoR::gisco_nuts
     if (verbose)
       message(
-        "Loaded from gisco_nuts dataset. Use update_cache = TRUE to load the shapefile from the .geojson file"
+        "Loaded from gisco_nuts dataset. Use update_cache = TRUE to load",
+        " the shapefile from the .geojson file"
       )
-    if (nuts_level %in% c('0', '1', '2', '3')) {
+    if (nuts_level %in% c("0", "1", "2", "3")) {
       data.sf <- data.sf[data.sf$LEVL_CODE == nuts_level,]
     }
   } else {
@@ -498,8 +529,11 @@ gisco_get_nuts <- function(year = "2016",
 }
 
 #' @rdname gisco_get
-#' @param level Level of Urban Audit. Possible values are \code{"CITIES", "FUA", "GREATER_CITIES"} or \code{NULL}. \code{NULL} would download the full dataset.
-#' @details \code{gisco_get_urban_audit}: one of \code{"2001", "2004", "2014", "2018"} or \code{"2020"}.
+#' @param level Level of Urban Audit. Possible values are
+#' \code{"CITIES", "FUA", "GREATER_CITIES"} or \code{NULL}.
+#' \code{NULL} would download the full dataset.
+#' @details \code{gisco_get_urban_audit}:
+#' one of \code{"2001", "2004", "2014", "2018"} or \code{"2020"}.
 #' @export
 gisco_get_urban_audit <- function(year = "2020",
                                   epsg = "4326",

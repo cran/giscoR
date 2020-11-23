@@ -1,5 +1,8 @@
-#' @title Get the grid cells covering the European land territory, for various resolutions.
-#' @description These datasets contain grid cells covering the European land territory, for various resolutions from 1km to 100km. Base statistics such as population figures are provided for these cells.
+#' @title Get the grid cells covering the European
+#' land territory, for various resolutions.
+#' @description These datasets contain grid cells covering the European land
+#' territory, for various resolutions from 1km to 100km. Base statistics such
+#' as population figures are provided for these cells.
 #' @return A \code{POLYGON/POINT} object.
 #' @author dieghernan, \url{https://github.com/dieghernan/}
 #' @source \href{https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/grids}{GISCO API Grids}
@@ -12,7 +15,8 @@
 #'   The file sizes range is from 428K (\code{resolution = "100"})
 #' to 1.7G \code{resolution = "1"}. For resolutions 1km and 2km you would
 #' need to confirm the download.
-#' @note There are specific downloading provisions, please see \url{https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/grids}
+#' @note There are specific downloading provisions, please see
+#' \url{https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/grids}
 #' @examples
 #' library(sf)
 #'
@@ -79,15 +83,16 @@ gisco_get_grid <- function(resolution = "20",
     api_entry <- "https://gisco-services.ec.europa.eu/grid"
     url <- file.path(api_entry, filename)
 
-    local <- file.path(gsc_helper_cachedir(cache_dir),filename)
+    local <- file.path(gsc_helper_cachedir(cache_dir), filename)
     exist_local <- file.exists(local)
 
     if (verbose & exist_local)
       message("File exits on local cache dir")
 
-    if (resolution %in% c("1" , "2") & isFALSE(exist_local)) {
+    if (resolution %in% c("1", "2") & isFALSE(exist_local)) {
       sel <-
-        menu(c("Yes", "No"), title = "You are about to download a large file (>500M). Proceed?")
+        menu(c("Yes", "No"),
+             title = "You are about to download a large file (>500M). Proceed?")
       if (sel != 1) {
         stop("Execution halted")
       }
@@ -99,7 +104,7 @@ gisco_get_grid <- function(resolution = "20",
 
     if (verbose) {
       size <- file.size(localfile)
-      class(size) <- 'object_size'
+      class(size) <- "object_size"
       message(format(size, units = "auto"))
     }
     load <- tryCatch(
