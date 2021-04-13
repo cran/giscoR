@@ -1,25 +1,29 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# giscoR <img src="man/figures/logo.png" align="right" width="120" />
+# giscoR <img src="man/figures/logo.png" align="right" width="120"/>
 
 <!-- badges: start -->
 
-[![CRAN/METACRAN](https://www.r-pkg.org/badges/version/giscoR)](https://CRAN.R-project.org/package=giscoR)
-![CRAN/METACRAN](https://img.shields.io/cran/l/giscoR) [![R build
+[![CRAN
+status](https://www.r-pkg.org/badges/version/giscoR)](https://CRAN.R-project.org/package=giscoR)
+[![CRAN
+results](https://cranchecks.info/badges/worst/giscoR)](https://cran.r-project.org/web/checks/check_results_giscoR.html)
+[![R build
 status](https://github.com/dieghernan/giscoR/workflows/R-CMD-check/badge.svg)](https://github.com/dieghernan/giscoR/actions)
 [![codecov](https://codecov.io/gh/dieghernan/giscoR/branch/master/graph/badge.svg)](https://codecov.io/gh/dieghernan/giscoR)
-[![lifecycle](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
+![](https://cranlogs.r-pkg.org/badges/giscoR) [![Project Status: Active
+– The project has reached a stable, usable state and is being actively
+developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![DOI](https://img.shields.io/badge/DOI-10.5281/zenodo.4317946-blue)](https://doi.org/10.5281/zenodo.4317946)
+
 <!-- badges: end -->
 
 [giscoR](https://dieghernan.github.io/giscoR/) is a API package that
 helps to retrieve data from [Eurostat - GISCO (the Geographic
 Information System of the
 COmmission)](https://ec.europa.eu/eurostat/web/gisco). It also provides
-some lightweight data sets ready to use without downloading. Currently
-only the [Administrative Units / Statistical
-Units](https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units)
-data sets are supported.
+some lightweight data sets ready to use without downloading.
 
 GISCO [(FAQ)](https://ec.europa.eu/eurostat/web/gisco/faq) is a
 geospatial open data repository including several data sets as
@@ -31,6 +35,9 @@ The data sets are usually provided at several resolution levels
 Note that the package does not provide metadata on the downloaded files,
 the information is available on the [API
 webpage](https://gisco-services.ec.europa.eu/distribution/v2/).
+
+Full site with examples and vignettes on
+<https://dieghernan.github.io/giscoR/>
 
 ## Installation
 
@@ -44,7 +51,6 @@ install.packages("giscoR")
 You can install the developing version of `giscoR` with:
 
 ``` r
-
 library(remotes)
 install_github("dieghernan/giscoR")
 ```
@@ -54,7 +60,6 @@ install_github("dieghernan/giscoR")
 This script highlights some features of `giscoR`:
 
 ``` r
-
 library(giscoR)
 library(sf)
 
@@ -67,39 +72,134 @@ DNK_res10 <-
 DNK_res03 <-
   gisco_get_countries(resolution = "03", country = "DNK")
 
-opar <- par(no.readonly = TRUE)
-par(mfrow = c(2, 2), mar = c(3, 0, 2, 0))
-plot(st_geometry(DNK_res60), main = "60M", col = "tomato")
-plot(st_geometry(DNK_res20), main = "20M", col = "tomato")
-plot(st_geometry(DNK_res10), main = "10M", col = "tomato")
-plot(st_geometry(DNK_res03), main = "03M", col = "tomato")
-title(sub = gisco_attributions(), line = 1)
+
+# Plot tmap
+
+library(tmap)
+
+plot60 <- qtm(DNK_res60, fill = "tomato", main.title = "60M")
+plot20 <- qtm(DNK_res20, fill = "tomato", main.title = "20M")
+plot10 <- qtm(DNK_res10, fill = "tomato", main.title = "10M")
+plot03 <- qtm(DNK_res03, fill = "tomato", main.title = "03M")
+
+tmap_arrange(plot60, plot20, plot10, plot03)
 ```
 
-![](man/figures/README-example-1.png)<!-- -->
+<img src="https://raw.githubusercontent.com/dieghernan/giscoR/master/img/README-example-1.svg" width="100%" />
 
 ``` r
-par(opar)
-
 # Labels and Lines available
-labs <- gisco_get_countries(spatialtype = "LB", region = "Africa", epsg = "3857")
-coast <- gisco_get_countries(spatialtype = "COASTL", epsg = "3857")
 
-opar <- par(no.readonly = TRUE)
-par(mar = c(3, 0, 0, 0))
-plot(st_geometry(labs),
-  col = c("springgreen4", "darkgoldenrod1", "red2"), cex = 2,
-  pch = 19
+labs <- gisco_get_countries(
+  spatialtype = "LB",
+  region = "Africa",
+  epsg = "3857"
 )
-plot(st_geometry(coast), col = "deepskyblue4", lwd = 6, add = TRUE)
-title(sub = gisco_attributions(), line = 1)
+
+coast <- gisco_get_countries(
+  spatialtype = "COASTL",
+  epsg = "3857"
+)
+
+
+tm_shape(coast, bbox = labs) +
+  tm_lines("deepskyblue4") +
+  tm_shape(labs) +
+  tm_dots(
+    col = "springgreen4",
+    border.col = "darkgoldenrod1",
+    shape = 21,
+    border.lwd = 1,
+    size = 1
+  )
 ```
 
-![](man/figures/README-example-2.png)<!-- -->
+<img src="https://raw.githubusercontent.com/dieghernan/giscoR/master/img/README-example-2.svg" width="100%" />
+
+## Labels
+
+An example of a labeled map using `tmap`:
 
 ``` r
-par(opar)
+ITA <- gisco_get_nuts(country = "Italy", nuts_level = 1)
+
+
+tm_shape(ITA, point.per = "feature") +
+  tm_polygons() +
+  tm_text("NAME_LATN")
 ```
+
+<img src="https://raw.githubusercontent.com/dieghernan/giscoR/master/img/README-labels-1.svg" width="100%" />
+
+## Thematic maps
+
+An example of a thematic map plotted with the `tmap` package. The
+information is extracted via the `eurostat` package:
+
+``` r
+nuts3 <- gisco_get_nuts(
+  year = "2016",
+  epsg = "3035",
+  resolution = "3",
+  nuts_level = "3"
+)
+
+# Countries
+countries <-
+  gisco_get_countries(
+    year = "2016",
+    epsg = "3035",
+    resolution = "3"
+  )
+
+# Use eurostat
+library(eurostat)
+
+popdens <- get_eurostat("demo_r_d3dens")
+popdens <- popdens[popdens$time == "2018-01-01", ]
+
+
+
+nuts3.sf <- merge(nuts3,
+  popdens,
+  by.x = "NUTS_ID",
+  by.y = "geo",
+  all.x = TRUE
+)
+
+br <- c(0, 25, 50, 100, 200, 500, 1000, 2500, 5000, 10000, 30000)
+
+# Plot
+tm_shape(countries, bbox = c(23, 14, 74, 55) * 10e4) +
+  tm_fill("#E0E0E0") +
+  tm_shape(nuts3.sf) +
+  tm_fill(
+    "values",
+    breaks = br,
+    palette = "-inferno",
+    alpha = .7,
+    title = "Population density (km2)\nNUTS3 (2018)"
+  ) +
+  tm_shape(countries) +
+  tm_borders(lwd = .25) +
+  tm_credits(gisco_attributions(),
+    position = c("left", "bottom")
+  ) +
+  tm_layout(
+    bg.color = "#daf3ff",
+    outer.bg.color = "white",
+    legend.bg.color = "white",
+    legend.frame = "black",
+    legend.title.size = 0.8,
+    inner.margins = c(0, 0, 0, 0),
+    outer.margins = c(0, 0, 0, 0),
+    frame = TRUE,
+    frame.lwd = 0,
+    attr.outside = TRUE
+  )
+```
+
+<img src="https://raw.githubusercontent.com/dieghernan/giscoR/master/img/README-thematic-1.svg" width="100%" />
 
 ### A note on caching
 
@@ -122,22 +222,18 @@ them on your local directory.
 
 ### API data packages
 
-`eurostat` package (<https://ropengov.github.io/eurostat/>). This is
-another API package that provides access to open data from Eurostat.
-
-`wbstats` (<https://nset-ornl.github.io/wbstats/>) is an interesting R
-API packages that provides access to [The World Bank
-Data](https://data.worldbank.org/) API.
+-   `eurostat` package (<https://ropengov.github.io/eurostat/>). This is
+    an API package that provides access to open data from Eurostat.
 
 ### Plotting `sf` objects
 
 Some packages recommended for visualization are:
 
-  - [`tmap`](https://mtennekes.github.io/tmap/)  
-  - [`cartography`](http://riatelab.github.io/cartography/docs/)
-  - [`ggplot2`](https://github.com/tidyverse/ggplot2) +
+-   [`tmap`](https://mtennekes.github.io/tmap/)
+-   [`ggplot2`](https://github.com/tidyverse/ggplot2) +
     [`ggspatial`](https://github.com/paleolimbot/ggspatial)
-  - [`leaflet`](https://rstudio.github.io/leaflet/)
+-   [`mapsf`](https://riatelab.github.io/mapsf/)
+-   [`leaflet`](https://rstudio.github.io/leaflet/)
 
 ## Contribute
 
@@ -146,14 +242,14 @@ code](https://github.com/dieghernan/giscoR/).
 
 Contributions are very welcome:
 
-  - [Use issue tracker](https://github.com/dieghernan/giscoR/issues) for
+-   [Use issue tracker](https://github.com/dieghernan/giscoR/issues) for
     feedback and bug reports.
-  - [Send pull requests](https://github.com/dieghernan/giscoR/)
-  - [Star us on the Github page](https://github.com/dieghernan/giscoR)
+-   [Send pull requests](https://github.com/dieghernan/giscoR/)
+-   [Star us on the Github page](https://github.com/dieghernan/giscoR)
 
 ## Copyright notice
 
-*From GISCO \> Geodata \> Reference data \> Administrative Units /
+*From GISCO &gt; Geodata &gt; Reference data &gt; Administrative Units /
 Statistical Units*
 
 When data downloaded from this page is used in any printed or electronic

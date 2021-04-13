@@ -5,32 +5,28 @@
 \alias{giscoR-package}
 \alias{giscoR}
 \title{Download geospatial data from GISCO API - Eurostat}
-\source{
-\href{https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units}{GISCO webpage}
-}
 \description{
 \if{html}{\figure{logo.png}{options: width=120 alt="giscoR logo" align='right'}}
 
 giscoR is a API package that helps to retrieve data from Eurostat - GISCO
- (the Geographic Information System of the COmmission)
+(the Geographic Information System of the COmmission)
 }
 \details{
-giscoR package
-
-\tabular{ll}{
-Package: \tab giscoR \cr
-Type: \tab Package\cr
-Version: \tab See sessionInfo() or DESCRIPTION file\cr
-Date: \tab 2020\cr
-License: \tab GPL-3\cr
-LazyLoad: \tab yes\cr
+giscoR package\tabular{ll}{
+    \tab  \cr
+   \strong{Package} \tab giscoR \cr
+   \strong{Type} \tab Package \cr
+   \strong{Version} \tab See sessionInfo() or DESCRIPTION file \cr
+   \strong{Date} \tab 2021 \cr
+   \strong{License} \tab GPL-3 \cr
+   \strong{LazyLoad} \tab yes \cr
 }
 }
 \note{
 COPYRIGHT NOTICE
 
 When data downloaded from
-\href{https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units}{this page}
+\url{https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units}
 is used in any printed or electronic publication,
 in addition to any other provisions
 applicable to the whole Eurostat website,
@@ -39,10 +35,11 @@ in the legend of the map and
 in the introductory page of the publication
 with the following copyright notice:
 \itemize{
-	\item EN: (C) EuroGeographics for the administrative boundaries
-	\item FR: (C) EuroGeographics pour les limites administratives
-	\item DE: (C) EuroGeographics bezüglich der Verwaltungsgrenzen
+\item EN: (C) EuroGeographics for the administrative boundaries
+\item FR: (C) EuroGeographics pour les limites administratives
+\item DE: (C) EuroGeographics bezüglich der Verwaltungsgrenzen
 }
+
 For publications in languages other than
 English, French or German,
 the translation of the copyright notice
@@ -57,11 +54,11 @@ See \code{citation("giscoR")}
 }
 \seealso{
 Useful links:
- \itemize{
- \item \url{https://dieghernan.github.io/giscoR/}
- \item \url{https://github.com/dieghernan/giscoR}
- \item Report bugs at \url{https://github.com/dieghernan/giscoR/issues}
- }
+\itemize{
+\item \url{https://dieghernan.github.io/giscoR/}
+\item \url{https://github.com/dieghernan/giscoR}
+\item Report bugs at \url{https://github.com/dieghernan/giscoR/issues}
+}
 }
 \author{
 dieghernan, \url{https://github.com/dieghernan/}

@@ -1,3 +1,17 @@
+# giscoR 0.2.4
+
+- New `eu` field on `giscoR::gisco_countrycode`.
+- Fix typos on documentation
+- Include vignette on the package
+- Move docs to markdown/roxygen
+- `lwgeom` moved to Import field.
+- `cartography` package replaced by `tmap` on vignettes.
+
+# giscoR 0.2.3
+
+- Update on docs
+- Release for DOI
+
 # giscoR 0.2.2
 
 - Remove vignette
