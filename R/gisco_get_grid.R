@@ -1,4 +1,4 @@
-#' Get the grid cells covering the European land territory
+#' Get grid cells covering covering Europe for various resolutions
 #'
 #' @description
 #' These datasets contain grid cells covering the European land
@@ -17,9 +17,11 @@
 #' @param resolution Resolution of the grid cells on kms. Available values are
 #' "1", "2", "5", "10", "20", "50", "100". See Details
 #'
-#' @param spatialtype Select one of `REGION,POINT`
+#' @param spatialtype Select one of "REGION" or "POINT".
 #'
-#' @inheritParams gisco_get
+#' @inheritParams gisco_get_countries
+#'
+#' @inheritSection gisco_get_countries About caching
 #'
 #' @details
 #'
@@ -34,40 +36,95 @@
 #' <https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/grids>
 #'
 #' @examples
-#' library(sf)
-#'
+#' \donttest{
 #' grid <- gisco_get_grid(resolution = 20)
 #' grid$popdens <- grid$TOT_P_2011 / 20
+#'
 #'
 #' breaks <-
 #'   c(
 #'     0,
+#'     0.1, # For capturing 0
+#'     100,
 #'     500,
 #'     1000,
 #'     2500,
 #'     5000,
 #'     10000,
 #'     25000,
-#'     50000,
 #'     max(grid$popdens) + 1
 #'   )
 #'
-#' pal <- hcl.colors(length(breaks) - 2, palette = "inferno", alpha = 0.7)
-#' pal <- c("black", pal)
+#' # Cut groups
 #'
-#' opar <- par(no.readonly = TRUE)
-#' par(mar = c(0, 0, 0, 0), bg = "grey2")
-#' plot(
-#'   grid[, "popdens"],
-#'   pal = pal,
-#'   key.pos = NULL,
-#'   breaks = breaks,
-#'   main = NA,
-#'   xlim = c(2500000, 7000000),
-#'   ylim = c(1500000, 5200000),
-#'   border = NA
-#' )
-#' par(opar)
+#' grid$popdens_cut <- cut(grid$popdens, breaks = breaks, include.lowest = TRUE)
+#' cut_labs <- prettyNum(breaks, big.mark = " ")[-1]
+#' cut_labs[1] <- "0"
+#' cut_labs[9] <- "> 25 000"
+#'
+#' pal <- c("black", hcl.colors(length(breaks) - 2,
+#'   palette = "Spectral",
+#'   alpha = 0.9
+#' ))
+#'
+#' library(ggplot2)
+#'
+#' ggplot(grid) +
+#'   geom_sf(aes(fill = popdens_cut), color = NA) +
+#'   coord_sf(
+#'     xlim = c(2500000, 7000000),
+#'     ylim = c(1500000, 5200000)
+#'   ) +
+#'   scale_fill_manual(
+#'     values = pal, na.value = "black",
+#'     name = "people per sq. kilometer",
+#'     labels = cut_labs,
+#'     guide = guide_legend(
+#'       direction = "horizontal",
+#'       keyheight = 0.5,
+#'       keywidth = 2,
+#'       title.position = "top",
+#'       title.hjust = 0.5,
+#'       label.hjust = .5,
+#'       nrow = 1,
+#'       byrow = TRUE,
+#'       reverse = FALSE,
+#'       label.position = "bottom"
+#'     )
+#'   ) +
+#'   theme_void() +
+#'   labs(
+#'     title = "Population density in Europe",
+#'     subtitle = "Grid: 20 km.",
+#'     caption = gisco_attributions()
+#'   ) +
+#'   theme(
+#'     plot.background = element_rect(fill = "grey2"),
+#'     plot.title = element_text(
+#'       size = 18, color = "white",
+#'       hjust = 0.5,
+#'     ),
+#'     plot.subtitle = element_text(
+#'       size = 14,
+#'       color = "white",
+#'       hjust = 0.5,
+#'       face = "bold"
+#'     ),
+#'     plot.caption = element_text(
+#'       size = 9, color = "grey60",
+#'       hjust = 0.5, vjust = 0,
+#'       margin = margin(t = 5, b = 10)
+#'     ),
+#'     legend.text = element_text(
+#'       size = 8,
+#'       color = "white"
+#'     ),
+#'     legend.title = element_text(
+#'       color = "white"
+#'     ),
+#'     legend.position = "bottom"
+#'   )
+#' }
 #' @export
 gisco_get_grid <- function(resolution = "20",
                            spatialtype = "REGION",

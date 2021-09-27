@@ -1,14 +1,16 @@
 #' Get location of airports and ports from GISCO API
 #'
-#' Loads a simple feature (`sf`) object from GISCO API or your local library.
+#' Loads a `sf` object from GISCO API or your local library.
 #'
 #' @concept infrastructure
+#' @family infrastructure
 #'
 #' @return A `POINT` object on EPSG:4326.
 #'
 #' @param year Year of reference.
 #'
-#' @param country A list of countries, see [gisco_get_countries()]
+#' @inheritParams gisco_get_countries
+#'
 #'
 #' @source
 #' <https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/transport-networks>
@@ -25,7 +27,7 @@
 #'  to Europe. All shapefiles provided in EPSG:4326
 #'
 #' @examples
-#'
+#' \donttest{
 #' library(sf)
 #'
 #' NL <- gisco_get_countries(country = "NL")
@@ -35,41 +37,25 @@
 #' # Intersect with NL
 #' PortsNL <- st_intersection(Ports, NL)
 #'
+#' # Bind
+#' PortsNL_bind <- st_as_sf(type = "Port", st_geometry(PortsNL))
+#' AirP_NL_bind <- st_as_sf(type = "Airport", st_geometry(AirP_NL))
 #'
-#' plot(st_geometry(NL), col = "wheat")
-#' plot(
-#'   st_geometry(PortsNL),
-#'   pch = 22,
-#'   col = "forestgreen",
-#'   add = TRUE,
-#'   cex = 0.8
-#' )
+#' Full <- rbind(AirP_NL_bind, PortsNL_bind)
 #'
-#' plot(
-#'   st_geometry(AirP_NL),
-#'   pch = 20,
-#'   col = "steelblue",
-#'   add = TRUE,
-#'   cex = 1.2
-#' )
-#' legend(
-#'   "topright",
-#'   legend = c("Port", "Airport"),
-#'   col = c("forestgreen", "steelblue"),
-#'   cex = 0.9,
-#'   bty = "n",
-#'   pch = c(22, 20),
-#'   pt.cex = c(1, 1.5),
-#'   y.intersp = 2
-#' )
+#' library(ggplot2)
 #'
-#' title(
-#'   main = "Transport Network on the Nethelands",
-#'   sub = gisco_attributions(),
-#'   line = 1,
-#'   cex.sub = 0.7,
-#'   font.sub = 3
-#' )
+#' ggplot(NL) +
+#'   geom_sf(fill = "wheat") +
+#'   geom_sf(data = Full, aes(shape = type, color = type)) +
+#'   labs(
+#'     title = "Trasport network on the Netherlands",
+#'     shape = NULL,
+#'     color = NULL,
+#'     caption = gisco_attributions()
+#'   )
+#' }
+#'
 #' @export
 gisco_get_airports <- function(year = "2013", country = NULL) {
   year <- as.character(year)

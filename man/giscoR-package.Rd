@@ -16,7 +16,7 @@ giscoR package\tabular{ll}{
     \tab  \cr
    \strong{Package} \tab giscoR \cr
    \strong{Type} \tab Package \cr
-   \strong{Version} \tab See sessionInfo() or DESCRIPTION file \cr
+   \strong{Version} \tab 0.3.0 \cr
    \strong{Date} \tab 2021 \cr
    \strong{License} \tab GPL-3 \cr
    \strong{LazyLoad} \tab yes \cr
@@ -55,9 +55,9 @@ See \code{citation("giscoR")}
 \seealso{
 Useful links:
 \itemize{
-\item \url{https://dieghernan.github.io/giscoR/}
-\item \url{https://github.com/dieghernan/giscoR}
-\item Report bugs at \url{https://github.com/dieghernan/giscoR/issues}
+\item \url{https://ropengov.github.io/giscoR/}
+\item \url{https://github.com/rOpenGov/giscoR}
+\item Report bugs at \url{https://github.com/rOpenGov/giscoR/issues}
 }
 }
 \author{

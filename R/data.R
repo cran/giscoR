@@ -30,7 +30,7 @@ NULL
 #'
 #' @format
 #' A `MULTIPOLYGON` data frame (resolution: 1:20million, EPSG:4326) object
-#' with 257 rows and 7 variables:
+#' with `r nrow(giscoR::gisco_countries)` rows and 7 variables:
 #'   * **id**: row ID
 #'   * **CNTR_NAME**: Official country name on local language
 #'   * **ISO3_CODE**: ISO 3166-1 alpha-3 code of each country, as provided by
@@ -42,15 +42,16 @@ NULL
 #'
 #' @examples
 #'
-#' library(sf)
-#'
 #' cntry <- gisco_countries
 #' GBR <- subset(cntry, ISO3_CODE == "GBR")
 #'
-#' plot(st_geometry(GBR), col = "red3", border = "blue4")
-#' title(sub = gisco_attributions(), line = 1)
+#' library(ggplot2)
+#'
+#' ggplot(GBR) +
+#'   geom_sf(color = "red3", fill = "blue4") +
+#'   theme_void()
 #' @source
-#' [`CNTR_RG_20M_2016_4326.geojson`](https://gisco-services.ec.europa.eu/distribution/v2/countries/geojson/) file.
+#' [CNTR_RG_20M_2016_4326.geojson](https://gisco-services.ec.europa.eu/distribution/v2/countries/geojson/) file.
 #'
 #' @docType data
 #'
@@ -75,7 +76,7 @@ NULL
 #'   * **geometry**: geometry field
 #'
 #' @source
-#' [`COAS_RG_20M_2016_4326.geojson`](https://gisco-services.ec.europa.eu/distribution/v2/coas/geojson/) file.
+#' [COAS_RG_20M_2016_4326.geojson](https://gisco-services.ec.europa.eu/distribution/v2/coas/geojson/) file.
 #'
 #' @docType data
 #'
@@ -83,25 +84,26 @@ NULL
 #'
 #' @examples
 #'
-#' library(sf)
-#'
 #' coasts <- gisco_coastallines
 #'
-#' plot(
-#'   st_geometry(coasts),
-#'   xlim = c(100, 120),
-#'   ylim = c(-24, 24),
-#'   col = "grey90",
-#'   border = "deepskyblue4",
-#'   lwd = 2
-#' )
-#' box()
-#' title(
-#'   main = "Coasts on Southeastern Asia",
-#'   sub = gisco_attributions(),
-#'   cex.sub = 0.7,
-#'   line = 1
-#' )
+#' library(ggplot2)
+#'
+#' ggplot(coasts) +
+#'   geom_sf(color = "blue", fill = "blue", alpha = 0.2) +
+#'   # Zoom on Oceania
+#'   coord_sf(
+#'     xlim = c(96, 179),
+#'     ylim = c(-51, 11)
+#'   ) +
+#'   theme_minimal() +
+#'   theme(
+#'     plot.background = element_rect(
+#'       fill = "black",
+#'       color = "black"
+#'     ),
+#'     panel.grid = element_blank(),
+#'     axis.text = element_text(colour = "grey90")
+#'   )
 NULL
 
 #' All NUTS `POLYGON` object
@@ -114,6 +116,7 @@ NULL
 #'
 #' @format
 #' A `POLYGON` data frame (resolution: 1:20million, EPSG:4326) object with
+#' `r prettyNum(nrow(giscoR::gisco_nuts), big.mark = ",")` rows and
 #' 11 variables:
 #'   * **id**: row ID
 #'   * **COAST_TYPE**: COAST_TYPE
@@ -128,7 +131,7 @@ NULL
 #'   * **geometry**: geometry field
 #'
 #' @source
-#' [`NUTS_RG_20M_2016_4326.geojson`](https://gisco-services.ec.europa.eu/distribution/v2/nuts/geojson/) file.
+#' [NUTS_RG_20M_2016_4326.geojson](https://gisco-services.ec.europa.eu/distribution/v2/nuts/geojson/) file.
 #'
 #' @docType data
 #'
@@ -136,19 +139,14 @@ NULL
 #'
 #' @examples
 #'
-#' library(sf)
-#'
 #' nuts <- gisco_nuts
 #'
 #' italy <- subset(nuts, CNTR_CODE == "IT" & LEVL_CODE == 3)
 #'
-#' plot(st_geometry(italy), col = c("springgreen4", "ivory", "red2"))
-#' title(
-#'   sub = gisco_attributions(),
-#'   line = 1,
-#'   cex.sub = 0.7,
-#'   font.sub = 3
-#' )
+#' library(ggplot2)
+#'
+#' ggplot(italy) +
+#'   geom_sf()
 #' @encoding UTF-8
 NULL
 
@@ -173,7 +171,7 @@ NULL
 #'   * **iso.name.en**: ISO English short name
 #'   * **cldr.short.en**: English short name as provided by the Unicode Common
 #'   Locale Data Repository
-#'   <http://cldr.unicode.org/translation/displaynames/country-names>
+#'   <https://cldr.unicode.org/translation/displaynames/countryregion-territory-names>
 #'   * **continent**: As provided by the World Bank
 #'   * **un.region.code**: Numeric region code UN (M49)
 #'   * **un.region.name**: Region name UN (M49)
@@ -188,9 +186,10 @@ NULL
 #' @examples
 #'
 #' data(gisco_countrycode)
-#' @source [`countrycode::codelist`] **v1.2.0**.
+#' @source [countrycode::codelist] **v1.2.0**.
 #'
-#' @seealso [`countrycode::codelist`], [`countrycode::countrycode-package`]
+#' @seealso [gisco_get_countries()],
+#'  [countrycode::codelist], [countrycode::countrycode-package]
 #'
 #' @docType data
 NULL

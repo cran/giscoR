@@ -1,6 +1,7 @@
-#' Get the healthcare services in Europe.
+#' Get locations of healthcare services in Europe.
 #'
 #' @concept infrastructure
+#' @family infrastructure
 #'
 #' @description
 #' The dataset contains information on main healthcare services considered to
@@ -13,14 +14,38 @@
 #' @source
 #' <https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/healthcare-services>
 #'
-#' @inheritParams gisco_get
+#' @inheritParams gisco_get_countries
+#'
+#' @inheritSection gisco_get_countries About caching
 #'
 #' @details
 #' Files are distributed on EPSG:4326. Metadata available on
 #' <https://gisco-services.ec.europa.eu/pub/healthcare/metadata.pdf>.
 #'
-#' @seealso [gisco_get]
+#' @seealso [gisco_get_countries()]
+#' @examples
+#' \donttest{
+#' if (gisco_check_access()) {
+#'   health_BEL <- gisco_get_healthcare(country = "Belgium")
+#'   health_BEL[health_BEL$public_private == "", ]$public_private <- "unknown"
+#'   BEL <- gisco_get_nuts(country = "Belgium", nuts_level = 2)
 #'
+#'   library(ggplot2)
+#'
+#'   ggplot(BEL) +
+#'     geom_sf(fill = "white", color = "grey80") +
+#'     geom_sf(data = health_BEL, aes(color = public_private), alpha = 0.5, size = 3) +
+#'     theme_bw() +
+#'     labs(
+#'       title = "Healthcare in Belgium",
+#'       subtitle = "NUTS 2",
+#'       fill = "type",
+#'       caption = paste0(gisco_attributions())
+#'     ) +
+#'     scale_color_manual(name = "type", values = hcl.colors(3, "Berlin")) +
+#'     theme_minimal()
+#' }
+#' }
 #' @export
 gisco_get_healthcare <- function(cache = TRUE,
                                  update_cache = FALSE,

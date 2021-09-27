@@ -20,13 +20,12 @@
 #' | :---         | :--      |
 #' | **Package**  | giscoR |
 #' | **Type**     | Package  |
-#' | **Version**  | See sessionInfo() or DESCRIPTION file |
-#' | **Date**     | 2021     |
-#' | **License**  | GPL-3    |
+#' | **Version**  | `r packageVersion("giscoR")` |
+#' | **Date**     | `r format(Sys.Date(), "%Y")`     |
+#' | **License**  | `r as.character(utils::packageDescription("giscoR")["License"])`|
 #' | **LazyLoad** | yes      |
 #'
 #'
-
 #'
 #' @author dieghernan, <https://github.com/dieghernan/>
 #'
@@ -36,9 +35,9 @@
 #' @seealso
 #'
 #' Useful links:
-#'  * <https://dieghernan.github.io/giscoR/>
-#'  * <https://github.com/dieghernan/giscoR>
-#'  * Report bugs at <https://github.com/dieghernan/giscoR/issues>
+#'  * <https://ropengov.github.io/giscoR/>
+#'  * <https://github.com/rOpenGov/giscoR>
+#'  * Report bugs at <https://github.com/rOpenGov/giscoR/issues>
 #'
 #'
 #'

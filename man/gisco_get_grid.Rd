@@ -2,7 +2,7 @@
 % Please edit documentation in R/gisco_get_grid.R
 \name{gisco_get_grid}
 \alias{gisco_get_grid}
-\title{Get the grid cells covering the European land territory}
+\title{Get grid cells covering covering Europe for various resolutions}
 \source{
 \url{https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/grids}
 }
@@ -19,15 +19,15 @@ gisco_get_grid(
 \item{resolution}{Resolution of the grid cells on kms. Available values are
 "1", "2", "5", "10", "20", "50", "100". See Details}
 
-\item{spatialtype}{Select one of \verb{REGION,POINT}}
+\item{spatialtype}{Select one of "REGION" or "POINT".}
 
-\item{cache_dir}{A path to a cache directory. See Details on \code{\link{gisco_get}}.}
+\item{cache_dir}{A path to a cache directory. See \strong{About caching}.}
 
 \item{update_cache}{A logical whether to update cache. Default is \code{FALSE}.
 When set to \code{TRUE} it would force a fresh download of the source
-\code{.geojson} file.}
+.geojson file.}
 
-\item{verbose}{Display information. Useful for debugging,
+\item{verbose}{Logical, displays information. Useful for debugging,
 default is \code{FALSE}.}
 }
 \value{
@@ -49,41 +49,109 @@ need to confirm the download.
 There are specific downloading provisions, please see
 \url{https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/grids}
 }
-\examples{
-library(sf)
+\section{About caching}{
+You can set your \code{cache_dir} with \code{\link[=gisco_set_cache_dir]{gisco_set_cache_dir()}}.
 
+Sometimes cached files may be corrupt. On that case, try re-downloading
+the data setting \code{update_cache = TRUE}.
+
+If you experience any problem on download, try to download the
+corresponding .geojson file by any other method and save it on your
+\code{cache_dir}. Use the option \code{verbose = TRUE} for debugging the API query.
+
+For a complete list of files available check \link{gisco_db}.
+}
+
+\examples{
+\donttest{
 grid <- gisco_get_grid(resolution = 20)
 grid$popdens <- grid$TOT_P_2011 / 20
+
 
 breaks <-
   c(
     0,
+    0.1, # For capturing 0
+    100,
     500,
     1000,
     2500,
     5000,
     10000,
     25000,
-    50000,
     max(grid$popdens) + 1
   )
 
-pal <- hcl.colors(length(breaks) - 2, palette = "inferno", alpha = 0.7)
-pal <- c("black", pal)
+# Cut groups
 
-opar <- par(no.readonly = TRUE)
-par(mar = c(0, 0, 0, 0), bg = "grey2")
-plot(
-  grid[, "popdens"],
-  pal = pal,
-  key.pos = NULL,
-  breaks = breaks,
-  main = NA,
-  xlim = c(2500000, 7000000),
-  ylim = c(1500000, 5200000),
-  border = NA
-)
-par(opar)
+grid$popdens_cut <- cut(grid$popdens, breaks = breaks, include.lowest = TRUE)
+cut_labs <- prettyNum(breaks, big.mark = " ")[-1]
+cut_labs[1] <- "0"
+cut_labs[9] <- "> 25 000"
+
+pal <- c("black", hcl.colors(length(breaks) - 2,
+  palette = "Spectral",
+  alpha = 0.9
+))
+
+library(ggplot2)
+
+ggplot(grid) +
+  geom_sf(aes(fill = popdens_cut), color = NA) +
+  coord_sf(
+    xlim = c(2500000, 7000000),
+    ylim = c(1500000, 5200000)
+  ) +
+  scale_fill_manual(
+    values = pal, na.value = "black",
+    name = "people per sq. kilometer",
+    labels = cut_labs,
+    guide = guide_legend(
+      direction = "horizontal",
+      keyheight = 0.5,
+      keywidth = 2,
+      title.position = "top",
+      title.hjust = 0.5,
+      label.hjust = .5,
+      nrow = 1,
+      byrow = TRUE,
+      reverse = FALSE,
+      label.position = "bottom"
+    )
+  ) +
+  theme_void() +
+  labs(
+    title = "Population density in Europe",
+    subtitle = "Grid: 20 km.",
+    caption = gisco_attributions()
+  ) +
+  theme(
+    plot.background = element_rect(fill = "grey2"),
+    plot.title = element_text(
+      size = 18, color = "white",
+      hjust = 0.5,
+    ),
+    plot.subtitle = element_text(
+      size = 14,
+      color = "white",
+      hjust = 0.5,
+      face = "bold"
+    ),
+    plot.caption = element_text(
+      size = 9, color = "grey60",
+      hjust = 0.5, vjust = 0,
+      margin = margin(t = 5, b = 10)
+    ),
+    legend.text = element_text(
+      size = 8,
+      color = "white"
+    ),
+    legend.title = element_text(
+      color = "white"
+    ),
+    legend.position = "bottom"
+  )
+}
 }
 \author{
 dieghernan, \url{https://github.com/dieghernan/}
