@@ -8,11 +8,10 @@ test_that("Errors on units", {
   expect_error(gisco_get_units(mode = "aa"))
 })
 
-test_that("Units online", {
-  skip_if_not(
-    gisco_check_access(),
-    "Skipping... GISCO not reachable."
-  )
+test_that("Units sf online", {
+  skip_on_cran()
+  skip_if_gisco_offline()
+
   expect_silent(gisco_get_units(
     year = "2001",
     id_giscoR = "countries",
@@ -24,6 +23,23 @@ test_that("Units online", {
     unit = "ES",
     cache = FALSE
   ))
+
+  expect_message(gisco_get_units(
+    year = "2001",
+    id_giscoR = "countries",
+    unit = "DK",
+    cache = FALSE,
+    verbose = TRUE
+  ))
+
+  # Check that the file was not downloaded
+  file <- file.path(
+    gsc_helper_detect_cache_dir(),
+    "DNK-cntry-region-20m-4326-2001.geojson"
+  )
+
+  expect_false(file.exists(file))
+
   expect_silent(gisco_get_units(
     id_giscoR = "countries",
     unit = "Spain",
@@ -39,7 +55,6 @@ test_that("Units online", {
     gisco_get_units(
       year = "2001",
       id_giscoR = "countries",
-      mode = "df",
       unit = "ES",
       spatialtype = "LB"
     )
@@ -53,6 +68,15 @@ test_that("Units online", {
     )
   )
   expect_silent(gisco_get_units(id_giscoR = "nuts", unit = "ES"))
+
+
+  dups <- expect_silent(gisco_get_units(
+    id_giscoR = "nuts",
+    unit = c("ES", "IT", "ES")
+  ))
+
+  expect_equal(nrow(dups), 2)
+
   expect_silent(gisco_get_units(
     id_giscoR = "nuts",
     year = 2016,
@@ -128,4 +152,89 @@ test_that("Units online", {
     year = 2018,
     mode = "df"
   ))
+})
+
+
+
+test_that("Units df online", {
+  skip_on_cran()
+  skip_if_gisco_offline()
+
+  test <- expect_silent(gisco_get_units(
+    year = "2001",
+    id_giscoR = "countries",
+    unit = "ES",
+    mode = "df"
+  ))
+
+  expect_s3_class(test, "data.frame", exact = TRUE)
+  expect_true(nrow(test) > 5)
+
+
+  test <- expect_silent(gisco_get_units(
+    id_giscoR = "countries",
+    unit = "Spain",
+    spatialtype = "LB",
+    mode = "df"
+  ))
+
+  expect_s3_class(test, "data.frame", exact = TRUE)
+  expect_true(nrow(test) > 5)
+
+
+  test <- expect_silent(gisco_get_units(
+    id_giscoR = "nuts",
+    unit = "ES",
+    mode = "df"
+  ))
+
+
+  expect_s3_class(test, "data.frame", exact = TRUE)
+  expect_true(nrow(test) > 5)
+
+  expect_message(gisco_get_units(
+    id_giscoR = "nuts", unit = "ES",
+    mode = "df", verbose = TRUE
+  ))
+
+
+  test <- expect_silent(gisco_get_units(
+    id_giscoR = "urban_audit",
+    year = 2001,
+    unit = "ES",
+    mode = "df"
+  ))
+
+  expect_s3_class(test, "data.frame", exact = TRUE)
+  expect_true(nrow(test) > 5)
+
+  test <- expect_silent(gisco_get_units(
+    id_giscoR = "urban_audit",
+    year = 2014,
+    unit = "ES",
+    mode = "df"
+  ))
+
+  expect_s3_class(test, "data.frame", exact = TRUE)
+  expect_true(nrow(test) > 5)
+
+  test <- expect_silent(gisco_get_units(
+    id_giscoR = "urban_audit",
+    year = 2020,
+    unit = "ES",
+    mode = "df"
+  ))
+
+  expect_s3_class(test, "data.frame", exact = TRUE)
+  expect_true(nrow(test) > 5)
+
+  test <- expect_silent(gisco_get_units(
+    id_giscoR = "urban_audit",
+    year = 2004,
+    unit = "ES",
+    mode = "df"
+  ))
+
+  expect_s3_class(test, "data.frame", exact = TRUE)
+  expect_true(nrow(test) > 5)
 })

@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# giscoR <a href='https://ropengov.github.io/giscoR/'><img src='man/figures/logo.svg' align="right" height="139" /></a>
+# giscoR <a href='https://ropengov.github.io/giscoR/'><img src='man/figures/logo.png' align="right" height="139" /></a>
 
 <!-- badges: start -->
 
@@ -16,7 +16,6 @@ results](https://cranchecks.info/badges/worst/giscoR)](https://cran.r-project.or
 status](https://github.com/rOpenGov/giscoR/workflows/R-CMD-check/badge.svg)](https://github.com/rOpenGov/giscoR/actions)
 [![codecov](https://codecov.io/gh/ropengov/giscoR/branch/master/graph/badge.svg)](https://codecov.io/gh/ropengov/giscoR)
 [![DOI](https://img.shields.io/badge/DOI-10.5281/zenodo.4317946-blue)](https://doi.org/10.5281/zenodo.4317946)
-[![CodeFactor](https://www.codefactor.io/repository/github/ropengov/giscor/badge)](https://www.codefactor.io/repository/github/ropengov/giscor)
 [![Project Status:
 Active](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![status](https://tinyverse.netlify.com/badge/giscoR)](https://CRAN.R-project.org/package=giscoR)
@@ -40,7 +39,7 @@ the information is available on the [API
 webpage](https://gisco-services.ec.europa.eu/distribution/v2/).
 
 Full site with examples and vignettes on
-<https://ropengov.github.io/giscoR//>
+<https://ropengov.github.io/giscoR/>
 
 ## Installation
 
@@ -110,6 +109,7 @@ ggplot(DNK_all) +
 <img src="https://raw.githubusercontent.com/ropengov/giscoR/master/img/README-example-1.png" width="100%" />
 
 ``` r
+
 # Labels and Lines available
 
 labs <- gisco_get_countries(
@@ -330,7 +330,7 @@ citation("giscoR")
 #> 
 #> Hernangómez D (2021). _giscoR: Download Map Data from GISCO API -
 #> Eurostat_. doi: 10.5281/zenodo.4317946 (URL:
-#> https://doi.org/10.5281/zenodo.4317946), R package version 0.3.0, <URL:
+#> https://doi.org/10.5281/zenodo.4317946), R package version 0.3.1, <URL:
 #> https://ropengov.github.io/giscoR/>.
 #> 
 #> A BibTeX entry for LaTeX users is
@@ -338,8 +338,8 @@ citation("giscoR")
 #>   @Manual{,
 #>     title = {giscoR: Download Map Data from GISCO API - Eurostat},
 #>     year = {2021},
-#>     note = {R package version 0.3.0},
-#>     version = {0.3.0},
+#>     note = {R package version 0.3.1},
+#>     version = {0.3.1},
 #>     author = {Diego Hernangómez},
 #>     doi = {10.5281/zenodo.4317946},
 #>     url = {https://ropengov.github.io/giscoR/},

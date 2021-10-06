@@ -30,11 +30,20 @@
 #' # Don't run this! It would modify your current state
 #' \dontrun{
 #' gisco_clear_cache(verbose = TRUE)
-#' }
 #'
 #' Sys.getenv("GISCO_CACHE_DIR")
+#'
+#' # Set new cache on a temp dir
+#' newcache <- file.path(tempdir(), "giscoR", "pkgdown")
+#'
+#' newcache
+#'
+#' gisco_set_cache_dir(newcache)
+#'
+#' Sys.getenv("GISCO_CACHE_DIR")
+#' }
 #' @export
-gisco_clear_cache <- function(config = TRUE,
+gisco_clear_cache <- function(config = FALSE,
                               cached_data = TRUE,
                               verbose = FALSE) {
   # nocov start
@@ -42,12 +51,13 @@ gisco_clear_cache <- function(config = TRUE,
   data_dir <- gsc_helper_detect_cache_dir()
   if (config && dir.exists(config_dir)) {
     unlink(config_dir, recursive = TRUE, force = TRUE)
-    if (verbose) message("giscoR cache config deleted")
-  }
 
+    gsc_message(verbose, "giscoR cache config deleted")
+  }
+  # nocov end
   if (cached_data && dir.exists(data_dir)) {
     unlink(data_dir, recursive = TRUE, force = TRUE)
-    if (verbose) message("giscoR cached data deleted: ", data_dir)
+    gsc_message(verbose, "giscoR cached data deleted: ", data_dir)
   }
 
 
@@ -56,5 +66,4 @@ gisco_clear_cache <- function(config = TRUE,
 
   # Reset cache dir
   return(invisible())
-  # nocov end
 }

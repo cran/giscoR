@@ -78,9 +78,10 @@ Urban Areas, that correspond roughly with towns and cities.
 \details{
 Valid years for eacg function are:
 \itemize{
-\item \strong{\code{gisco_get_communes}}: one of "2001", "2004", "2006", "2008", "2010",
-"2013" or "2016".
-\item \strong{\code{gisco_get_lau}}: one of "2016", "2017", "2018" or "2019"
+\item \strong{\code{gisco_get_communes}}: one of '2001', '2004', '2006', '2008', '2010',
+'2013' or '2016'.
+\item \strong{\code{gisco_get_lau}}: one of
+'2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019', '2020'.
 }
 }
 \note{
@@ -100,23 +101,27 @@ For a complete list of files available check \link{gisco_db}.
 }
 
 \examples{
+\dontshow{if (gisco_check_access()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 \donttest{
-if (gisco_check_access()) {
-  ire_lau <- gisco_get_communes(spatialtype = "LB", country = "Ireland")
 
-  library(ggplot2)
+ire_lau <- gisco_get_communes(spatialtype = "LB", country = "Ireland")
 
-  ggplot(ire_lau) +
-    geom_sf(shape = 21, col = "#009A44", size = 0.5) +
-    labs(
-      title = "Communes in Ireland",
-      subtitle = "Year 2016",
-      caption = gisco_attributions()
-    ) +
-    theme_void() +
-    theme(text = element_text(colour = "#009A44", family = "serif", face = "bold"))
+library(ggplot2)
+
+ggplot(ire_lau) +
+  geom_sf(shape = 21, col = "#009A44", size = 0.5) +
+  labs(
+    title = "Communes in Ireland",
+    subtitle = "Year 2016",
+    caption = gisco_attributions()
+  ) +
+  theme_void() +
+  theme(text = element_text(
+    colour = "#009A44",
+    family = "serif", face = "bold"
+  ))
 }
-}
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other political: 
@@ -124,6 +129,7 @@ Other political:
 \code{\link{gisco_get_coastallines}()},
 \code{\link{gisco_get_countries}()},
 \code{\link{gisco_get_nuts}()},
+\code{\link{gisco_get_postalcodes}()},
 \code{\link{gisco_get_units}()},
 \code{\link{gisco_get_urban_audit}()}
 }

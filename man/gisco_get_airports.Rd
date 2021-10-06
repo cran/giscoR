@@ -8,17 +8,38 @@
 \url{https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/transport-networks}
 }
 \usage{
-gisco_get_airports(year = "2013", country = NULL)
+gisco_get_airports(
+  year = "2013",
+  country = NULL,
+  cache_dir = NULL,
+  update_cache = FALSE,
+  verbose = FALSE
+)
 
-gisco_get_ports(year = "2013")
+gisco_get_ports(
+  year = "2013",
+  country = NULL,
+  cache_dir = NULL,
+  update_cache = FALSE,
+  verbose = FALSE
+)
 }
 \arguments{
-\item{year}{Year of reference.}
+\item{year}{Year of reference. Only year available right now is "2013".}
 
 \item{country}{Optional. A character vector of country codes. It could be
 either a vector of country names, a vector of ISO3 country codes or a
 vector of Eurostat country codes. Mixed types (as \code{c("Turkey","US","FRA")})
 would not work. See also \code{\link[countrycode:countrycode]{countrycode::countrycode()}}.}
+
+\item{cache_dir}{A path to a cache directory. See \strong{About caching}.}
+
+\item{update_cache}{A logical whether to update cache. Default is \code{FALSE}.
+When set to \code{TRUE} it would force a fresh download of the source
+.geojson file.}
+
+\item{verbose}{Logical, displays information. Useful for debugging,
+default is \code{FALSE}.}
 }
 \value{
 A \code{POINT} object on EPSG:4326.
@@ -26,52 +47,84 @@ A \code{POINT} object on EPSG:4326.
 \description{
 Loads a \code{sf} object from GISCO API or your local library.
 }
-\section{Years available}{
-\itemize{
-\item \strong{\code{gisco_get_airports}}:  "2006" and "2013"
-\item \strong{\code{gisco_get_ports}}: "2009" and "2013"
-}
+\details{
+\code{\link[=gisco_get_airports]{gisco_get_airports()}} refer to Europe. All shapefiles provided in
+\href{https://epsg.io/4326}{EPSG:4326}.
 
-Ports 2009 contains worldwide information, the rest of datasets refer
-to Europe. All shapefiles provided in EPSG:4326
+\code{\link[=gisco_get_ports]{gisco_get_ports()}} adds a new field \code{CNTR_ISO2} to the original data
+identifying the country of the port. Worldwide information available.
+The port codes are aligned with
+\href{https://unece.org/trade/uncefact/unlocode}{UN/LOCODE} standard.
+}
+\section{About caching}{
+You can set your \code{cache_dir} with \code{\link[=gisco_set_cache_dir]{gisco_set_cache_dir()}}.
+
+Sometimes cached files may be corrupt. On that case, try re-downloading
+the data setting \code{update_cache = TRUE}.
+
+If you experience any problem on download, try to download the
+corresponding .geojson file by any other method and save it on your
+\code{cache_dir}. Use the option \code{verbose = TRUE} for debugging the API query.
+
+For a complete list of files available check \link{gisco_db}.
 }
 
 \examples{
+\dontshow{if (gisco_check_access()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 \donttest{
 library(sf)
 
-NL <- gisco_get_countries(country = "NL")
-AirP_NL <- gisco_get_airports(country = "NL")
-
-Ports <- gisco_get_ports()
-# Intersect with NL
-PortsNL <- st_intersection(Ports, NL)
-
-# Bind
-PortsNL_bind <- st_as_sf(type = "Port", st_geometry(PortsNL))
-AirP_NL_bind <- st_as_sf(type = "Airport", st_geometry(AirP_NL))
-
-Full <- rbind(AirP_NL_bind, PortsNL_bind)
+Greece <- gisco_get_countries(country = "EL", resolution = "1")
+AirP_GC <- gisco_get_airports(country = "EL")
+AirP_GC <- st_transform(AirP_GC, st_crs(Greece))
 
 library(ggplot2)
 
-ggplot(NL) +
-  geom_sf(fill = "wheat") +
-  geom_sf(data = Full, aes(shape = type, color = type)) +
+
+ggplot(Greece) +
+  geom_sf(fill = "grey80") +
+  geom_sf(data = AirP_GC, color = "blue") +
   labs(
-    title = "Trasport network on the Netherlands",
+    title = "Airports on Greece",
     shape = NULL,
     color = NULL,
     caption = gisco_attributions()
   )
-}
 
+
+##############################
+#         Plot ports         #
+##############################
+
+ports <- gisco_get_ports()
+coast <- gisco_get_coastallines(year = 2013)
+
+# To Equal Earth projection :)
+
+library(sf)
+coast <- st_transform(coast, 8857)
+ports <- st_transform(ports, st_crs(coast))
+
+
+ggplot(coast) +
+  geom_sf(fill = "#F6E1B9", color = "#0978AB") +
+  geom_sf(data = ports, fill = "red", shape = 21) +
+  theme_void() +
+  theme(
+    panel.background = element_rect(fill = "#C6ECFF"),
+    panel.grid = element_blank(),
+    plot.title = element_text(face = "bold", hjust = 0.5),
+    plot.subtitle = element_text(face = "italic", hjust = 0.5)
+  ) +
+  labs(
+    title = "Ports Worldwide", subtitle = "Year 2013",
+    caption = "(c) European Union, 1995 - today"
+  )
+}
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other infrastructure: 
 \code{\link{gisco_get_healthcare}()}
-}
-\author{
-dieghernan, \url{https://github.com/dieghernan/}
 }
 \concept{infrastructure}

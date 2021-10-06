@@ -44,16 +44,16 @@ gisco_set_cache_dir <- function(cache_dir,
                                 install = FALSE,
                                 verbose = TRUE) {
 
-  # nocov start
+
 
   # Default if not provided
   if (missing(cache_dir) || cache_dir == "") {
-    if (verbose) {
-      message(
-        "Using a temporary cache dir. ",
-        "Set 'cache_dir' to a value for store permanently"
-      )
-    }
+    gsc_message(
+      verbose,
+      "Using a temporary cache dir. ",
+      "Set 'cache_dir' to a value for store permanently"
+    )
+
     # Create a folder on tempdir
     cache_dir <- file.path(tempdir(), "giscoR")
     is_temp <- TRUE
@@ -70,23 +70,26 @@ gisco_set_cache_dir <- function(cache_dir,
     is.logical(install)
   )
 
+  # Expand
+  cache_dir <- path.expand(cache_dir)
 
   # Create cache dir if it doesn't exists
   if (!dir.exists(cache_dir)) {
     dir.create(cache_dir, recursive = TRUE)
   }
 
-  if (verbose) {
-    message(
-      "giscoR cache dir is: ",
-      cache_dir
-    )
-  }
+  gsc_message(
+    verbose,
+    "giscoR cache dir is: ",
+    cache_dir
+  )
+
 
 
   # Install path on environ var.
 
   if (install) {
+    # nocov start
     config_dir <- rappdirs::user_config_dir("giscoR", "R")
     # Create cache dir if not presente
     if (!dir.exists(config_dir)) {
@@ -105,18 +108,18 @@ gisco_set_cache_dir <- function(cache_dir,
         call. = FALSE
       )
     }
+    # nocov end
   } else {
-    if (verbose && !is_temp) {
-      message(
-        "To install your cache_dir path for use in future sessions,",
-        "\nrun this function with `install = TRUE`."
-      )
-    }
+    gsc_message(
+      verbose && !is_temp,
+      "To install your cache_dir path for use in future sessions,",
+      "\nrun this function with `install = TRUE`."
+    )
   }
+
 
   Sys.setenv(GISCO_CACHE_DIR = cache_dir)
   return(invisible(cache_dir))
-  # nocov end
 }
 
 gisco_clear_cache <- function(config = TRUE,
@@ -126,12 +129,12 @@ gisco_clear_cache <- function(config = TRUE,
   data_dir <- gsc_helper_detect_cache_dir()
   if (config && dir.exists(config_dir)) {
     unlink(config_dir, recursive = TRUE, force = TRUE)
-    if (verbose) message("giscoR cache config deleted")
+    gsc_message(verbose, "giscoR cache config deleted")
   }
 
   if (cached_data && dir.exists(data_dir)) {
     unlink(data_dir, recursive = TRUE, force = TRUE, expand = TRUE)
-    if (verbose) message("giscoR cached data deleted: ", data_dir)
+    gsc_message(verbose, "giscoR cached data deleted: ", data_dir)
   }
 
 
@@ -208,11 +211,6 @@ gsc_helper_cachedir <- function(cache_dir = NULL) {
   # Check cache dir from options if not set
   if (is.null(cache_dir)) {
     cache_dir <- gsc_helper_detect_cache_dir()
-  }
-
-  # Reevaluate
-  if (is.null(cache_dir)) {
-    cache_dir <- file.path(tempdir(), "giscoR")
   }
 
   # Create cache dir if needed

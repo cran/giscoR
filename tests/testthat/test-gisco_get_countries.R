@@ -37,16 +37,15 @@ test_that("Countries offline", {
 })
 
 test_that("Countries online", {
-  skip_if_not(
-    gisco_check_access(),
-    "Skipping... GISCO not reachable."
-  )
+  skip_on_cran()
+  skip_if_gisco_offline()
+
   expect_silent(gisco_get_countries(
     spatialtype = "LB",
     country = c("Spain", "Italia")
   ))
 
-  expect_warning(gisco_get_countries(
+  expect_silent(gisco_get_countries(
     spatialtype = "LB",
     cache = FALSE
   ))

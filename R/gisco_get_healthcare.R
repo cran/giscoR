@@ -23,28 +23,33 @@
 #' <https://gisco-services.ec.europa.eu/pub/healthcare/metadata.pdf>.
 #'
 #' @seealso [gisco_get_countries()]
-#' @examples
+#' @examplesIf gisco_check_access()
 #' \donttest{
-#' if (gisco_check_access()) {
-#'   health_BEL <- gisco_get_healthcare(country = "Belgium")
-#'   health_BEL[health_BEL$public_private == "", ]$public_private <- "unknown"
-#'   BEL <- gisco_get_nuts(country = "Belgium", nuts_level = 2)
 #'
-#'   library(ggplot2)
+#' health_BEL <- gisco_get_healthcare(country = "Belgium")
+#' health_BEL[health_BEL$public_private == "", ]$public_private <- "unknown"
+#' BEL <- gisco_get_nuts(
+#'   country = "Belgium", nuts_level = 2,
+#'   resolution = "01"
+#' )
 #'
-#'   ggplot(BEL) +
-#'     geom_sf(fill = "white", color = "grey80") +
-#'     geom_sf(data = health_BEL, aes(color = public_private), alpha = 0.5, size = 3) +
-#'     theme_bw() +
-#'     labs(
-#'       title = "Healthcare in Belgium",
-#'       subtitle = "NUTS 2",
-#'       fill = "type",
-#'       caption = paste0(gisco_attributions())
-#'     ) +
-#'     scale_color_manual(name = "type", values = hcl.colors(3, "Berlin")) +
-#'     theme_minimal()
-#' }
+#' library(ggplot2)
+#'
+#' ggplot(BEL) +
+#'   geom_sf(fill = "white", color = "grey80") +
+#'   geom_sf(
+#'     data = health_BEL, aes(color = public_private),
+#'     alpha = 0.5, size = 3
+#'   ) +
+#'   theme_bw() +
+#'   labs(
+#'     title = "Healthcare in Belgium",
+#'     subtitle = "NUTS 2",
+#'     fill = "type",
+#'     caption = paste0(gisco_attributions())
+#'   ) +
+#'   scale_color_manual(name = "type", values = hcl.colors(3, "Berlin")) +
+#'   theme_minimal()
 #' }
 #' @export
 gisco_get_healthcare <- function(cache = TRUE,
@@ -56,27 +61,24 @@ gisco_get_healthcare <- function(cache = TRUE,
   epsg <- "4326"
   ext <- "gpkg"
 
-  geturl <-
-    list(
-      api.url =
-        "https://gisco-services.ec.europa.eu/pub/healthcare/gpkg/all.gpkg",
-      namefile = "all.gpkg"
-    )
+  api_entry <- "https://gisco-services.ec.europa.eu/pub/healthcare/gpkg/all.gpkg"
+  filename <- basename(api_entry)
 
 
   if (cache) {
     # Guess source to load
     namefileload <-
       gsc_api_cache(
-        geturl$api.url,
-        geturl$namefile,
+        api_entry,
+        filename,
         cache_dir,
         update_cache,
         verbose
       )
   } else {
-    namefileload <- geturl$api.url
+    namefileload <- api_entry
   }
+
   data_sf <-
     gsc_api_load(namefileload, epsg, ext, cache, verbose)
 

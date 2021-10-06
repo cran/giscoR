@@ -10,13 +10,11 @@ test_that("Coastallines", {
 })
 
 test_that("Coastal download online", {
-  skip_if_not(
-    gisco_check_access(),
-    "Skipping... GISCO not reachable."
-  )
+  skip_on_cran()
+  skip_if_gisco_offline()
 
   expect_silent(gisco_get_coastallines(resolution = "60"))
-  expect_warning(gisco_get_coastallines(resolution = "60", cache = FALSE))
+  expect_silent(gisco_get_coastallines(resolution = "60", cache = FALSE))
   expect_silent(gisco_get_coastallines(resolution = 3))
   expect_message(gisco_get_coastallines(resolution = "60", verbose = TRUE))
   expect_message(gisco_get_coastallines(
@@ -30,7 +28,7 @@ test_that("Coastal download online", {
     cache_dir = cachetest
   ))
 
-  a <- gisco_get_coastallines(resolution = "60", epsg = "3035")
+  a <- gisco_get_coastallines(resolution = "60", epsg = "3035", verbose = TRUE)
   b <- gisco_get_coastallines(resolution = "60", epsg = "3857")
   c <- gisco_get_coastallines(resolution = "60", epsg = "4326")
 
@@ -38,7 +36,7 @@ test_that("Coastal download online", {
   epsg3857 <- sf::st_crs(3857)
   epsg4326 <- sf::st_crs(4326)
 
-  expect_equal(epsg3035, sf::st_crs(a))
-  expect_equal(epsg3857, sf::st_crs(b))
-  expect_equal(epsg4326, sf::st_crs(c))
+  expect_identical(epsg3035, sf::st_crs(a))
+  expect_identical(epsg3857, sf::st_crs(b))
+  expect_identical(epsg4326, sf::st_crs(c))
 })

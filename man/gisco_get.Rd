@@ -120,14 +120,15 @@ africa <- gisco_get_countries(region = "Africa")
 ggplot(africa) +
   geom_sf(fill = "#078930", col = "white") +
   theme_minimal()
-
+\donttest{
 if (gisco_check_access()) {
   # Extract points
-  asia_pol <- gisco_get_countries(region = "Asia")
+  asia_pol <- gisco_get_countries(region = "Asia", resolution = "3")
   asia_lb <- gisco_get_countries(spatialtype = "LB", region = "Asia")
   ggplot(asia_pol) +
     geom_sf(fill = "gold3") +
     geom_sf(data = asia_lb, color = "#007FFF")
+}
 }
 }
 \seealso{
@@ -139,6 +140,7 @@ Other political:
 \code{\link{gisco_get_coastallines}()},
 \code{\link{gisco_get_lau}()},
 \code{\link{gisco_get_nuts}()},
+\code{\link{gisco_get_postalcodes}()},
 \code{\link{gisco_get_units}()},
 \code{\link{gisco_get_urban_audit}()}
 }

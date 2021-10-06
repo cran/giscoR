@@ -6,15 +6,13 @@ test_that("Errors on bulk download", {
 })
 
 test_that("Bulk download online", {
-  skip_if_not(
-    gisco_check_access(),
-    "Skipping... GISCO not reachable."
-  )
+  skip_on_cran()
+  skip_if_gisco_offline()
 
   expect_silent(gisco_bulk_download(resolution = 60, cache_dir = tempdir()))
   expect_silent(gisco_bulk_download(
     resolution = 60,
-    cache_dir = tempdir(),
+    cache_dir = file.path(tempdir(), "testthat", "bulk"),
     ext = "shp"
   ))
   expect_silent(gisco_bulk_download(
@@ -67,7 +65,7 @@ test_that("Bulk download online", {
     update_cache = TRUE,
     cache_dir = tempdir(),
   ))
-  expect_message(
+  expect_silent(
     gisco_bulk_download(
       resolution = 60,
       cache_dir = tempdir(),
@@ -75,7 +73,7 @@ test_that("Bulk download online", {
       recursive = TRUE
     )
   )
-  expect_message(
+  expect_silent(
     gisco_bulk_download(
       resolution = 60,
       cache_dir = tempdir(),

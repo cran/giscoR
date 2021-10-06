@@ -4,7 +4,7 @@
 \alias{gisco_clear_cache}
 \title{Clear your \strong{giscoR} cache dir}
 \usage{
-gisco_clear_cache(config = TRUE, cached_data = TRUE, verbose = FALSE)
+gisco_clear_cache(config = FALSE, cached_data = TRUE, verbose = FALSE)
 }
 \arguments{
 \item{config}{if \code{TRUE}, will delete the configuration folder of
@@ -39,9 +39,18 @@ as it you would never have installed and/or used \strong{giscoR}.
 # Don't run this! It would modify your current state
 \dontrun{
 gisco_clear_cache(verbose = TRUE)
-}
 
 Sys.getenv("GISCO_CACHE_DIR")
+
+# Set new cache on a temp dir
+newcache <- file.path(tempdir(), "giscoR", "pkgdown")
+
+newcache
+
+gisco_set_cache_dir(newcache)
+
+Sys.getenv("GISCO_CACHE_DIR")
+}
 }
 \seealso{
 Other cache utilities: 
