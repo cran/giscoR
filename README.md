@@ -5,7 +5,7 @@
 
 <!-- badges: start -->
 
-[![rOG-badge](https://ropengov.github.io/rogtemplate/reference/figures/ropengov-badge.svg)](http://ropengov.org/)
+[![rOG-badge](https://ropengov.github.io/rogtemplate/reference/figures/ropengov-badge.svg)](https://ropengov.org/)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/giscoR)](https://CRAN.R-project.org/package=giscoR)
 [![CRAN
@@ -14,7 +14,7 @@ results](https://cranchecks.info/badges/worst/giscoR)](https://cran.r-project.or
 [![r-universe](https://ropengov.r-universe.dev/badges/giscoR)](https://ropengov.r-universe.dev/)
 [![R build
 status](https://github.com/rOpenGov/giscoR/workflows/R-CMD-check/badge.svg)](https://github.com/rOpenGov/giscoR/actions)
-[![codecov](https://codecov.io/gh/ropengov/giscoR/branch/master/graph/badge.svg)](https://codecov.io/gh/ropengov/giscoR)
+[![codecov](https://codecov.io/gh/ropengov/giscoR/branch/main/graph/badge.svg)](https://app.codecov.io/gh/ropengov/giscoR)
 [![DOI](https://img.shields.io/badge/DOI-10.5281/zenodo.4317946-blue)](https://doi.org/10.5281/zenodo.4317946)
 [![Project Status:
 Active](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
@@ -106,7 +106,7 @@ ggplot(DNK_all) +
   theme_minimal()
 ```
 
-<img src="https://raw.githubusercontent.com/ropengov/giscoR/master/img/README-example-1.png" width="100%" />
+<img src="https://raw.githubusercontent.com/ropengov/giscoR/main/img/README-example-1.png" width="100%" />
 
 ``` r
 
@@ -135,7 +135,7 @@ ggplot(coast) +
   )
 ```
 
-<img src="https://raw.githubusercontent.com/ropengov/giscoR/master/img/README-example-2.png" width="100%" />
+<img src="https://raw.githubusercontent.com/ropengov/giscoR/main/img/README-example-2.png" width="100%" />
 
 ### Labels
 
@@ -150,7 +150,7 @@ ggplot(ITA) +
   theme(axis.title = element_blank())
 ```
 
-<img src="https://raw.githubusercontent.com/ropengov/giscoR/master/img/README-labels-1.png" width="100%" />
+<img src="https://raw.githubusercontent.com/ropengov/giscoR/main/img/README-labels-1.png" width="100%" />
 
 ### Thematic maps
 
@@ -274,7 +274,7 @@ ggplot(nuts3.sf) +
   )
 ```
 
-<img src="https://raw.githubusercontent.com/ropengov/giscoR/master/img/README-thematic-1.png" width="100%" />
+<img src="https://raw.githubusercontent.com/ropengov/giscoR/main/img/README-thematic-1.png" width="100%" />
 
 ## A note on caching
 
@@ -321,34 +321,27 @@ Contributions are very welcome:
 
 ## Citation
 
-Please use the following when citing `giscoR`:
+To cite ‘giscoR’ in publications use:
 
-``` r
-citation("giscoR")
-#> 
-#> To cite the 'giscoR' package in publications use:
-#> 
-#> Hernangómez D (2021). _giscoR: Download Map Data from GISCO API -
-#> Eurostat_. doi: 10.5281/zenodo.4317946 (URL:
-#> https://doi.org/10.5281/zenodo.4317946), R package version 0.3.1, <URL:
-#> https://ropengov.github.io/giscoR/>.
-#> 
-#> A BibTeX entry for LaTeX users is
-#> 
-#>   @Manual{,
-#>     title = {giscoR: Download Map Data from GISCO API - Eurostat},
-#>     year = {2021},
-#>     note = {R package version 0.3.1},
-#>     version = {0.3.1},
-#>     author = {Diego Hernangómez},
-#>     doi = {10.5281/zenodo.4317946},
-#>     url = {https://ropengov.github.io/giscoR/},
-#>   }
-```
+Hernangomez D (2022). giscoR: Download Map Data from GISCO API -
+Eurostat. <https://doi.org/10.5281/zenodo.4317946>,
+<https://ropengov.github.io/giscoR/>
+
+A BibTeX entry for LaTeX users is
+
+    @Manual{R-giscoR,
+      title = {{giscoR}: Download Map Data from GISCO API - Eurostat},
+      doi = {10.5281/zenodo.4317946},
+      author = {Diego Hernangómez},
+      year = {2022},
+      version = {0.3.2},
+      url = {https://ropengov.github.io/giscoR/},
+      abstract = {Tools to download data from the GISCO (Geographic Information System of the Commission) Eurostat database <https://ec.europa.eu/eurostat/web/gisco>. Global and European map data available. This package is in no way officially related to or endorsed by Eurostat.},
+    }
 
 ## Copyright notice
 
-*From GISCO &gt; Geodata &gt; Reference data &gt; Administrative Units /
+*From GISCO \> Geodata \> Reference data \> Administrative Units /
 Statistical Units*
 
 > When data downloaded from this page is used in any printed or

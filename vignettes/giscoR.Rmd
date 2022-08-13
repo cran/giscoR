@@ -8,18 +8,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>",
-  warning = FALSE,
-  message = FALSE,
-  out.width = "100%"
-)
 
-library(sf)
-library(ggplot2) # Use ggplot for plotting
-```
 
 # Introduction
 
@@ -48,7 +37,8 @@ projections: EPSG 4326, 3035 or 3857.
 
 **giscoR** provides a dataset caching capability, that could be set as:
 
-```{r, eval=FALSE}
+
+```r
 gisco_set_cache_dir("./path/to/location")
 ```
 
@@ -68,16 +58,44 @@ apply](https://ec.europa.eu/eurostat/web/gisco/geodata) when using GISCO data.
 There is a function, `gisco_attributions` that would guide you on this topic. It
 also provides attributions on several languages.
 
-```{r, message=TRUE}
+
+```r
 library(giscoR)
 gisco_attributions(copyright = TRUE)
+#> 
+#>     COPYRIGHT NOTICE
+#> 
+#>     When data downloaded from GISCO
+#>     is used in any printed or electronic publication,
+#>     in addition to any other provisions applicable to
+#>     the whole Eurostat website, data source will have
+#>     to be acknowledged in the legend of the map and in
+#>     the introductory page of the publication with the
+#>     following copyright notice:
+#> 
+#>     - EN: (C) EuroGeographics for the administrative boundaries
+#>     - FR: (C) EuroGeographics pour les limites administratives
+#>     - DE: (C) EuroGeographics bezuglich der Verwaltungsgrenzen
+#> 
+#>     For publications in languages other than English,
+#>     French or German, the translation of the copyright
+#>     notice in the language of the publication shall be
+#>     used.
+#> 
+#>     If you intend to use the data commercially, please
+#>     contact EuroGeographics for information regarding
+#>     their licence agreements.
+#> 
+#> 
+#> [1] "© EuroGeographics for the administrative boundaries"
 ```
 
 # Basic example
 
 Some examples on data downloads
 
-```{r country, eval=FALSE}
+
+```r
 
 library(sf)
 library(ggplot2) # Use ggplot for plotting
@@ -102,13 +120,8 @@ ggplot(Asia) +
     )
   )
 ```
-```{r include_png1, echo=FALSE, out.width="100%"}
 
-# For better quality, including cache png
-# From cache
-knitr::include_graphics("asia.png")
-```
-
+<img src="./country-1.png" title="plot of chunk country" alt="plot of chunk country" width="100%" />
 
 You can select specific countries by name (in any language), ISO 3 codes or
 Eurostat codes. The only restriction is that you can't mix country names, ISO3
@@ -117,7 +130,8 @@ and Eurostat codes on one single call.
 It is possible also to combine different shapefiles, just set `resolution` and
 `epsg` (and optionally `year`) to the same value:
 
-```{r africa, eval=FALSE}
+
+```r
 
 africa_north <-
   gisco_get_countries(
@@ -150,12 +164,9 @@ ggplot(coast) +
   ) +
   facet_wrap(vars(NAME_ENGL), ncol = 2)
 ```
-```{r include_png2, echo=FALSE, out.width="100%"}
 
-# For better quality, including cache png
-# From cache
-knitr::include_graphics("africa.png")
-```
+<img src="./africa-1.png" title="plot of chunk africa" alt="plot of chunk africa" width="100%" />
+
 # Plotting **giscoR**
 
 This is an example on how **giscoR** can play nicely with some Eurostat data. For
@@ -165,7 +176,8 @@ handles `sf` objects (e.g. `tmap`, `mapsf`, `leaflet`, etc. could be used).
 Also `colorspace` and `rcartocolor` packages are recommended, as they provide
 great color palettes.
 
-```{r giscoR, eval=FALSE}
+
+```r
 
 # EU members plus UK
 
@@ -278,10 +290,6 @@ ggplot(nuts2.sf) +
     legend.position = c(0.5, 0.02)
   )
 ```
-```{r include_png3, echo=FALSE, out.width="100%"}
 
-# For better quality, including cache png
-# From cache
-knitr::include_graphics("choro.png")
-```
+<img src="./giscoR-1.png" title="plot of chunk giscoR" alt="plot of chunk giscoR" width="100%" />
 

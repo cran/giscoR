@@ -1,3 +1,7 @@
+# giscoR 0.3.2
+
+-   Fix HTML5 issue as requested by CRAN.
+
 # giscoR 0.3.1
 
 -   Add `Copyright` on DESCRIPTION.
@@ -16,7 +20,7 @@
 
 # giscoR 0.3.0
 
--   Now **giscoR** is part of [rOpenGov](http://ropengov.org/). Repo has been transferred.
+-   Now **giscoR** is part of [rOpenGov](https://ropengov.org/). Repo has been transferred.
 -   Caching improvements: new function `gisco_set_cache_dir()` based on `rappdirs::user_cache_dir()`. Now the `cache_dir` path is stored and it is not necessary to set it up again on a new session. Also added `gisco_clear_cache()`.
 -   Fix an error when `cache = FALSE`. Now files are loaded instead throwing an error.
 -   New tests with `testthat`.
