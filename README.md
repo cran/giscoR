@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# giscoR <a href='https://ropengov.github.io/giscoR/'><img src='man/figures/logo.png' align="right" height="139" /></a>
+# giscoR <a href='https://ropengov.github.io/giscoR/'><img src="man/figures/logo.png" align="right" height="139"/></a>
 
 <!-- badges: start -->
 
@@ -9,7 +9,7 @@
 [![CRAN
 status](https://www.r-pkg.org/badges/version/giscoR)](https://CRAN.R-project.org/package=giscoR)
 [![CRAN
-results](https://cranchecks.info/badges/worst/giscoR)](https://cran.r-project.org/web/checks/check_results_giscoR.html)
+results](https://badges.cranchecks.info/worst/giscoR.svg)](https://cran.r-project.org/web/checks/check_results_giscoR.html)
 [![Downloads](https://cranlogs.r-pkg.org/badges/giscoR)](https://CRAN.R-project.org/package=giscoR)
 [![r-universe](https://ropengov.r-universe.dev/badges/giscoR)](https://ropengov.r-universe.dev/)
 [![R build
@@ -19,6 +19,7 @@ status](https://github.com/rOpenGov/giscoR/workflows/R-CMD-check/badge.svg)](htt
 [![Project Status:
 Active](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![status](https://tinyverse.netlify.com/badge/giscoR)](https://CRAN.R-project.org/package=giscoR)
+
 <!-- badges: end -->
 
 [giscoR](https://ropengov.github.io/giscoR//) is an API package that
@@ -58,7 +59,7 @@ install_github("rOpenGov/giscoR")
 ```
 
 Alternatively, you can install `giscoR` using the
-[r-universe](https://ropengov.r-universe.dev):
+[r-universe](https://ropengov.r-universe.dev/giscoR):
 
 ``` r
 # Enable this universe
@@ -110,6 +111,7 @@ ggplot(DNK_all) +
 
 ``` r
 
+
 # Labels and Lines available
 
 labs <- gisco_get_countries(
@@ -127,7 +129,7 @@ coast <- gisco_get_countries(
 afr_bbox <- st_bbox(labs)
 
 ggplot(coast) +
-  geom_sf(col = "deepskyblue4", size = 3) +
+  geom_sf(col = "deepskyblue4", linewidth = 3) +
   geom_sf(data = labs, fill = "springgreen4", col = "darkgoldenrod1", size = 5, shape = 21) +
   coord_sf(
     xlim = afr_bbox[c("xmin", "xmax")],
@@ -212,8 +214,8 @@ pal <- hcl.colors(length(br) - 1, "Lajolla")
 # Plot
 
 ggplot(nuts3.sf) +
-  geom_sf(aes(fill = values_cut), size = 0, color = NA, alpha = 0.9) +
-  geom_sf(data = country_lines, col = "black", size = 0.1) +
+  geom_sf(aes(fill = values_cut), linewidth = 0, color = NA, alpha = 0.9) +
+  geom_sf(data = country_lines, col = "black", linewidth = 0.1) +
   # Center in Europe: EPSG 3035
   coord_sf(
     xlim = c(2377294, 7453440),
@@ -294,18 +296,18 @@ them on your local directory.
 
 ### API data packages
 
--   `eurostat` package (<https://ropengov.github.io/eurostat/>). This is
-    an API package that provides access to open data from Eurostat.
+- `eurostat` package (<https://ropengov.github.io/eurostat/>). This is
+  an API package that provides access to open data from Eurostat.
 
 ### Plotting `sf` objects
 
 Some packages recommended for visualization are:
 
--   [`tmap`](https://r-tmap.github.io/tmap/)
--   [`ggplot2`](https://github.com/tidyverse/ggplot2) +
-    [`ggspatial`](https://github.com/paleolimbot/ggspatial)
--   [`mapsf`](https://riatelab.github.io/mapsf/)
--   [`leaflet`](https://rstudio.github.io/leaflet/)
+- [`tmap`](https://r-tmap.github.io/tmap/)
+- [`ggplot2`](https://github.com/tidyverse/ggplot2) +
+  [`ggspatial`](https://github.com/paleolimbot/ggspatial)
+- [`mapsf`](https://riatelab.github.io/mapsf/)
+- [`leaflet`](https://rstudio.github.io/leaflet/)
 
 ## Contribute
 
@@ -314,16 +316,16 @@ code](https://github.com/rOpenGov/giscoR/).
 
 Contributions are very welcome:
 
--   [Use issue tracker](https://github.com/rOpenGov/giscoR/issues) for
-    feedback and bug reports.
--   [Send pull requests](https://github.com/rOpenGov/giscoR/)
--   [Star us on the GitHub page](https://github.com/rOpenGov/giscoR)
+- [Use issue tracker](https://github.com/rOpenGov/giscoR/issues) for
+  feedback and bug reports.
+- [Send pull requests](https://github.com/rOpenGov/giscoR/)
+- [Star us on the GitHub page](https://github.com/rOpenGov/giscoR)
 
 ## Citation
 
 To cite ‘giscoR’ in publications use:
 
-Hernangomez D (2022). giscoR: Download Map Data from GISCO API -
+Hernangomez D (2023). giscoR: Download Map Data from GISCO API -
 Eurostat. <https://doi.org/10.5281/zenodo.4317946>,
 <https://ropengov.github.io/giscoR/>
 
@@ -333,8 +335,8 @@ A BibTeX entry for LaTeX users is
       title = {{giscoR}: Download Map Data from GISCO API - Eurostat},
       doi = {10.5281/zenodo.4317946},
       author = {Diego Hernangómez},
-      year = {2022},
-      version = {0.3.2},
+      year = {2023},
+      version = {0.3.3},
       url = {https://ropengov.github.io/giscoR/},
       abstract = {Tools to download data from the GISCO (Geographic Information System of the Commission) Eurostat database <https://ec.europa.eu/eurostat/web/gisco>. Global and European map data available. This package is in no way officially related to or endorsed by Eurostat.},
     }

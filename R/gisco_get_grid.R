@@ -73,7 +73,7 @@
 #' library(ggplot2)
 #'
 #' ggplot(grid) +
-#'   geom_sf(aes(fill = popdens_cut), color = NA) +
+#'   geom_sf(aes(fill = popdens_cut), color = NA, linewidth = 0) +
 #'   coord_sf(
 #'     xlim = c(2500000, 7000000),
 #'     ylim = c(1500000, 5200000)
@@ -165,7 +165,7 @@ gisco_get_grid <- function(resolution = "20",
   )
 
   # nocov start
-  if (resolution %in% c("1", "2") & isFALSE(exist_local)) {
+  if (resolution %in% c("1", "2") && isFALSE(exist_local)) {
     sel <-
       menu(c("Yes", "No"),
         title = "You are about to download a large file (>500M). Proceed?"

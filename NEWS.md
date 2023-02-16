@@ -1,3 +1,7 @@
+# giscoR 0.3.3
+
+-   Fix broken urls on `gisco_get_healthcare()` (#51).
+
 # giscoR 0.3.2
 
 -   Fix HTML5 issue as requested by CRAN.
@@ -20,9 +24,14 @@
 
 # giscoR 0.3.0
 
--   Now **giscoR** is part of [rOpenGov](https://ropengov.org/). Repo has been transferred.
--   Caching improvements: new function `gisco_set_cache_dir()` based on `rappdirs::user_cache_dir()`. Now the `cache_dir` path is stored and it is not necessary to set it up again on a new session. Also added `gisco_clear_cache()`.
--   Fix an error when `cache = FALSE`. Now files are loaded instead throwing an error.
+-   Now **giscoR** is part of [rOpenGov](https://ropengov.org/). Repo has been
+    transferred.
+-   Caching improvements: new function `gisco_set_cache_dir()` based on
+    `rappdirs::user_cache_dir()`. Now the `cache_dir` path is stored and it is
+    not necessary to set it up again on a new session. Also added
+    `gisco_clear_cache()`.
+-   Fix an error when `cache = FALSE`. Now files are loaded instead throwing an
+    error.
 -   New tests with `testthat`.
 -   Update on docs. New examples
 -   Refactor documents and codes for the previous `gisco_get` doc.
@@ -78,7 +87,8 @@
     -   `gisco_get_ports()`
     -   `gisco_get_units()`
 
--   Now `gisco_get_countries()` and `gisco_get_nuts()` uses `gisco_get_units()` for individual files, making the call much faster.
+-   Now `gisco_get_countries()` and `gisco_get_nuts()` uses `gisco_get_units()`
+    for individual files, making the call much faster.
 
 # giscoR 0.1.1
 

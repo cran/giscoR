@@ -96,7 +96,6 @@ Some examples on data downloads
 
 
 ```r
-
 library(sf)
 library(ggplot2) # Use ggplot for plotting
 
@@ -121,7 +120,7 @@ ggplot(Asia) +
   )
 ```
 
-<img src="./country-1.png" title="plot of chunk country" alt="plot of chunk country" width="100%" />
+<img src="./country-1.png" alt="plot of chunk country" width="100%" />
 
 You can select specific countries by name (in any language), ISO 3 codes or
 Eurostat codes. The only restriction is that you can't mix country names, ISO3
@@ -132,7 +131,6 @@ It is possible also to combine different shapefiles, just set `resolution` and
 
 
 ```r
-
 africa_north <-
   gisco_get_countries(
     country = c("Morocco", "Argelia", "Libia", "Tunisia", "Egypt"),
@@ -165,7 +163,7 @@ ggplot(coast) +
   facet_wrap(vars(NAME_ENGL), ncol = 2)
 ```
 
-<img src="./africa-1.png" title="plot of chunk africa" alt="plot of chunk africa" width="100%" />
+<img src="./africa-1.png" alt="plot of chunk africa" width="100%" />
 
 # Plotting **giscoR**
 
@@ -178,7 +176,6 @@ great color palettes.
 
 
 ```r
-
 # EU members plus UK
 
 eu2016 <- c("UK", gisco_countrycode[gisco_countrycode$eu, ]$CNTR_CODE)
@@ -291,5 +288,5 @@ ggplot(nuts2.sf) +
   )
 ```
 
-<img src="./giscoR-1.png" title="plot of chunk giscoR" alt="plot of chunk giscoR" width="100%" />
+<img src="./giscoR-1.png" alt="plot of chunk giscoR" width="100%" />
 

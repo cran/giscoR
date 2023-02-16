@@ -249,7 +249,7 @@ gsc_api_cache <-
     fileoncache <- file.exists(file.local)
 
     # If already cached return
-    if (isFALSE(update_cache) & fileoncache) {
+    if (isFALSE(update_cache) && fileoncache) {
       gsc_message(
         verbose,
         "\nFile already cached\n",
@@ -323,7 +323,6 @@ gsc_api_load <- function(file = NULL,
                          ext = tools::file_ext(file),
                          cache = FALSE,
                          verbose = TRUE) {
-
   # Currently only supported these ext
   if (!ext %in% c("geojson", "gpkg")) {
     stop("\nExtension ",
@@ -442,7 +441,9 @@ gsc_unzip <-
     # Extract files
     outfiles <- infiles[grep(ext, infiles$Name), ]$Name
 
-    gsc_message(verbose, "Extracting files:\n", paste0(outfiles, collapse = "\n"), "\n")
+    gsc_message(verbose, "Extracting files:\n", paste0(outfiles,
+      collapse = "\n"
+    ), "\n")
 
 
     allfiles <- list.files(cache_dir)
