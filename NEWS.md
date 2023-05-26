@@ -1,3 +1,7 @@
+# giscoR 0.3.4
+
+-   Update tests and documentation.
+
 # giscoR 0.3.3
 
 -   Fix broken urls on `gisco_get_healthcare()` (#51).
