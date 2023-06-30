@@ -8,13 +8,13 @@
 }
 \usage{
 gisco_bulk_download(
-  id_giscoR = "countries",
+  id_giscoR = c("countries", "coastallines", "communes", "lau", "nuts", "urban_audit"),
   year = "2016",
   cache_dir = NULL,
   update_cache = FALSE,
   verbose = FALSE,
   resolution = "10",
-  ext = "geojson",
+  ext = c("geojson", "shp", "svg", "json", "gdb"),
   recursive = TRUE
 )
 }
@@ -89,11 +89,13 @@ For a complete list of files available check \link{gisco_db}.
 }
 
 \examples{
+\dontshow{if (gisco_check_access()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 \dontrun{
 
 # Countries 2016 - It would take some time
 gisco_bulk_download(id_giscoR = "countries", resolution = "60")
 }
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other political: 

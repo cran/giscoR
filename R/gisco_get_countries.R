@@ -94,6 +94,7 @@
 #' @export
 #'
 #' @examples
+#'
 #' cntries <- gisco_get_countries()
 #'
 #' library(ggplot2)
@@ -106,16 +107,7 @@
 #' ggplot(africa) +
 #'   geom_sf(fill = "#078930", col = "white") +
 #'   theme_minimal()
-#' \donttest{
-#' if (gisco_check_access()) {
-#'   # Extract points
-#'   asia_pol <- gisco_get_countries(region = "Asia", resolution = "3")
-#'   asia_lb <- gisco_get_countries(spatialtype = "LB", region = "Asia")
-#'   ggplot(asia_pol) +
-#'     geom_sf(fill = "gold3") +
-#'     geom_sf(data = asia_lb, color = "#007FFF")
-#' }
-#' }
+#'
 gisco_get_countries <- function(year = "2016",
                                 epsg = "4326",
                                 cache = TRUE,
@@ -129,15 +121,9 @@ gisco_get_countries <- function(year = "2016",
   ext <- "geojson"
 
   api_entry <- gsc_api_url(
-    id_giscoR = "countries",
-    year = year,
-    epsg = epsg,
-    resolution = resolution,
-    spatialtype = spatialtype,
-    ext = ext,
-    nuts_level = NULL,
-    level = NULL,
-    verbose = verbose
+    id_giscoR = "countries", year = year, epsg = epsg,
+    resolution = resolution, spatialtype = spatialtype, ext = ext,
+    nuts_level = NULL, level = NULL, verbose = verbose
   )
 
   filename <- basename(api_entry)
@@ -160,36 +146,27 @@ gisco_get_countries <- function(year = "2016",
     # Speed up if requesting units
     if (!is.null(country) && spatialtype %in% c("RG", "LB")) {
       data_sf <- gisco_get_units(
-        id_giscoR = "countries",
-        unit = country,
-        mode = "sf",
-        year = year,
-        epsg = epsg,
-        cache = cache,
-        cache_dir = cache_dir,
-        update_cache = update_cache,
-        verbose = verbose,
-        resolution = resolution,
-        spatialtype = spatialtype
+        id_giscoR = "countries", unit = country,
+        mode = "sf", year = year, epsg = epsg, cache = cache,
+        cache_dir = cache_dir, update_cache = update_cache, verbose = verbose,
+        resolution = resolution, spatialtype = spatialtype
       )
     } else {
       if (cache) {
         # Guess source to load
-        namefileload <-
-          gsc_api_cache(
-            api_entry,
-            filename,
-            cache_dir,
-            update_cache,
-            verbose
-          )
+        namefileload <- gsc_api_cache(
+          api_entry, filename, cache_dir,
+          update_cache, verbose
+        )
       } else {
         namefileload <- api_entry
       }
 
+      if (is.null(namefileload)) {
+        return(NULL)
+      }
       # Load - geojson only so far
-      data_sf <-
-        gsc_api_load(namefileload, epsg, ext, cache, verbose)
+      data_sf <- gsc_api_load(namefileload, epsg, ext, cache, verbose)
     }
   }
 

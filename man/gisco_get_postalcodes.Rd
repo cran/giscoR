@@ -70,27 +70,31 @@ For a complete list of files available check \link{gisco_db}.
 }
 
 \examples{
+\dontshow{if (gisco_check_access()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 
 # Heavy-weight download!
 \dontrun{
 
 pc_bel <- gisco_get_postalcodes(country = "BE")
 
-library(ggplot2)
+if (!is.null(pc_bel)) {
+  library(ggplot2)
 
-ggplot(pc_bel) +
-  geom_sf(color = "gold") +
-  theme_bw() +
-  labs(
-    title = "Postcodes of Belgium",
-    subtitle = "2020",
-    caption = paste("(c) European Union - GISCO, 2021,",
-      "postal code point dataset",
-      "Licence CC-BY-SA 4.0",
-      sep = "\n"
+  ggplot(pc_bel) +
+    geom_sf(color = "gold") +
+    theme_bw() +
+    labs(
+      title = "Postcodes of Belgium",
+      subtitle = "2020",
+      caption = paste("(c) European Union - GISCO, 2021,",
+        "postal code point dataset",
+        "Licence CC-BY-SA 4.0",
+        sep = "\n"
+      )
     )
-  )
 }
+}
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other political: 
