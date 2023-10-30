@@ -49,7 +49,7 @@ gsc_helper_countrynames <- function(names, out = "eurostat") {
 #'
 #' @return data_sf with UTF-8 encoding.
 #'
-#' @source Extracted from **sf** package.
+#' @source Extracted from \CRANpkg{sf} package.
 #'
 #' @noRd
 gsc_helper_utf8 <- function(data_sf) {
@@ -71,12 +71,12 @@ gsc_helper_utf8 <- function(data_sf) {
   names <- names(data_sf)
   g <- sf::st_geometry(data_sf)
 
-  which.geom <-
+  which_geom <-
     which(vapply(data_sf, function(f) {
       inherits(f, "sfc")
     }, TRUE))
 
-  nm <- names(which.geom)
+  nm <- names(which_geom)
 
   data_utf8 <-
     as.data.frame(set_utf8(sf::st_drop_geometry(data_sf)),

@@ -1,9 +1,14 @@
+# giscoR 0.4.0
+
+-   `gisco_get_nuts()`: Add an additional `geo` column (identical to `NUTS_ID`)
+    for enhanced compatibility with **eurostat** package (#62).
+-   Adjust examples for **CRAN**.
+-   Add dependency **httr**.
+
 # giscoR 0.3.5
 
 -   Review examples to avoid CRAN errors and notes.
-
 -   New helper function: `gisco_detect_cache_dir()`.
-
 -   Now the functions fail gracefully with an informative message, instead of an
     error, and return `NULL`.
 
@@ -52,7 +57,7 @@
 -   New `eu` field on `giscoR::gisco_countrycode`.
 -   Fix typos on documentation
 -   Include vignette on the package
--   Move docs to markdown/roxygen
+-   Move docs to `roxygen2`
 -   `lwgeom` moved to Import field.
 -   `cartography` package replaced by `tmap` on vignettes.
 

@@ -238,26 +238,26 @@ gsc_api_cache <-
     cache_dir <- gsc_helper_cachedir(cache_dir)
 
     # Create destfile and clean
-    file.local <- file.path(cache_dir, name)
-    file.local <- gsub("//", "/", file.local)
+    file_local <- file.path(cache_dir, name)
+    file_local <- gsub("//", "/", file_local)
 
 
     gsc_message(verbose, "\nCache dir is ", cache_dir, "\n")
 
 
     # Check if file already exists
-    fileoncache <- file.exists(file.local)
+    fileoncache <- file.exists(file_local)
 
     # If already cached return
     if (isFALSE(update_cache) && fileoncache) {
       gsc_message(
         verbose,
         "\nFile already cached\n",
-        file.local
+        file_local
       )
 
 
-      return(file.local)
+      return(file_local)
     }
 
     if (fileoncache) {
@@ -286,7 +286,7 @@ gsc_api_cache <-
 
 
     err_dwnload <- suppressWarnings(try(
-      download.file(url, file.local, quiet = isFALSE(verbose), mode = "wb"),
+      download.file(url, file_local, quiet = isFALSE(verbose), mode = "wb"),
       silent = TRUE
     ))
 
@@ -294,13 +294,36 @@ gsc_api_cache <-
 
     if (inherits(err_dwnload, "try-error")) {
       gsc_message(verbose, "Retry query")
-      Sys.sleep(1)
+      Sys.sleep(1.5)
       err_dwnload <- suppressWarnings(try(
-        download.file(url, file.local, quiet = isFALSE(verbose), mode = "wb"),
+        download.file(url, file_local, quiet = isFALSE(verbose), mode = "wb"),
         silent = TRUE
       ))
     }
 
+    # Last try with httr (#69)
+
+    if (inherits(err_dwnload, "try-error")) {
+      ops <- options()
+      options(timeout = 1000)
+      req <- try(httr::GET(url, httr::write_disk(file_local, overwrite = TRUE)),
+        silent = TRUE
+      )
+      options(ops)
+
+      # Mock err download
+      if (inherits(req, "try-error")) {
+        mock_er <- "aaaa"
+        unlink(file_local)
+      } else if (httr::status_code(req) == 200) {
+        mock_er <- 200
+      } else {
+        mock_er <- "aaaa"
+        unlink(file_local)
+      }
+
+      err_dwnload <- try(mock_er / 2, silent = TRUE)
+    }
     # If not then stop
     if (inherits(err_dwnload, "try-error")) {
       gsc_message(
@@ -315,9 +338,9 @@ gsc_api_cache <-
       return(NULL)
     }
 
-    gsc_message(verbose, "Download succesful on \n\n", file.local, "\n\n")
+    gsc_message(verbose, "Download succesful on \n\n", file_local, "\n\n")
 
-    return(file.local)
+    return(file_local)
   }
 
 
@@ -446,9 +469,11 @@ gsc_unzip <-
     # Extract files
     outfiles <- infiles[grep(ext, infiles$Name), ]$Name
 
-    gsc_message(verbose, "Extracting files:\n", paste0(outfiles,
-      collapse = "\n"
-    ), "\n")
+    gsc_message(
+      verbose, "Extracting files:\n",
+      paste0(outfiles, collapse = "\n"),
+      "\n"
+    )
 
 
     allfiles <- list.files(cache_dir)

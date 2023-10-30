@@ -15,6 +15,7 @@ results](https://badges.cranchecks.info/worst/giscoR.svg)](https://cran.r-projec
 [![R build
 status](https://github.com/rOpenGov/giscoR/workflows/R-CMD-check/badge.svg)](https://github.com/rOpenGov/giscoR/actions)
 [![codecov](https://codecov.io/gh/ropengov/giscoR/branch/main/graph/badge.svg)](https://app.codecov.io/gh/ropengov/giscoR)
+[![CodeFactor](https://www.codefactor.io/repository/github/ropengov/giscor/badge)](https://www.codefactor.io/repository/github/ropengov/giscor)
 [![DOI](https://img.shields.io/badge/DOI-10.5281/zenodo.4317946-blue)](https://doi.org/10.5281/zenodo.4317946)
 [![Project Status:
 Active](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
@@ -28,9 +29,9 @@ Information System of the
 COmmission)](https://ec.europa.eu/eurostat/web/gisco). It also provides
 some lightweight data sets ready to use without downloading.
 
-GISCO [(FAQ)](https://ec.europa.eu/eurostat/web/gisco/faq) is a
-geospatial open data repository including several data sets as
-countries, coastal lines, labels or [NUTS
+[GISCO](https://ec.europa.eu/eurostat/web/gisco) is a geospatial open
+data repository including several data sets as countries, coastal lines,
+labels or [NUTS
 levels](https://ec.europa.eu/eurostat/web/regions-and-cities/overview).
 The data sets are usually provided at several resolution levels
 (60M/20M/10M/03M/01M) and in 3 different projections (4326/3035/3857).
@@ -322,18 +323,19 @@ Contributions are very welcome:
 
 To cite ‘giscoR’ in publications use:
 
-Hernangomez D (2023). giscoR: Download Map Data from GISCO API -
-Eurostat. <https://doi.org/10.5281/zenodo.4317946>,
-<https://ropengov.github.io/giscoR/>
+Hernangómez D (2023). *giscoR: Download Map Data from GISCO API -
+Eurostat*. <doi:10.5281/zenodo.4317946>
+<https://doi.org/10.5281/zenodo.4317946>,
+<https://ropengov.github.io/giscoR/>.
 
 A BibTeX entry for LaTeX users is
 
-    @Manual{R-giscoR,
+    @Manual{,
       title = {{giscoR}: Download Map Data from GISCO API - Eurostat},
       doi = {10.5281/zenodo.4317946},
       author = {Diego Hernangómez},
       year = {2023},
-      version = {0.3.5},
+      version = {0.4.0},
       url = {https://ropengov.github.io/giscoR/},
       abstract = {Tools to download data from the GISCO (Geographic Information System of the Commission) Eurostat database <https://ec.europa.eu/eurostat/web/gisco>. Global and European map data available. This package is in no way officially related to or endorsed by Eurostat.},
     }
