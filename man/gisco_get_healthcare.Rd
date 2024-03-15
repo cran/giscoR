@@ -2,7 +2,7 @@
 % Please edit documentation in R/gisco_get_healthcare.R
 \name{gisco_get_healthcare}
 \alias{gisco_get_healthcare}
-\title{Get locations of healthcare services in Europe.}
+\title{Get locations of healthcare services in Europe}
 \source{
 \url{https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/healthcare-services}
 }
@@ -21,7 +21,7 @@ gisco_get_healthcare(
 
 \item{update_cache}{A logical whether to update cache. Default is \code{FALSE}.
 When set to \code{TRUE} it would force a fresh download of the source
-.geojson file.}
+\code{.geojson} file.}
 
 \item{cache_dir}{A path to a cache directory. See \strong{About caching}.}
 
@@ -34,7 +34,7 @@ vector of Eurostat country codes. Mixed types (as \code{c("Turkey","US","FRA")})
 would not work. See also \code{\link[countrycode:countrycode]{countrycode::countrycode()}}.}
 }
 \value{
-A \code{POINT} object.
+A \code{POINT} \CRANpkg{sf} object.
 }
 \description{
 The dataset contains information on main healthcare services considered to
@@ -51,7 +51,7 @@ Sometimes cached files may be corrupt. On that case, try re-downloading
 the data setting \code{update_cache = TRUE}.
 
 If you experience any problem on download, try to download the
-corresponding .geojson file by any other method and save it on your
+corresponding \code{.geojson} file by any other method and save it on your
 \code{cache_dir}. Use the option \code{verbose = TRUE} for debugging the API query.
 
 For a complete list of files available check \link{gisco_db}.

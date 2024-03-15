@@ -1,4 +1,4 @@
-#' Get GISCO world country `sf` polygons, points and lines
+#' Get GISCO world country \CRANpkg{sf} polygons, points and lines
 #'
 #' @description
 #' Returns world country polygons, lines and points at a specified scale, as
@@ -13,7 +13,6 @@
 #' @note
 #' Please check the download and usage provisions on [gisco_attributions()].
 #'
-#' @concept political
 #' @family political
 #'
 #' @details
@@ -25,7 +24,7 @@
 #' the data setting `update_cache = TRUE`.
 #'
 #'  If you experience any problem on download, try to download the
-#'  corresponding .geojson file by any other method and save it on your
+#'  corresponding `.geojson` file by any other method and save it on your
 #'  `cache_dir`. Use the option `verbose = TRUE` for debugging the API query.
 #'
 #' For a complete list of files available check [gisco_db].
@@ -39,33 +38,36 @@
 #' `region = "EU"` to get the EU members (reference date: 2021).
 #'
 #'
-#' @return A `sf` object specified by `spatialtype`.
+#' @return A \CRANpkg{sf} object specified by `spatialtype`.
 #'
-#' @param year Release year of the file. One of "2001", "2006",
-#'   "2010", "2013", "2016" or "2020".
+#' @param year Release year of the file. One
+#'   of `r gsc_helper_year_docs("countries")`.
 #'
 #' @param epsg projection of the map: 4-digit [EPSG code](https://epsg.io/).
 #'  One of:
-#'  * "4258": ETRS89
-#'  * "4326": WGS84
-#'  * "3035": ETRS89 / ETRS-LAEA
-#'  * "3857": Pseudo-Mercator
+#'  * `"4258"`: ETRS89
+#'  * `"4326"`: WGS84
+#'  * `"3035"`: ETRS89 / ETRS-LAEA
+#'  * `"3857"`: Pseudo-Mercator
 #'
 #' @param cache A logical whether to do caching. Default is `TRUE`. See
 #'   **About caching**.
 #'
 #' @param update_cache A logical whether to update cache. Default is `FALSE`.
 #'  When set to `TRUE` it would force a fresh download of the source
-#'  .geojson file.
+#'  `.geojson` file.
 #'
 #' @param cache_dir A path to a cache directory. See **About caching**.
 #'
 #' @param spatialtype Type of geometry to be returned:
-#'  * **"BN"**: Boundaries - `LINESTRING` object.
-#'  * **"COASTL"**: coastlines - `LINESTRING` object.
-#'  * **"INLAND"**: inland boundaries - `LINESTRING` object.
-#'  * **"LB"**: Labels - `POINT` object.
-#'  * **"RG"**: Regions - `MULTIPOLYGON/POLYGON` object.
+#'  * `"BN"`: Boundaries - `LINESTRING` object.
+#'  * `"COASTL"`: coastlines - `LINESTRING` object.
+#'  * `"INLAND"`: inland boundaries - `LINESTRING` object.
+#'  * `"LB"`: Labels - `POINT` object.
+#'  * `"RG"`: Regions - `MULTIPOLYGON/POLYGON` object.
+#'
+#'  **Note that** parameters `country` and `region` would be only applied
+#'  when `spatialtype` is `"BN"` or `"RG"`.
 #'
 #' @param country Optional. A character vector of country codes. It could be
 #'  either a vector of country names, a vector of ISO3 country codes or a
@@ -76,16 +78,17 @@
 #'   default is `FALSE`.
 #'
 #' @param resolution Resolution of the geospatial data. One of
-#'  * "60": 1:60million
-#'  * "20": 1:20million
-#'  * "10": 1:10million
-#'  * "03": 1:3million
-#'  * "01": 1:1million
+#'  * `"60"`: 1:60million
+#'  * `"20"`: 1:20million
+#'  * `"10"`: 1:10million
+#'  * `"03"`: 1:3million
+#'  * `"01"`: 1:1million
 #'
 #' @param region Optional. A character vector of UN M49 region codes or
-#'  European Union membership. Possible values are "Africa", "Americas",
-#'  "Asia", "Europe", "Oceania" or "EU" for countries belonging to the European
-#'  Union (as per 2021). See **About world regions** and [gisco_countrycode]
+#'  European Union membership. Possible values are `"Africa"`, `"Americas"`,
+#'  `"Asia"`, `"Europe"`, `"Oceania"` or `"EU"` for countries belonging to the
+#'  European Union (as per 2021). See **About world regions** and
+#'  [gisco_countrycode].
 #'
 #' @seealso [gisco_countrycode()], [gisco_countries],
 #'   [countrycode::countrycode()]
@@ -108,15 +111,10 @@
 #'   geom_sf(fill = "#078930", col = "white") +
 #'   theme_minimal()
 #'
-gisco_get_countries <- function(year = "2016",
-                                epsg = "4326",
-                                cache = TRUE,
-                                update_cache = FALSE,
-                                cache_dir = NULL,
-                                verbose = FALSE,
-                                resolution = "20",
-                                spatialtype = "RG",
-                                country = NULL,
+gisco_get_countries <- function(year = "2016", epsg = "4326", cache = TRUE,
+                                update_cache = FALSE, cache_dir = NULL,
+                                verbose = FALSE, resolution = "20",
+                                spatialtype = "RG", country = NULL,
                                 region = NULL) {
   ext <- "geojson"
 

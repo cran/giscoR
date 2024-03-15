@@ -2,7 +2,7 @@
 #'
 #' Database with the list of files that the package can load.
 #'
-#' @concept dataset
+#' @family dataset
 #'
 #' @name gisco_db
 #'
@@ -10,7 +10,7 @@
 #'
 #' @format A data frame
 #'
-#' @details This dataframe is used to check the validity of the API calls.
+#' @details This data frame is used to check the validity of the API calls.
 #'
 #' @source GISCO API `datasets.json`.
 #' @keywords internal
@@ -19,14 +19,14 @@
 #' data(gisco_db)
 NULL
 
-#' World countries `POLYGON` object
+#' World countries `POLYGON` \CRANpkg{sf} object
 #'
 #' @family dataset
 #'
 #' @name gisco_countries
 #'
-#' @description A `sf` object including all
-#' countries as provided by GISCO (2016 version).
+#' @description A \CRANpkg{sf} object including all countries as provided by
+#' GISCO (2016 version).
 #'
 #' @format
 #' A `MULTIPOLYGON` data frame (resolution: 1:20million, EPSG:4326) object
@@ -52,8 +52,15 @@ NULL
 #'   geom_sf(color = "red3", fill = "blue4") +
 #'   theme_void()
 #' @source
-#' [CNTR_RG_20M_2016_4326.geojson](https://gisco-services.ec.europa.eu/distribution/v2/countries/geojson/)
-#' file.
+#'
+#' ```{r, echo=FALSE, results='asis'}
+#'
+#' cat(paste0("[CNTR_RG_20M_2016_4326.geojson]",
+#'       "(https://gisco-services.ec.europa.eu/distribution/v2/",
+#'       "countries/geojson/) file."))
+#'
+#'
+#' ```
 #'
 #' @docType data
 #'
@@ -64,14 +71,14 @@ NULL
 
 #' World coastal lines `POLYGON` object
 #'
-#' A `sf` object as provided by GISCO (2016 version).
+#' A \CRANpkg{sf} object as provided by GISCO (2016 version).
 #'
 #' @family dataset
 #'
 #' @name gisco_coastallines
 #'
 #' @format
-#' A `POLYGON` data frame (resolution: 1:20million, EPSG:4326) object with
+#' A `POLYGON` \CRANpkg{sf} object (resolution: 1:20million, EPSG:4326) with
 #' 3 variables:
 #' \describe{
 #'   \item{COAS_ID}{Coast ID}
@@ -80,8 +87,14 @@ NULL
 #' }
 #'
 #' @source
-#' [COAS_RG_20M_2016_4326.geojson](https://gisco-services.ec.europa.eu/distribution/v2/coas/geojson/)
-#' file.
+#'
+#' ```{r, echo=FALSE, results='asis'}
+#'
+#' cat(paste0("[COAS_RG_20M_2016_4326.geojson]",
+#'       "(https://gisco-services.ec.europa.eu/distribution/v2/",
+#'       "coas/geojson/) file."))
+#'
+#' ```
 #'
 #' @docType data
 #'
@@ -113,7 +126,8 @@ NULL
 
 #' All NUTS `POLYGON` object
 #'
-#' A `sf` object including all NUTS levels as provided by GISCO (2016 version).
+#' A \CRANpkg{sf} object including all NUTS levels as provided by GISCO
+#' (2016 version).
 #'
 #' @family dataset
 #'
@@ -165,8 +179,14 @@ NULL
 #'
 #'
 #' @source
-#' [NUTS_RG_20M_2016_4326.geojson](https://gisco-services.ec.europa.eu/distribution/v2/nuts/geojson/)
-#' file.
+#'
+#' ```{r, echo=FALSE, results='asis'}
+#'
+#' cat(paste0("[NUTS_RG_20M_2016_4326.geojson]",
+#'       "(https://gisco-services.ec.europa.eu/distribution/v2/",
+#'       "nuts/geojson/) file."))
+#'
+#' ```
 #'
 #' @docType data
 #'
@@ -186,16 +206,16 @@ NULL
 NULL
 
 
-#' Dataframe with different country code schemes and world regions
+#' Data frame with different country code schemes and world regions
 #'
 #' @name gisco_countrycode
 #'
 #' @family dataset
 #'
 #' @description
-#' A dataframe containing conversions between different country
+#' A data frame containing conversions between different country
 #' code schemes (Eurostat/ISO2 and 3) as well as geographic regions as
-#' provided by the World Bank and the UN (M49). This dataset
+#' provided by the World Bank and the UN (M49). This data set
 #' is extracted from \CRANpkg{countrycode} package.
 #'
 #' @format
@@ -225,39 +245,14 @@ NULL
 #' @seealso [gisco_get_countries()],
 #'  [countrycode::codelist], [countrycode::countrycode-package]
 #'
-#' See also the [Unicode Common Locale Data
-#' Repository](https://cldr.unicode.org/translation/displaynames/countryregion-territory-names).
+#' See also the
+#' ```{r, echo=FALSE, results='asis'}
 #'
-#' @docType data
-NULL
-
-#' Disposable income of private households by NUTS 2 regions
+#' cat(paste0(" [Unicode Common Locale Data Repository]",
+#'       "(https://cldr.unicode.org/translation/displaynames/",
+#'       "countryregion-territory-names)."))
 #'
-#' @name tgs00026
+#' ```
 #'
-#' @family dataset
-#'
-#' @source <https://ec.europa.eu/eurostat>, extracted on 2020-10-27
-#'
-#' @description
-#' The disposable income of private households is the balance
-#' of primary income (operating surplus/mixed income plus compensation of
-#' employees plus property income received minus property income paid) and
-#' the redistribution of income in cash. These transactions comprise social
-#' contributions paid, social benefits in cash received, current taxes on
-#' income and wealth paid, as well as other current transfers. Disposable
-#' income does not include social transfers in kind coming from public
-#' administrations or non-profit institutions serving households.
-#' @format
-#' data_frame:
-#' \describe{
-#'   \item{geo}{NUTS2 identifier}
-#'   \item{time}{reference year (2007 to 2018)}
-#'   \item{values}{value in euros}
-#' }
-#'
-#' @examples
-#'
-#' data(tgs00026)
 #' @docType data
 NULL

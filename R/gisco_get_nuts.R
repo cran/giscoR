@@ -1,38 +1,55 @@
-#' Get GISCO NUTS `sf` polygons, points and lines
+#' Get GISCO NUTS \CRANpkg{sf} polygons, points and lines
 #'
 #' @description
 #' Returns
-#' [NUTS regions](https://en.wikipedia.org/wiki/Nomenclature_of_Territorial_Units_for_Statistics)
+#'
+#' ```{r, echo=FALSE, results='asis'}
+#'
+#' cat(paste0(" [NUTS regions]",
+#'       "(https://en.wikipedia.org/wiki/Nomenclature_of_Territorial_",
+#'       "Units_for_Statistics) "))
+#'
+#' ```
 #' polygons, lines and points at a specified scale, as provided by GISCO.
 #'
 #' NUTS are provided at three different levels:
-#' * **"0"**: Country level
-#' * **"1"**: Groups of states/regions
-#' * **"2"**: States/regions
-#' * **"3"**: Counties/provinces/districts
+#' * `"0"`: Country level
+#' * `"1"`: Groups of states/regions
+#' * `"2"`: States/regions
+#' * `"3"`: Counties/provinces/districts
 #'
 #' Note that NUTS-level definition may vary across countries. See also
-#' <https://ec.europa.eu/eurostat/web/nuts/background>.
+#' ```{r, echo=FALSE, results='asis'}
 #'
-#' @concept political
+#' cat(
+#'   paste0(" <https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data",
+#'       "//administrative-units-statistical-units/nuts>.")
+#'    )
+#'
+#' ```
+#'
 #' @family political
 #'
-#' @return A `sf` object specified by `spatialtype`. The resulting `sf` object
-#' would present an additional column `geo` (equal to `NUTS_ID`) for
-#' improving compatibility with \CRANpkg{eurostat} package. See
-#' [eurostat::get_eurostat_geospatial()]). See also [gisco_nuts] to
-#' understand the columns and values provided.
+#' @return A \CRANpkg{sf} object specified by `spatialtype`. The resulting
+#' \CRANpkg{sf} object would present an additional column `geo` (equal to
+#' `NUTS_ID`) for improving compatibility with \CRANpkg{eurostat} package. See
+#' [eurostat::get_eurostat_geospatial()]).
 #'
-#' @param year Release year of the file. One of "2003", "2006,
-#'   "2010", "2013", "2016" or "2021".
+#' See also [gisco_nuts] to understand the columns and values provided.
+#'
+#' @param year Release year of the file. One
+#'   of `r gsc_helper_year_docs("nuts")`.
 #'
 #' @param spatialtype Type of geometry to be returned:
-#'  * **"BN"**: Boundaries - `LINESTRING` object.
-#'  * **"LB"**: Labels - `POINT` object.
-#'  * **"RG"**: Regions - `MULTIPOLYGON/POLYGON` object.
+#'  * `"BN"`: Boundaries - `LINESTRING` object.
+#'  * `"LB"`: Labels - `POINT` object.
+#'  * `"RG"`: Regions - `MULTIPOLYGON/POLYGON` object.
 #'
-#' @param nuts_level NUTS level. One of "0", "1", "2" or "3".
-#' See Description.
+#'  **Note that** parameters `country`, `nuts_level` and `nuts_id` would be only
+#'  applied when `spatialtype` is `"BN"` or `"RG"`.
+#'
+#' @param nuts_level NUTS level. One of `"0"`, `"1"`, `"2"` or `"3"`.
+#' See **Description**.
 #'
 #' @param nuts_id Optional. A character vector of NUTS IDs.
 #'
@@ -80,17 +97,11 @@
 #'   geom_sf(aes(fill = CNTR_CODE)) +
 #'   scale_fill_viridis_d()
 #' }
-gisco_get_nuts <- function(year = "2016",
-                           epsg = "4326",
-                           cache = TRUE,
-                           update_cache = FALSE,
-                           cache_dir = NULL,
-                           verbose = FALSE,
-                           resolution = "20",
-                           spatialtype = "RG",
-                           country = NULL,
-                           nuts_id = NULL,
-                           nuts_level = "all") {
+gisco_get_nuts <- function(year = "2016", epsg = "4326", cache = TRUE,
+                           update_cache = FALSE, cache_dir = NULL,
+                           verbose = FALSE, resolution = "20",
+                           spatialtype = "RG", country = NULL,
+                           nuts_id = NULL, nuts_level = "all") {
   ext <- "geojson"
 
   nuts_level <- as.character(nuts_level)

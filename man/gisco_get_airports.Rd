@@ -25,7 +25,7 @@ gisco_get_ports(
 )
 }
 \arguments{
-\item{year}{Year of reference. Only year available right now is "2013".}
+\item{year}{Year of reference. Only year available right now is \code{"2013"}.}
 
 \item{country}{Optional. A character vector of country codes. It could be
 either a vector of country names, a vector of ISO3 country codes or a
@@ -36,7 +36,7 @@ would not work. See also \code{\link[countrycode:countrycode]{countrycode::count
 
 \item{update_cache}{A logical whether to update cache. Default is \code{FALSE}.
 When set to \code{TRUE} it would force a fresh download of the source
-.geojson file.}
+\code{.geojson} file.}
 
 \item{verbose}{Logical, displays information. Useful for debugging,
 default is \code{FALSE}.}
@@ -45,7 +45,7 @@ default is \code{FALSE}.}
 A \code{POINT} object on EPSG:4326.
 }
 \description{
-Loads a \code{sf} object from GISCO API or your local library.
+Loads a \CRANpkg{sf} object from GISCO API or your local library.
 }
 \details{
 \code{\link[=gisco_get_airports]{gisco_get_airports()}} refer to Europe. All shapefiles provided in
@@ -63,7 +63,7 @@ Sometimes cached files may be corrupt. On that case, try re-downloading
 the data setting \code{update_cache = TRUE}.
 
 If you experience any problem on download, try to download the
-corresponding .geojson file by any other method and save it on your
+corresponding \code{.geojson} file by any other method and save it on your
 \code{cache_dir}. Use the option \code{verbose = TRUE} for debugging the API query.
 
 For a complete list of files available check \link{gisco_db}.

@@ -4,7 +4,7 @@
 \encoding{UTF-8}
 \name{gisco_countries}
 \alias{gisco_countries}
-\title{World countries \code{POLYGON} object}
+\title{World countries \code{POLYGON} \CRANpkg{sf} object}
 \format{
 A \code{MULTIPOLYGON} data frame (resolution: 1:20million, EPSG:4326) object
 with 257 rows and 7 variables:
@@ -20,12 +20,11 @@ GISCO}
 }
 }
 \source{
-\href{https://gisco-services.ec.europa.eu/distribution/v2/countries/geojson/}{CNTR_RG_20M_2016_4326.geojson}
-file.
+\href{https://gisco-services.ec.europa.eu/distribution/v2/countries/geojson/}{CNTR_RG_20M_2016_4326.geojson} file.
 }
 \description{
-A \code{sf} object including all
-countries as provided by GISCO (2016 version).
+A \CRANpkg{sf} object including all countries as provided by
+GISCO (2016 version).
 }
 \examples{
 
@@ -44,7 +43,7 @@ ggplot(GBR) +
 Other dataset: 
 \code{\link{gisco_coastallines}},
 \code{\link{gisco_countrycode}},
-\code{\link{gisco_nuts}},
-\code{\link{tgs00026}}
+\code{\link{gisco_db}},
+\code{\link{gisco_nuts}}
 }
 \concept{dataset}

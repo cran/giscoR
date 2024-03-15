@@ -16,7 +16,7 @@ gisco_get_postalcodes(
 )
 }
 \arguments{
-\item{year}{Year of reference. Currently only "2020" is available.}
+\item{year}{Year of reference. Currently only \code{"2020"} is available.}
 
 \item{country}{Optional. A character vector of country codes. It could be
 either a vector of country names, a vector of ISO3 country codes or a
@@ -27,13 +27,13 @@ would not work. See also \code{\link[countrycode:countrycode]{countrycode::count
 
 \item{update_cache}{A logical whether to update cache. Default is \code{FALSE}.
 When set to \code{TRUE} it would force a fresh download of the source
-.geojson file.}
+\code{.geojson} file.}
 
 \item{verbose}{Logical, displays information. Useful for debugging,
 default is \code{FALSE}.}
 }
 \value{
-A \code{POINT} object on EPSG:4326.
+A \code{POINT} \CRANpkg{sf} object on EPSG:4326.
 }
 \description{
 Get postal codes points of the EU, EFTA and candidate countries.
@@ -63,7 +63,7 @@ Sometimes cached files may be corrupt. On that case, try re-downloading
 the data setting \code{update_cache = TRUE}.
 
 If you experience any problem on download, try to download the
-corresponding .geojson file by any other method and save it on your
+corresponding \code{.geojson} file by any other method and save it on your
 \code{cache_dir}. Use the option \code{verbose = TRUE} for debugging the API query.
 
 For a complete list of files available check \link{gisco_db}.

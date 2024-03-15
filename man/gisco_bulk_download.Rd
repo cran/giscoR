@@ -21,36 +21,36 @@ gisco_bulk_download(
 \arguments{
 \item{id_giscoR}{Type of dataset to be downloaded. Values supported are:
 \itemize{
-\item "coastallines"
-\item "communes"
-\item "countries"
-\item "lau"
-\item "nuts"
-\item "urban_audit"
+\item \code{"coastallines"}
+\item \code{"communes"}
+\item \code{"countries"}
+\item \code{"lau"}
+\item \code{"nuts"}
+\item \code{"urban_audit"}
 }}
 
-\item{year}{Release year of the file. See Details}
+\item{year}{Release year of the file. See \strong{Details}.}
 
 \item{cache_dir}{A path to a cache directory. See \strong{About caching}.}
 
 \item{update_cache}{A logical whether to update cache. Default is \code{FALSE}.
 When set to \code{TRUE} it would force a fresh download of the source
-.geojson file.}
+\code{.geojson} file.}
 
 \item{verbose}{Logical, displays information. Useful for debugging,
 default is \code{FALSE}.}
 
 \item{resolution}{Resolution of the geospatial data. One of
 \itemize{
-\item "60": 1:60million
-\item "20": 1:20million
-\item "10": 1:10million
-\item "03": 1:3million
-\item "01": 1:1million
+\item \code{"60"}: 1:60million
+\item \code{"20"}: 1:20million
+\item \code{"10"}: 1:10million
+\item \code{"03"}: 1:3million
+\item \code{"01"}: 1:1million
 }}
 
 \item{ext}{Extension of the file(s) to be downloaded. Formats available are
-"geojson", "shp", "svg", "json", "gdb". See \strong{Details}.}
+\code{"geojson"}, \code{"shp"}, \code{"svg"}, \code{"json"}, \code{"gdb"}. See \strong{Details}.}
 
 \item{recursive}{Tries to unzip recursively the zip files (if any) included
 in the initial bulk download (case of \code{ext = "shp"}).}
@@ -59,7 +59,8 @@ in the initial bulk download (case of \code{ext = "shp"}).}
 Silent function.
 }
 \description{
-Downloads zipped data from GISCO and extract them on the \code{cache_dir} folder.
+Downloads zipped data from GISCO and extract them on the
+\code{\link[=gisco_set_cache_dir]{cache_dir}} folder.
 }
 \details{
 See the years available in the corresponding functions:
@@ -72,7 +73,7 @@ See the years available in the corresponding functions:
 \item \code{\link[=gisco_get_urban_audit]{gisco_get_urban_audit()}}
 }
 
-The usual extension used across \strong{giscoR} is "geojson",
+The usual extension used across \CRANpkg{giscoR} is \code{"geojson"},
 however other formats are already available on GISCO.
 }
 \section{About caching}{
@@ -82,7 +83,7 @@ Sometimes cached files may be corrupt. On that case, try re-downloading
 the data setting \code{update_cache = TRUE}.
 
 If you experience any problem on download, try to download the
-corresponding .geojson file by any other method and save it on your
+corresponding \code{.geojson} file by any other method and save it on your
 \code{cache_dir}. Use the option \code{verbose = TRUE} for debugging the API query.
 
 For a complete list of files available check \link{gisco_db}.

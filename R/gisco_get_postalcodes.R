@@ -2,14 +2,14 @@
 #'
 #' Get postal codes points of the EU, EFTA and candidate countries.
 #'
-#' @param year Year of reference. Currently only "2020" is available.
+#' @param year Year of reference. Currently only `"2020"` is available.
 #'
 #' @inheritParams gisco_get_airports
 #' @inheritSection gisco_get_countries About caching
 #'
 #' @family political
 #'
-#' @return A `POINT` object on EPSG:4326.
+#' @return A `POINT` \CRANpkg{sf} object on EPSG:4326.
 #'
 #' @export
 #'
@@ -58,10 +58,8 @@
 #'     )
 #' }
 #' }
-gisco_get_postalcodes <- function(year = "2020",
-                                  country = NULL,
-                                  cache_dir = NULL,
-                                  update_cache = FALSE,
+gisco_get_postalcodes <- function(year = "2020", country = NULL,
+                                  cache_dir = NULL, update_cache = FALSE,
                                   verbose = FALSE) {
   year <- as.character(year)
   if (year != "2020") {

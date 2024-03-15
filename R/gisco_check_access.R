@@ -1,9 +1,9 @@
 #' Check access to GISCO API
 #'
-#' @concept helper
+#' @family helper
 #'
 #' @description
-#' Check if R has access to resources at
+#' Check if **R** has access to resources at
 #' <https://gisco-services.ec.europa.eu/distribution/v2/>.
 #'
 #' @return a logical.

@@ -22,14 +22,14 @@ package
 \details{
 Current languages supported are:
 \itemize{
-\item "en" - English
-\item "da" - Danish
-\item "de" - German
-\item "es" - Spanish
-\item "fi" - Finish
-\item "fr" - French
-\item "no" - Norwegian
-\item "sv" - Swedish
+\item \code{"en"} - English
+\item \code{"da"} - Danish
+\item \code{"de"} - German
+\item \code{"es"} - Spanish
+\item \code{"fi"} - Finish
+\item \code{"fr"} - French
+\item \code{"no"} - Norwegian
+\item \code{"sv"} - Swedish
 }
 
 Please consider
@@ -39,28 +39,23 @@ mistake or want to add a new language.
 \note{
 COPYRIGHT NOTICE
 
-When data downloaded from GISCO
-is used in any printed or electronic publication,
-in addition to any other provisions
-applicable to the whole Eurostat website,
-data source will have to be acknowledged
-in the legend of the map and
-in the introductory page of the publication
-with the following copyright notice:
+When data downloaded from GISCO is used in any printed or electronic
+publication, in addition to any other provisions applicable to the whole
+Eurostat website, data source will have to be acknowledged in the legend of
+the map and in the introductory page of the publication with the following
+copyright notice:
 \itemize{
 \item EN: (C) EuroGeographics for the administrative boundaries
 \item FR: (C) EuroGeographics pour les limites administratives
 \item DE: (C) EuroGeographics bezuglich der Verwaltungsgrenzen
 }
 
-For publications in languages other than
-English, French or German,
-the translation of the copyright notice
-in the language of the publication shall be used.
+For publications in languages other than English, French or German,
+the translation of the copyright notice in the language of the publication
+shall be used.
 
-If you intend to use the data commercially,
-please contact EuroGeographics for
-information regarding their licence agreements.
+If you intend to use the data commercially, please contact EuroGeographics
+for information regarding their licence agreements.
 }
 \examples{
 gisco_attributions()
@@ -68,5 +63,9 @@ gisco_attributions()
 gisco_attributions(lang = "es", copyright = TRUE)
 
 gisco_attributions(lang = "XXX")
+}
+\seealso{
+Other helper: 
+\code{\link{gisco_check_access}()}
 }
 \concept{helper}

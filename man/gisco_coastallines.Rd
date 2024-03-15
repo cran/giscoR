@@ -5,7 +5,7 @@
 \alias{gisco_coastallines}
 \title{World coastal lines \code{POLYGON} object}
 \format{
-A \code{POLYGON} data frame (resolution: 1:20million, EPSG:4326) object with
+A \code{POLYGON} \CRANpkg{sf} object (resolution: 1:20million, EPSG:4326) with
 3 variables:
 \describe{
 \item{COAS_ID}{Coast ID}
@@ -14,11 +14,10 @@ A \code{POLYGON} data frame (resolution: 1:20million, EPSG:4326) object with
 }
 }
 \source{
-\href{https://gisco-services.ec.europa.eu/distribution/v2/coas/geojson/}{COAS_RG_20M_2016_4326.geojson}
-file.
+\href{https://gisco-services.ec.europa.eu/distribution/v2/coas/geojson/}{COAS_RG_20M_2016_4326.geojson} file.
 }
 \description{
-A \code{sf} object as provided by GISCO (2016 version).
+A \CRANpkg{sf} object as provided by GISCO (2016 version).
 }
 \examples{
 
@@ -49,7 +48,7 @@ ggplot(coasts) +
 Other dataset: 
 \code{\link{gisco_countries}},
 \code{\link{gisco_countrycode}},
-\code{\link{gisco_nuts}},
-\code{\link{tgs00026}}
+\code{\link{gisco_db}},
+\code{\link{gisco_nuts}}
 }
 \concept{dataset}

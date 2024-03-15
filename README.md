@@ -12,8 +12,7 @@ status](https://www.r-pkg.org/badges/version/giscoR)](https://CRAN.R-project.org
 results](https://badges.cranchecks.info/worst/giscoR.svg)](https://cran.r-project.org/web/checks/check_results_giscoR.html)
 [![Downloads](https://cranlogs.r-pkg.org/badges/giscoR)](https://CRAN.R-project.org/package=giscoR)
 [![r-universe](https://ropengov.r-universe.dev/badges/giscoR)](https://ropengov.r-universe.dev/giscoR)
-[![R build
-status](https://github.com/rOpenGov/giscoR/workflows/R-CMD-check/badge.svg)](https://github.com/rOpenGov/giscoR/actions)
+[![R-CMD-check](https://github.com/rOpenGov/giscoR/actions/workflows/check-full.yaml/badge.svg)](https://github.com/rOpenGov/giscoR/actions/workflows/check-full.yaml)
 [![codecov](https://codecov.io/gh/ropengov/giscoR/branch/main/graph/badge.svg)](https://app.codecov.io/gh/ropengov/giscoR)
 [![CodeFactor](https://www.codefactor.io/repository/github/ropengov/giscor/badge)](https://www.codefactor.io/repository/github/ropengov/giscor)
 [![DOI](https://img.shields.io/badge/DOI-10.5281/zenodo.4317946-blue)](https://doi.org/10.5281/zenodo.4317946)
@@ -23,7 +22,7 @@ Active](https://www.repostatus.org/badges/latest/active.svg)](https://www.repost
 
 <!-- badges: end -->
 
-[giscoR](https://ropengov.github.io/giscoR//) is an API package that
+[**giscoR**](https://ropengov.github.io/giscoR//) is an API package that
 helps to retrieve data from [Eurostat - GISCO (the Geographic
 Information System of the
 COmmission)](https://ec.europa.eu/eurostat/web/gisco). It also provides
@@ -45,21 +44,20 @@ Full site with examples and vignettes on
 
 ## Installation
 
-Install `giscoR` from
+Install **giscoR** from
 [**CRAN**](https://CRAN.R-project.org/package=giscoR):
 
 ``` r
 install.packages("giscoR")
 ```
 
-You can install the developing version of `giscoR` with:
+You can install the developing version of **giscoR** with:
 
 ``` r
-library(remotes)
-install_github("rOpenGov/giscoR")
+remotes::install_github("rOpenGov/giscoR")
 ```
 
-Alternatively, you can install `giscoR` using the
+Alternatively, you can install **giscoR** using the
 [r-universe](https://ropengov.r-universe.dev/giscoR):
 
 ``` r
@@ -70,7 +68,7 @@ install.packages("giscoR",
 
 ## Usage
 
-This script highlights some features of `giscoR`:
+This script highlights some features of **giscoR** :
 
 ``` r
 library(giscoR)
@@ -137,7 +135,7 @@ ggplot(coast) +
 
 ### Labels
 
-An example of a labeled map using `ggplot2`:
+An example of a labeled map using **ggplot2**:
 
 ``` r
 ITA <- gisco_get_nuts(country = "Italy", nuts_level = 1)
@@ -152,9 +150,9 @@ ggplot(ITA) +
 
 ### Thematic maps
 
-An example of a thematic map plotted with the `ggplot2` package. The
-information is extracted via the `eurostat` package. We would follow the
-fantastic approach presented by [Milos
+An example of a thematic map plotted with the **ggplot2** package. The
+information is extracted via the **eurostat** package. We would follow
+the fantastic approach presented by [Milos
 Popovic](https://milospopovic.net/) on [this
 post](https://milospopovic.net/how-to-make-choropleth-map-in-r/):
 
@@ -163,7 +161,7 @@ We start by extracting the corresponding geographic data:
 ``` r
 # Get shapes
 nuts3 <- gisco_get_nuts(
-  year = "2016",
+  year = "2021",
   epsg = "3035",
   resolution = "3",
   nuts_level = "3"
@@ -183,16 +181,18 @@ We now download the data from Eurostat:
 ``` r
 # Use eurostat
 library(eurostat)
-
-popdens <- get_eurostat("demo_r_d3dens") %>%  filter(time == "2018-01-01")
-  
+popdens <- get_eurostat("demo_r_d3dens") %>%
+  filter(TIME_PERIOD == "2021-01-01")
 ```
 
 By last, we merge and manipulate the data for creating the final plot:
 
 ``` r
 # Merge data
-nuts3.sf <- nuts3 %>%
+nuts3_sf <- nuts3 %>%
+  left_join(popdens, by = "geo")
+
+nuts3_sf <- nuts3 %>%
   left_join(popdens, by = c("NUTS_ID" = "geo"))
 
 
@@ -200,7 +200,7 @@ nuts3.sf <- nuts3 %>%
 
 br <- c(0, 25, 50, 100, 200, 500, 1000, 2500, 5000, 10000, 30000)
 
-nuts3.sf <- nuts3.sf %>%
+nuts3_sf <- nuts3_sf %>%
   mutate(values_cut = cut(values, br, dig.lab = 5))
 
 labs_plot <- prettyNum(br[-1], big.mark = ",")
@@ -211,7 +211,7 @@ pal <- hcl.colors(length(br) - 1, "Lajolla")
 
 # Plot
 
-ggplot(nuts3.sf) +
+ggplot(nuts3_sf) +
   geom_sf(aes(fill = values_cut), linewidth = 0, color = NA, alpha = 0.9) +
   geom_sf(data = country_lines, col = "black", linewidth = 0.1) +
   # Center in Europe: EPSG 3035
@@ -219,58 +219,41 @@ ggplot(nuts3.sf) +
     xlim = c(2377294, 7453440),
     ylim = c(1313597, 5628510)
   ) +
-  labs(
-    title = "Population density in 2018",
-    subtitle = "NUTS-3 level",
-    caption = paste0(
-      "Source: Eurostat, ", gisco_attributions(),
-      "\nBased on Milos Popovic: https://milospopovic.net/how-to-make-choropleth-map-in-r/"
-    )
-  ) +
+  # Legends
   scale_fill_manual(
-    name = "people per sq. kilometer",
-    values = pal,
-    labels = labs_plot,
-    drop = FALSE,
-    guide = guide_legend(
-      direction = "horizontal",
-      keyheight = 0.5,
-      keywidth = 2.5,
-      title.position = "top",
-      title.hjust = 0.5,
-      label.hjust = .5,
-      nrow = 1,
-      byrow = TRUE,
-      reverse = FALSE,
-      label.position = "bottom"
-    )
+    values = pal, labels = labs_plot,
+    drop = FALSE, guide = guide_legend(direction = "horizontal", nrow = 1)
   ) +
+  # Theming
   theme_void() +
   # Theme
   theme(
     plot.title = element_text(
-      size = 20, color = pal[length(pal) - 1],
+      color = rev(pal)[2], size = rel(1.5),
       hjust = 0.5, vjust = -6
     ),
     plot.subtitle = element_text(
-      size = 14,
-      color = pal[length(pal) - 1],
+      color = rev(pal)[2], size = rel(1.25),
       hjust = 0.5, vjust = -10, face = "bold"
     ),
-    plot.caption = element_text(
-      size = 9, color = "grey60",
-      hjust = 0.5, vjust = 0,
-      margin = margin(t = 5, b = 10)
-    ),
-    legend.text = element_text(
-      size = 10,
-      color = "grey20"
-    ),
-    legend.title = element_text(
-      size = 11,
-      color = "grey20"
-    ),
-    legend.position = "bottom"
+    plot.caption = element_text(color = "grey60", hjust = 0.5, vjust = 0),
+    legend.text = element_text(color = "grey20", hjust = .5),
+    legend.title = element_text(color = "grey20", hjust = .5),
+    legend.position = "bottom",
+    legend.title.position = "top",
+    legend.text.position = "bottom",
+    legend.key.height = unit(.5, "line"),
+    legend.key.width = unit(2.5, "line")
+  ) +
+  # Annotate and labs
+  labs(
+    title = "Population density in 2021",
+    subtitle = "NUTS-3 level",
+    fill = "people per sq. kilometer",
+    caption = paste0(
+      "Source: Eurostat, ", gisco_attributions(),
+      "\nBased on Milos Popovic: https://milospopovic.net/how-to-make-choropleth-map-in-r/"
+    )
   )
 ```
 
@@ -279,8 +262,8 @@ ggplot(nuts3.sf) +
 ## A note on caching
 
 Some data sets (as Local Administrative Units - LAU, or high-resolution
-files) may have a size larger than 50MB. You can use `giscoR` to create
-your own local repository at a given local directory passing the
+files) may have a size larger than 50MB. You can use **giscoR** to
+create your own local repository at a given local directory passing the
 following function:
 
 ``` r
@@ -294,18 +277,19 @@ them on your local directory.
 
 ### API data packages
 
-- `eurostat` package (<https://ropengov.github.io/eurostat/>). This is
+- **eurostat** package (<https://ropengov.github.io/eurostat/>). This is
   an API package that provides access to open data from Eurostat.
 
-### Plotting `sf` objects
+### Plotting **sf** objects
 
 Some packages recommended for visualization are:
 
-- [`tmap`](https://r-tmap.github.io/tmap/)
-- [`ggplot2`](https://github.com/tidyverse/ggplot2) +
-  [`ggspatial`](https://github.com/paleolimbot/ggspatial)
-- [`mapsf`](https://riatelab.github.io/mapsf/)
-- [`leaflet`](https://rstudio.github.io/leaflet/)
+- [**tmap**](https://r-tmap.github.io/tmap/)
+- [**ggplot2**](https://github.com/tidyverse/ggplot2) +
+  [**ggspatial**](https://github.com/paleolimbot/ggspatial) +
+  [**tidyterra**](https://dieghernan.github.io/tidyterra/)
+- [**mapsf**](https://riatelab.github.io/mapsf/)
+- [**leaflet**](https://rstudio.github.io/leaflet/)
 
 ## Contribute
 
@@ -323,7 +307,7 @@ Contributions are very welcome:
 
 To cite ‘giscoR’ in publications use:
 
-Hernangómez D (2023). *giscoR: Download Map Data from GISCO API -
+Hernangómez D (2024). *giscoR: Download Map Data from GISCO API -
 Eurostat*. <doi:10.5281/zenodo.4317946>
 <https://doi.org/10.5281/zenodo.4317946>,
 <https://ropengov.github.io/giscoR/>.
@@ -334,16 +318,13 @@ A BibTeX entry for LaTeX users is
       title = {{giscoR}: Download Map Data from GISCO API - Eurostat},
       doi = {10.5281/zenodo.4317946},
       author = {Diego Hernangómez},
-      year = {2023},
-      version = {0.4.0},
+      year = {2024},
+      version = {0.4.1},
       url = {https://ropengov.github.io/giscoR/},
       abstract = {Tools to download data from the GISCO (Geographic Information System of the Commission) Eurostat database <https://ec.europa.eu/eurostat/web/gisco>. Global and European map data available. This package is in no way officially related to or endorsed by Eurostat.},
     }
 
 ## Copyright notice
-
-*From GISCO \> Geodata \> Reference data \> Administrative Units /
-Statistical Units*
 
 > When data downloaded from this page is used in any printed or
 > electronic publication, in addition to any other provisions applicable
@@ -351,18 +332,20 @@ Statistical Units*
 > acknowledged in the legend of the map and in the introductory page of
 > the publication with the following copyright notice:
 >
-> EN: © EuroGeographics for the administrative boundaries
->
-> FR: © EuroGeographics pour les limites administratives
->
-> DE: © EuroGeographics bezüglich der Verwaltungsgrenzen
+> - EN: © EuroGeographics for the administrative boundaries
+> - FR: © EuroGeographics pour les limites administratives
+> - DE: © EuroGeographics bezüglich der Verwaltungsgrenzen
 >
 > For publications in languages other than English, French or German,
 > the translation of the copyright notice in the language of the
 > publication shall be used.
-
-If you intend to use the data commercially, please contact
-EuroGeographics for information regarding their license agreements.
+>
+> If you intend to use the data commercially, please contact
+> [EuroGeographics](https://eurogeographics.org/maps-for-europe/licensing/)
+> for information regarding their licence agreements.
+>
+> *From
+> <https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units>*
 
 ## Disclaimer
 

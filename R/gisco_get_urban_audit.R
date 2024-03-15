@@ -1,4 +1,5 @@
-#' Get GISCO greater cities and metropolitan areas `sf` polygons and points
+#' Get GISCO greater cities and metropolitan areas \CRANpkg{sf} polygons and
+#' points
 #'
 #' @description
 #' Returns polygons and points corresponding to cities, greater cities and
@@ -6,20 +7,19 @@
 #' [Urban Audit report](https://ec.europa.eu/eurostat/web/regions-and-cities)
 #' of Eurostat.
 #'
-#' @concept political
 #' @family political
 #'
-#' @return A `sf` object specified by `spatialtype`.
+#' @return A \CRANpkg{sf} object specified by `spatialtype`.
 #'
-#' @param year Release year of the file. One of "2001", "2004",
-#'   "2014", "2018" or "2020".
+#' @param year Release year of the file. One
+#'   of `r gsc_helper_year_docs("urban_audit")`.
 #'
 #' @param spatialtype Type of geometry to be returned:
-#'  * **"LB"**: Labels - `POINT` object.
-#'  * **"RG"**: Regions - `MULTIPOLYGON/POLYGON` object.
+#'  * `"LB"`: Labels - `POINT` object.
+#'  * `"RG"`: Regions - `MULTIPOLYGON/POLYGON` object.
 #'
-#' @param level Level of Urban Audit. Possible values are "CITIES", "FUA",
-#' "GREATER_CITIES" or `NULL`, that would download the full dataset.
+#' @param level Level of Urban Audit. Possible values are `"CITIES"`, `"FUA"`,
+#' `"GREATER_CITIES"` or `NULL`, that would download the full dataset.
 #'
 #' @inheritParams gisco_get_countries
 #'
@@ -46,14 +46,10 @@
 #'     geom_sf()
 #' }
 #' }
-gisco_get_urban_audit <- function(year = "2020",
-                                  epsg = "4326",
-                                  cache = TRUE,
-                                  update_cache = FALSE,
-                                  cache_dir = NULL,
-                                  verbose = FALSE,
-                                  spatialtype = "RG",
-                                  country = NULL,
+gisco_get_urban_audit <- function(year = "2020", epsg = "4326",
+                                  cache = TRUE, update_cache = FALSE,
+                                  cache_dir = NULL, verbose = FALSE,
+                                  spatialtype = "RG", country = NULL,
                                   level = NULL) {
   ext <- "geojson"
 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/gisco_get_coastallines.R
 \name{gisco_get_coastallines}
 \alias{gisco_get_coastallines}
-\title{Get GISCO coastlines \code{sf} polygons}
+\title{Get GISCO coastlines \CRANpkg{sf} polygons}
 \source{
 \url{https://gisco-services.ec.europa.eu/distribution/v2/}
 }
@@ -18,15 +18,15 @@ gisco_get_coastallines(
 )
 }
 \arguments{
-\item{year}{Release year. One of "2006", "2010", "2013" or "2016"}
+\item{year}{Release year. One of \code{"2006"}, \code{"2010"}, \code{"2013"} or \code{"2016"}.}
 
 \item{epsg}{projection of the map: 4-digit \href{https://epsg.io/}{EPSG code}.
 One of:
 \itemize{
-\item "4258": ETRS89
-\item "4326": WGS84
-\item "3035": ETRS89 / ETRS-LAEA
-\item "3857": Pseudo-Mercator
+\item \code{"4258"}: ETRS89
+\item \code{"4326"}: WGS84
+\item \code{"3035"}: ETRS89 / ETRS-LAEA
+\item \code{"3857"}: Pseudo-Mercator
 }}
 
 \item{cache}{A logical whether to do caching. Default is \code{TRUE}. See
@@ -34,7 +34,7 @@ One of:
 
 \item{update_cache}{A logical whether to update cache. Default is \code{FALSE}.
 When set to \code{TRUE} it would force a fresh download of the source
-.geojson file.}
+\code{.geojson} file.}
 
 \item{cache_dir}{A path to a cache directory. See \strong{About caching}.}
 
@@ -43,15 +43,15 @@ default is \code{FALSE}.}
 
 \item{resolution}{Resolution of the geospatial data. One of
 \itemize{
-\item "60": 1:60million
-\item "20": 1:20million
-\item "10": 1:10million
-\item "03": 1:3million
-\item "01": 1:1million
+\item \code{"60"}: 1:60million
+\item \code{"20"}: 1:20million
+\item \code{"10"}: 1:10million
+\item \code{"03"}: 1:3million
+\item \code{"01"}: 1:1million
 }}
 }
 \value{
-A \code{sf} \code{POLYGON} object.
+A \CRANpkg{sf} \code{POLYGON} object.
 }
 \description{
 Downloads worldwide coastlines
@@ -66,7 +66,7 @@ Sometimes cached files may be corrupt. On that case, try re-downloading
 the data setting \code{update_cache = TRUE}.
 
 If you experience any problem on download, try to download the
-corresponding .geojson file by any other method and save it on your
+corresponding \code{.geojson} file by any other method and save it on your
 \code{cache_dir}. Use the option \code{verbose = TRUE} for debugging the API query.
 
 For a complete list of files available check \link{gisco_db}.
@@ -86,7 +86,10 @@ ggplot(coast) +
     ylim = c(4, 30)
   ) +
   theme_minimal() +
-  theme(panel.background = element_rect(fill = "#C7E7FB", color = "black"))
+  theme(
+    panel.background = element_rect(fill = "#C7E7FB", color = NA),
+    panel.border = element_rect(colour = "black", fill = NA)
+  )
 \dontshow{\}) # examplesIf}
 }
 \seealso{

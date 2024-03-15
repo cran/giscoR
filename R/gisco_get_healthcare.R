@@ -1,18 +1,23 @@
-#' Get locations of healthcare services in Europe.
+#' Get locations of healthcare services in Europe
 #'
-#' @concept infrastructure
 #' @family infrastructure
 #'
 #' @description
 #' The dataset contains information on main healthcare services considered to
 #' be 'hospitals' by Member States.
 #'
-#' @return A `POINT` object.
+#' @return A `POINT` \CRANpkg{sf} object.
 #'
 #' @author dieghernan, <https://github.com/dieghernan/>
 #'
 #' @source
-#' <https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/healthcare-services>
+#'
+#' ```{r, echo=FALSE, results='asis'}
+#'
+#' cat(paste0("<https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data",
+#'       "/healthcare-services>"))
+#'
+#' ```
 #'
 #' @inheritParams gisco_get_countries
 #'
@@ -30,10 +35,8 @@
 #' health_BEL
 #' }
 #' @export
-gisco_get_healthcare <- function(cache = TRUE,
-                                 update_cache = FALSE,
-                                 cache_dir = NULL,
-                                 verbose = FALSE,
+gisco_get_healthcare <- function(cache = TRUE, update_cache = FALSE,
+                                 cache_dir = NULL, verbose = FALSE,
                                  country = NULL) {
   # Given vars
   epsg <- "4326"

@@ -25,11 +25,11 @@ A \code{POLYGON} data frame (resolution: 1:20million, EPSG:4326) object with
 }
 }
 \source{
-\href{https://gisco-services.ec.europa.eu/distribution/v2/nuts/geojson/}{NUTS_RG_20M_2016_4326.geojson}
-file.
+\href{https://gisco-services.ec.europa.eu/distribution/v2/nuts/geojson/}{NUTS_RG_20M_2016_4326.geojson} file.
 }
 \description{
-A \code{sf} object including all NUTS levels as provided by GISCO (2016 version).
+A \CRANpkg{sf} object including all NUTS levels as provided by GISCO
+(2016 version).
 }
 \details{
 \strong{MOUNT_TYPE}: Mountain typology:
@@ -79,6 +79,6 @@ Other dataset:
 \code{\link{gisco_coastallines}},
 \code{\link{gisco_countries}},
 \code{\link{gisco_countrycode}},
-\code{\link{tgs00026}}
+\code{\link{gisco_db}}
 }
 \concept{dataset}

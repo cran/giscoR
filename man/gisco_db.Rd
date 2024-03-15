@@ -14,11 +14,18 @@ GISCO API \code{datasets.json}.
 Database with the list of files that the package can load.
 }
 \details{
-This dataframe is used to check the validity of the API calls.
+This data frame is used to check the validity of the API calls.
 }
 \examples{
 
 data(gisco_db)
+}
+\seealso{
+Other dataset: 
+\code{\link{gisco_coastallines}},
+\code{\link{gisco_countries}},
+\code{\link{gisco_countrycode}},
+\code{\link{gisco_nuts}}
 }
 \concept{dataset}
 \keyword{internal}
