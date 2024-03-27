@@ -4,38 +4,33 @@
 \encoding{UTF-8}
 \name{gisco_countries}
 \alias{gisco_countries}
-\title{World countries \code{POLYGON} \CRANpkg{sf} object}
+\title{World countries \code{POLYGON} \code{\link[sf:sf]{sf}} object}
 \format{
 A \code{MULTIPOLYGON} data frame (resolution: 1:20million, EPSG:4326) object
 with 257 rows and 7 variables:
 \describe{
-\item{id}{row ID}
-\item{CNTR_NAME}{Official country name on local language}
+\item{id}{row ID.}
+\item{CNTR_NAME}{Official country name on local language.}
 \item{ISO3_CODE}{ISO 3166-1 alpha-3 code of each country, as provided by
-GISCO}
-\item{CNTR_ID}{Country ID}
-\item{NAME_ENGL}{Country name in English}
-\item{FID}{FID}
-\item{geometry}{geometry field}
+GISCO.}
+\item{CNTR_ID}{Country ID.}
+\item{NAME_ENGL}{Country name in English.}
+\item{FID}{FID.}
+\item{geometry}{geometry field.}
 }
 }
 \source{
 \href{https://gisco-services.ec.europa.eu/distribution/v2/countries/geojson/}{CNTR_RG_20M_2016_4326.geojson} file.
 }
 \description{
-A \CRANpkg{sf} object including all countries as provided by
+A \code{\link[sf:sf]{sf}} object including all countries as provided by
 GISCO (2016 version).
 }
 \examples{
 
-cntry <- gisco_countries
-GBR <- subset(cntry, ISO3_CODE == "GBR")
+data("gisco_countries")
+head(gisco_countries)
 
-library(ggplot2)
-
-ggplot(GBR) +
-  geom_sf(color = "red3", fill = "blue4") +
-  theme_void()
 }
 \seealso{
 \code{\link[=gisco_get_countries]{gisco_get_countries()}}

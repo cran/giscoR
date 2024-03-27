@@ -5,42 +5,23 @@
 \alias{gisco_coastallines}
 \title{World coastal lines \code{POLYGON} object}
 \format{
-A \code{POLYGON} \CRANpkg{sf} object (resolution: 1:20million, EPSG:4326) with
-3 variables:
+A \code{POLYGON} \code{\link[sf:sf]{sf}} object (resolution: 1:20million, EPSG:4326)
+with 3 variables:
 \describe{
-\item{COAS_ID}{Coast ID}
-\item{FID}{FID}
-\item{geometry}{geometry field}
+\item{COAS_ID}{Coast ID.}
+\item{FID}{FID.}
+\item{geometry}{geometry field.}
 }
 }
 \source{
 \href{https://gisco-services.ec.europa.eu/distribution/v2/coas/geojson/}{COAS_RG_20M_2016_4326.geojson} file.
 }
 \description{
-A \CRANpkg{sf} object as provided by GISCO (2016 version).
+A \code{\link[sf:sf]{sf}} object as provided by GISCO (2016 version).
 }
 \examples{
-
-coasts <- gisco_coastallines
-
-library(ggplot2)
-
-ggplot(coasts) +
-  geom_sf(color = "blue", fill = "blue", alpha = 0.2) +
-  # Zoom on Oceania
-  coord_sf(
-    xlim = c(96, 179),
-    ylim = c(-51, 11)
-  ) +
-  theme_minimal() +
-  theme(
-    plot.background = element_rect(
-      fill = "black",
-      color = "black"
-    ),
-    panel.grid = element_blank(),
-    axis.text = element_text(colour = "grey90")
-  )
+data("gisco_coastallines")
+head(gisco_coastallines)
 }
 \seealso{
 \code{\link[=gisco_get_coastallines]{gisco_get_coastallines()}}

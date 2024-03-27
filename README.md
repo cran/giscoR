@@ -151,9 +151,9 @@ ggplot(ITA) +
 ### Thematic maps
 
 An example of a thematic map plotted with the **ggplot2** package. The
-information is extracted via the **eurostat** package. We would follow
-the fantastic approach presented by [Milos
-Popovic](https://milospopovic.net/) on [this
+information is extracted via the **eurostat** package ([Lahti et al.
+2017](#ref-RJ-2017-019)). We would follow the fantastic approach
+presented by [Milos Popovic](https://milospopovic.net/) on [this
 post](https://milospopovic.net/how-to-make-choropleth-map-in-r/):
 
 We start by extracting the corresponding geographic data:
@@ -199,18 +199,22 @@ nuts3_sf <- nuts3 %>%
 # Breaks and labels
 
 br <- c(0, 25, 50, 100, 200, 500, 1000, 2500, 5000, 10000, 30000)
+labs <- prettyNum(br[-1], big.mark = ",")
 
+# Label function to be used in the plot, mainly for NAs
+labeller_plot <- function(x) {
+  ifelse(is.na(x), "No Data", x)
+}
 nuts3_sf <- nuts3_sf %>%
-  mutate(values_cut = cut(values, br, dig.lab = 5))
+  # Cut with labels
+  mutate(values_cut = cut(values, br, labels = labs))
 
-labs_plot <- prettyNum(br[-1], big.mark = ",")
 
 # Palette
-pal <- hcl.colors(length(br) - 1, "Lajolla")
+pal <- hcl.colors(length(labs), "Lajolla")
 
 
 # Plot
-
 ggplot(nuts3_sf) +
   geom_sf(aes(fill = values_cut), linewidth = 0, color = NA, alpha = 0.9) +
   geom_sf(data = country_lines, col = "black", linewidth = 0.1) +
@@ -221,7 +225,9 @@ ggplot(nuts3_sf) +
   ) +
   # Legends
   scale_fill_manual(
-    values = pal, labels = labs_plot,
+    values = pal,
+    # Label for NA
+    labels = labeller_plot,
     drop = FALSE, guide = guide_legend(direction = "horizontal", nrow = 1)
   ) +
   # Theming
@@ -252,7 +258,8 @@ ggplot(nuts3_sf) +
     fill = "people per sq. kilometer",
     caption = paste0(
       "Source: Eurostat, ", gisco_attributions(),
-      "\nBased on Milos Popovic: https://milospopovic.net/how-to-make-choropleth-map-in-r/"
+      "\nBased on Milos Popovic: ",
+      "https://milospopovic.net/how-to-make-choropleth-map-in-r/"
     )
   )
 ```
@@ -277,8 +284,8 @@ them on your local directory.
 
 ### API data packages
 
-- **eurostat** package (<https://ropengov.github.io/eurostat/>). This is
-  an API package that provides access to open data from Eurostat.
+- **eurostat** ([Lahti et al. 2017](#ref-RJ-2017-019)): This is an API
+  package that provides access to open data from Eurostat.
 
 ### Plotting **sf** objects
 
@@ -319,7 +326,7 @@ A BibTeX entry for LaTeX users is
       doi = {10.5281/zenodo.4317946},
       author = {Diego Hernangómez},
       year = {2024},
-      version = {0.4.1},
+      version = {0.4.2},
       url = {https://ropengov.github.io/giscoR/},
       abstract = {Tools to download data from the GISCO (Geographic Information System of the Commission) Eurostat database <https://ec.europa.eu/eurostat/web/gisco>. Global and European map data available. This package is in no way officially related to or endorsed by Eurostat.},
     }
@@ -332,9 +339,9 @@ A BibTeX entry for LaTeX users is
 > acknowledged in the legend of the map and in the introductory page of
 > the publication with the following copyright notice:
 >
-> - EN: © EuroGeographics for the administrative boundaries
-> - FR: © EuroGeographics pour les limites administratives
-> - DE: © EuroGeographics bezüglich der Verwaltungsgrenzen
+> - EN: © EuroGeographics for the administrative boundaries.
+> - FR: © EuroGeographics pour les limites administratives.
+> - DE: © EuroGeographics bezüglich der Verwaltungsgrenzen.
 >
 > For publications in languages other than English, French or German,
 > the translation of the copyright notice in the language of the
@@ -344,9 +351,25 @@ A BibTeX entry for LaTeX users is
 > [EuroGeographics](https://eurogeographics.org/maps-for-europe/licensing/)
 > for information regarding their licence agreements.
 >
-> *From
-> <https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units>*
+> *From [GISCO
+> Web](https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units)*
 
 ## Disclaimer
 
 This package is in no way officially related to or endorsed by Eurostat.
+
+## References
+
+<div id="refs" class="references csl-bib-body hanging-indent"
+entry-spacing="0">
+
+<div id="ref-RJ-2017-019" class="csl-entry">
+
+Lahti, Leo, Janne Huovari, Markus Kainu, and Przemysław Biecek. 2017.
+“<span class="nocase">Retrieval and Analysis of Eurostat Open Data with
+the eurostat Package</span>.” *The R Journal* 9 (1): 385–92.
+<https://doi.org/10.32614/RJ-2017-019>.
+
+</div>
+
+</div>

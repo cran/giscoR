@@ -1,3 +1,8 @@
+# giscoR 0.4.2
+
+-   Update of docs to avoid warnings on **CRAN** (#81).
+-   Rebuild datasets.
+
 # giscoR 0.4.1
 
 -   Improve documentation, stating where the parameters `country` and `region`
