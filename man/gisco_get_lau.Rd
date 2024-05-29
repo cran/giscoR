@@ -17,7 +17,7 @@ gisco_get_communes(
 )
 
 gisco_get_lau(
-  year = "2016",
+  year = "2021",
   epsg = "4326",
   cache = TRUE,
   update_cache = FALSE,
@@ -31,7 +31,7 @@ gisco_get_lau(
 \item{year}{Release year of the file:
 \itemize{
 \item For \code{gisco_get_communes()} one of \code{"2001"}, \code{"2004"}, \code{"2006"}, \code{"2008"}, \code{"2010"}, \code{"2013"} or \code{"2016"}.
-\item For \code{gisco_get_lau()} one of \code{"2011"}, \code{"2012"}, \code{"2013"}, \code{"2014"}, \code{"2015"}, \code{"2016"}, \code{"2017"}, \code{"2018"}, \code{"2019"} or \code{"2020"}.
+\item For \code{gisco_get_lau()} one of \code{"2011"}, \code{"2012"}, \code{"2013"}, \code{"2014"}, \code{"2015"}, \code{"2016"}, \code{"2017"}, \code{"2018"}, \code{"2019"}, \code{"2020"} or \code{"2021"}.
 }}
 
 \item{epsg}{projection of the map: 4-digit \href{https://epsg.io/}{EPSG code}.
@@ -69,7 +69,7 @@ when \code{spatialtype} is \code{"BN"} or \code{"RG"}.}
 
 \item{country}{Optional. A character vector of country codes. It could be
 either a vector of country names, a vector of ISO3 country codes or a
-vector of Eurostat country codes. Mixed types (as \code{c("Turkey","US","FRA")})
+vector of Eurostat country codes. Mixed types (as \code{c("Italy","ES","FRA")})
 would not work. See also \code{\link[countrycode:countrycode]{countrycode::countrycode()}}.}
 
 \item{gisco_id}{Optional. A character vector of GISCO_ID LAU values.}

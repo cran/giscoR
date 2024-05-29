@@ -8,7 +8,7 @@
 }
 \usage{
 gisco_get_urban_audit(
-  year = "2020",
+  year = "2021",
   epsg = "4326",
   cache = TRUE,
   update_cache = FALSE,
@@ -21,7 +21,7 @@ gisco_get_urban_audit(
 }
 \arguments{
 \item{year}{Release year of the file. One
-of \code{"2001"}, \code{"2004"}, \code{"2014"}, \code{"2018"} or \code{"2020"}.}
+of \code{"2001"}, \code{"2004"}, \code{"2014"}, \code{"2018"}, \code{"2020"} or \code{"2021"}.}
 
 \item{epsg}{projection of the map: 4-digit \href{https://epsg.io/}{EPSG code}.
 One of:
@@ -52,7 +52,7 @@ default is \code{FALSE}.}
 
 \item{country}{Optional. A character vector of country codes. It could be
 either a vector of country names, a vector of ISO3 country codes or a
-vector of Eurostat country codes. Mixed types (as \code{c("Turkey","US","FRA")})
+vector of Eurostat country codes. Mixed types (as \code{c("Italy","ES","FRA")})
 would not work. See also \code{\link[countrycode:countrycode]{countrycode::countrycode()}}.}
 
 \item{level}{Level of Urban Audit. Possible values are \code{"CITIES"}, \code{"FUA"},

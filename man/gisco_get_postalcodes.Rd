@@ -4,7 +4,7 @@
 \alias{gisco_get_postalcodes}
 \title{Get postal code points from GISCO}
 \source{
-\url{https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/postal-codes}
+\url{https://ec.europa.eu/eurostat/web/gisco/geodata//administrative-units/postal-codes}.
 }
 \usage{
 gisco_get_postalcodes(
@@ -20,7 +20,7 @@ gisco_get_postalcodes(
 
 \item{country}{Optional. A character vector of country codes. It could be
 either a vector of country names, a vector of ISO3 country codes or a
-vector of Eurostat country codes. Mixed types (as \code{c("Turkey","US","FRA")})
+vector of Eurostat country codes. Mixed types (as \code{c("Italy","ES","FRA")})
 would not work. See also \code{\link[countrycode:countrycode]{countrycode::countrycode()}}.}
 
 \item{cache_dir}{A path to a cache directory. See \strong{About caching}.}
@@ -50,8 +50,7 @@ The dataset is released under the CC-BY-SA-4.0 licence and requires the
 following attribution whenever used:
 
 \emph{(c) European Union - GISCO, 2021, postal code point dataset, Licence
-CC-BY-SA 4.0 available at
-\url{https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data}}
+CC-BY-SA 4.0 available at \url{https://ec.europa.eu/eurostat/web/gisco/geodata//administrative-units/postal-codes}}.
 
 Shapefiles provided in ETRS89 (\href{https://epsg.io/4258}{EPSG:4258}).
 }
