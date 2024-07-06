@@ -1,3 +1,9 @@
+# giscoR 0.5.1
+
+-   Use **CRAN** DOI: <https://doi.org/10.32614/CRAN.package.giscoR>.
+-   `gisco_get_education()`: Fix API entry points.
+-   Review failing examples.
+
 # giscoR 0.5.0
 
 -   New functions:

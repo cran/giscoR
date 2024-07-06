@@ -108,7 +108,7 @@ matching) for all parameters of each endpoint.
 \details{
 Brief description of the API endpoints (source \href{https://gisco-services.ec.europa.eu/addressapi/docs/screen/endpoints}{GISCO Address API \> Endpoints}:\tabular{ll}{
    \strong{Endpoint} \tab \strong{Description} \cr
-   \verb{/countries} \tab Returns all country codes that are compatible with the address API. Check the coverage map for available countries and see \href{https://publications.europa.eu/code/en/en-5000500.htm}{here for a list of official country codes}. \cr
+   \verb{/countries} \tab Returns all country codes that are compatible with the address API. Check the coverage map for available countries and see \href{https://style-guide.europa.eu/en/content/-/isg/topic?identifier=annex-a5-list-countries-territories-currencies}{here for a list of official country codes}. \cr
    \verb{/provinces} \tab Returns all provinces within the specified country. Can also be used to get the province of a specified city. \cr
    \verb{/cities} \tab Returns all cities within a specified province or country. \cr
    \verb{/roads} \tab Returns all roads or streets within a specified city. \cr
@@ -140,35 +140,24 @@ The resulting object may present the following variables:\tabular{ll}{
 \examples{
 \dontshow{if (gisco_check_access()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 \donttest{
-library(dplyr)
-
 # Cities in a region
 
-gisco_addressapi_cities(country = "PT", province = "LISBOA") \%>\%
-  as_tibble()
-
+gisco_addressapi_cities(country = "PT", province = "LISBOA")
 
 
 # Geocode and reverse geocode with sf objects
-library(ggplot2)
-
 # Structured search
-
 struct <- gisco_addressapi_search(
   country = "ES", city = "BARCELONA",
   road = "GRACIA"
 )
 
-struct \%>\%
-  ggplot() +
-  geom_sf(aes(color = PC)) +
-  labs(color = "POSTAL CODES")
+struct
 
 # Reverse geocoding
-
 reverse <- gisco_addressapi_reverse(x = struct$X[1], y = struct$Y[1])
 
-glimpse(reverse)
+reverse
 }
 \dontshow{\}) # examplesIf}
 }
