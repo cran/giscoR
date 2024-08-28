@@ -1,7 +1,7 @@
 Type: Package
 Package: giscoR
 Title: Download Map Data from GISCO API - Eurostat
-Version: 0.5.1
+Version: 0.6.0
 Authors@R: c(
     person("Diego", "Hernangómez", , "diego.hernangomezherrero@gmail.com", role = c("aut", "cre", "cph"),
            comment = c(ORCID = "0000-0001-8457-4658", affiliation = "rOpenGov")),
@@ -39,7 +39,7 @@ X-schema.org-isPartOf: http://ropengov.org/
 X-schema.org-keywords: ropengov, r, spatial, api-wrapper, rstats,
         r-package, eurostat, gisco, thematic-maps, eurostat-data
 NeedsCompilation: no
-Packaged: 2024-07-06 08:08:43 UTC; diego
+Packaged: 2024-08-28 11:29:02 UTC; diego
 Author: Diego Hernangómez [aut, cre, cph]
     (<https://orcid.org/0000-0001-8457-4658>, rOpenGov),
   EuroGeographics [cph] (for the administrative boundaries.),
@@ -47,4 +47,4 @@ Author: Diego Hernangómez [aut, cre, cph]
     for the gisco_countrycode dataset.)
 Maintainer: Diego Hernangómez <diego.hernangomezherrero@gmail.com>
 Repository: CRAN
-Date/Publication: 2024-07-06 16:22:02 UTC
+Date/Publication: 2024-08-28 13:40:23 UTC
