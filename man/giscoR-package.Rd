@@ -20,12 +20,11 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Diego Hernangómez \email{diego.hernangomezherrero@gmail.com} (\href{https://orcid.org/0000-0001-8457-4658}{ORCID}) (rOpenGov) [copyright holder]
+\strong{Maintainer}: Diego Hernangómez \email{diego.hernangomezherrero@gmail.com} (\href{https://orcid.org/0000-0001-8457-4658}{ORCID}) [copyright holder]
 
 Other contributors:
 \itemize{
-  \item EuroGeographics (for the administrative boundaries.) [copyright holder]
-  \item Vincent Arel-Bundock (\href{https://orcid.org/0000-0003-2042-7063}{ORCID}) (for the gisco_countrycode dataset.) [copyright holder]
+  \item EuroGeographics [copyright holder]
 }
 
 }
