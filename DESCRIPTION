@@ -1,10 +1,12 @@
 Type: Package
 Package: giscoR
 Title: Download Map Data from GISCO API - Eurostat
-Version: 0.6.1
+Version: 1.0.0
 Authors@R: c(
     person("Diego", "Hernangómez", , "diego.hernangomezherrero@gmail.com", role = c("aut", "cre", "cph"),
            comment = c(ORCID = "0000-0001-8457-4658")),
+    person("Eurostat", role = "cph",
+           comment = c(ROR = "033d3q980")),
     person("EuroGeographics", role = "cph")
   )
 Description: Tools to download data from the GISCO (Geographic Information
@@ -16,31 +18,34 @@ License: GPL-3
 URL: https://ropengov.github.io/giscoR/,
         https://github.com/rOpenGov/giscoR
 BugReports: https://github.com/rOpenGov/giscoR/issues
-Depends: R (>= 3.6.0)
-Imports: countrycode (>= 1.2.0), geojsonsf (>= 2.0.0), jsonlite,
-        rappdirs (>= 0.3.0), sf (>= 0.9.0), utils
-Suggests: dplyr, eurostat, ggplot2 (>= 3.5.0), httr2, knitr, lwgeom (>=
+Depends: R (>= 4.1)
+Imports: cli, countrycode (>= 1.2.0), httr2, jsonlite, lifecycle,
+        rappdirs (>= 0.3.0), sf (>= 1.0.0), tibble, utils
+Suggests: dplyr, eurostat, ggplot2 (>= 3.5.0), knitr, lwgeom (>=
         0.2-2), rmarkdown, testthat (>= 3.0.0)
 VignetteBuilder: knitr
 Config/Needs/website: ropengov/rogtemplate, ragg, reactable, styler,
         devtools, remotes, geometries, rapidjsonr, sfheaders, jsonify
 Config/testthat/edition: 3
 Config/testthat/parallel: true
-Copyright: General Copyright © European Union, 1995 - today. See file
-        COPYRIGHTS for specific provisions.
+Copyright: Eurostat's general copyright notice and licence policy
+        applies (see file COPYRIGHTS). Moreover, there are specific
+        rules that apply to administrative and statistical data, see
+        <https://ec.europa.eu/eurostat/web/gisco/geodata>.
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 X-schema.org-applicationCategory: cartography
 X-schema.org-isPartOf: http://ropengov.org/
 X-schema.org-keywords: ropengov, r, spatial, api-wrapper, rstats,
         r-package, eurostat, gisco, thematic-maps, eurostat-data, cran,
         ggplot2, gis, cran-r
 NeedsCompilation: no
-Packaged: 2025-01-27 19:22:29 UTC; diego
-Author: Diego Hernangómez [aut, cre, cph]
-    (<https://orcid.org/0000-0001-8457-4658>),
+Packaged: 2025-12-09 18:26:14 UTC; diego
+Author: Diego Hernangómez [aut, cre, cph] (ORCID:
+    <https://orcid.org/0000-0001-8457-4658>),
+  Eurostat [cph] (ROR: <https://ror.org/033d3q980>),
   EuroGeographics [cph]
 Maintainer: Diego Hernangómez <diego.hernangomezherrero@gmail.com>
 Repository: CRAN
-Date/Publication: 2025-01-27 20:00:02 UTC
+Date/Publication: 2025-12-10 07:40:02 UTC
