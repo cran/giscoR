@@ -13,7 +13,11 @@ convert_country_code <- function(names, out = "eurostat") {
   # Vectorize
   outnames <- lapply(names, function(x) {
     if (
-      any(grepl("kosovo", tolower(x)), "xk" == tolower(x), "xkx" == tolower(x))
+      any(
+        grepl("kosovo", tolower(x), fixed = TRUE),
+        "xk" == tolower(x),
+        "xkx" == tolower(x)
+      )
     ) {
       code <- switch(out,
         "eurostat" = "XK",
@@ -32,9 +36,10 @@ convert_country_code <- function(names, out = "eurostat") {
     } else {
       cli::cli_abort(
         paste0(
-          "Invalid country name {.str {x}} ",
+          "Invalid country name {.str {x}}. ",
           "Try a vector of names or ISO3/Eurostat codes"
-        )
+        ),
+        call = NULL
       )
     }
     outnames

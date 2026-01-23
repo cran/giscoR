@@ -64,7 +64,8 @@ get_url_db <- function(
         fn,
         "} are ",
         "{.str {years}}."
-      )
+      ),
+      call = NULL
     )
   }
 
@@ -88,7 +89,8 @@ get_url_db <- function(
         "No results for {.fn {fn}} with params:",
         val,
         i = "Check available combinations in {.fn giscoR::gisco_get_cached_db}."
-      )
+      ),
+      call = NULL
     )
   }
 
@@ -134,7 +136,7 @@ download_url <- function(
 
   # Create destfile and clean
   file_local <- file.path(cache_dir, name)
-  file_local <- gsub("//", "/", file_local)
+  file_local <- gsub("//", "/", file_local, fixed = TRUE)
 
   msg <- paste0("Cache dir is {.path ", cache_dir, "}.")
   make_msg("info", verbose, msg)
@@ -235,7 +237,7 @@ download_url <- function(
     cli::cli_alert("Returning {.val NULL}")
     return(NULL)
   }
-  msg <- paste0("Download succesful on {.file ", file_local, "}.")
+  msg <- paste0("Download successful on {.file ", file_local, "}.")
   make_msg("success", verbose, msg)
 
   file_local

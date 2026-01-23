@@ -2,8 +2,8 @@
 #'
 #' @description
 #' Functions to interact with the [GISCO Address
-#' API](https://gisco-services.ec.europa.eu/addressapi/docs/screen/home), that
-#' allows to carry out both geocoding and reverse geocoding using a pan-european
+#' API](https://gisco-services.ec.europa.eu/addressapi/docs/screen/home), which
+#' allows for both geocoding and reverse geocoding using a pan-European
 #' address database.
 #'
 #' Each endpoint available is implemented through a specific function, see
@@ -267,12 +267,12 @@ gisco_address_api_copyright <- function(verbose = FALSE) {
 
 #' Helper function to prepare and call the Address API
 #'
-#' @param custom_query A named list with the query parameters.
+#' @param custom_query A named list with the query arguments.
 #' @param apiurl The API endpoint URL.
 #' @param verbose Logical. Whether to print verbose output.
 #'
 #' @returns
-#' A `sf` object or `tibble`.
+#' A `sf` object or tibble.
 #'
 #' @noRd
 call_address_api <- function(custom_query, apiurl, verbose = FALSE) {

@@ -1,3 +1,11 @@
+# giscoR 1.0.1
+
+-   Fix a bug that overwrites the internal data base on a new session with the
+    cached version. Now the cache should be persistent.
+-   Update `?gisco_db`.
+-   `gisco_get_urban_audit()` and `gisco_get_unit_urban_audit()`: Default year
+    changed to the latest available: 2024.
+
 # giscoR 1.0.0
 
 This major release introduces a full overhaul of the codebase and test suite.
@@ -18,7 +26,7 @@ by refreshing the cached database without waiting for a new version of
 
 We have transitioned from `rappdirs::user_config_dir()` to `tools::R_user_dir()`
 for managing your persistent cache directory. If you are a heavy **giscoR** user
-and already have a cache directory in place, you’ll receive a one-time friendly
+and already have a cache directory in place, you'll receive a one-time friendly
 message informing you about this migration. Consider it a warm welcome to
 **giscoR** 1.0.0 😉.
 
@@ -26,7 +34,7 @@ The package now requires **R ≥ 4.1**, and dependency updates improve both
 performance and maintainability. All functions return tidy objects (tibbles or
 `sf` objects with tibble data).
 
-Dataset subsetting is now performed at read time using GDAL’s query capabilities
+Dataset subsetting is now performed at read time using GDAL's query capabilities
 (`sf::read_sf()`), improving performance and reducing file size. The
 **geojsonsf** dependency is no longer required.
 
@@ -105,7 +113,7 @@ We updated all bundled datasets to their latest versions and added new ones:
 >
 > Please use the updated datasets or, preferably, retrieve them via the
 > corresponding functions such as `gisco_get_countries()` with default
-> parameters.
+> arguments.
 
 ## Deprecations
 

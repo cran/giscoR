@@ -11,10 +11,10 @@
 #' find your cached path or use [gisco_detect_cache_dir()].
 #'
 #' @inheritParams gisco_get_nuts
-#' @param cache_dir A path to a cache directory. On missing value the function
+#' @param cache_dir A path to a cache directory. On `NULL` the function
 #'   would store the cached files on a temporary dir (See [base::tempdir()]).
 #' @param install If `TRUE`, will install the key in your local machine for
-#'   use in future sessions.  Defaults to `FALSE.` If `cache_dir` is `FALSE`
+#'   use in future sessions. Defaults to `FALSE`. If `cache_dir` is `FALSE`
 #'   this argument is set to `FALSE` automatically.
 #' @param overwrite If this is set to `TRUE`, it will overwrite an existing
 #'   `GISCO_CACHE_DIR` that you already have in local machine.
@@ -33,16 +33,16 @@
 #'
 #' @section Caching strategies:
 #'
-#' Some files can be read from its online source without caching using the
+#' Some files can be read from their online source without caching using the
 #' option `cache = FALSE`. Otherwise the source file would be downloaded to
 #' your computer. \CRANpkg{giscoR} implements the following caching options:
 #'
 #' - For occasional use, rely on the default [tempdir()]-based cache (no
 #'   install).
 #' - Modify the cache for a single session setting
-#'   `gisco_set_cache_dir(cache_dir = "a/path/here)`.
+#'   `gisco_set_cache_dir(cache_dir = "a/path/here")`.
 #' - For reproducible workflows, install a persistent cache with
-#'   `gisco_set_cache_dir(cache_dir = "a/path/here, install = TRUE)` that would
+#'   `gisco_set_cache_dir(cache_dir = "a/path/here", install = TRUE)` that would
 #'   be kept across **R** sessions.
 #' - For caching specific files, use the `cache_dir` argument in the
 #'   corresponding function. See example in [gisco_get_nuts()].
@@ -83,18 +83,20 @@
 #'
 #' @export
 gisco_set_cache_dir <- function(
-  cache_dir,
+  cache_dir = NULL,
   overwrite = FALSE,
   install = FALSE,
   verbose = TRUE
 ) {
+  cache_dir <- ensure_null(cache_dir)
+
   # Default if not provided
-  if (missing(cache_dir) || cache_dir == "") {
+  if (is.null(cache_dir)) {
     make_msg(
       "info",
       verbose,
       "Using a temporary cache dir (see {.fn base::tempdir}). ",
-      "Set {.arg cache_dir} to a value for store permanently."
+      "Set {.arg cache_dir} to a value to store permanently."
     )
 
     # Create a folder on tempdir
@@ -129,7 +131,7 @@ gisco_set_cache_dir <- function(
 
     giscor_file <- file.path(config_dir, "gisco_cache_dir")
 
-    if (!file.exists(giscor_file) || overwrite == TRUE) {
+    if (!file.exists(giscor_file) || overwrite) {
       # Create file if it doesn't exist
       writeLines(cache_dir, con = giscor_file)
     } else {
@@ -196,7 +198,7 @@ gisco_detect_cache_dir <- function() {
 #'
 #' @details
 #' This is an overkill function that is intended to reset your status
-#' as it you would never have installed and/or used \CRANpkg{giscoR}.
+#' as if you would never have installed and/or used \CRANpkg{giscoR}.
 #'
 #' @examples
 #'
@@ -235,10 +237,20 @@ gisco_clear_cache <- function(
   }
   # nocov end
   if (cached_data && dir.exists(data_dir)) {
+    siz <- file.size(list.files(
+      data_dir,
+      recursive = TRUE,
+      full.names = TRUE
+    ))
+    siz <- sum(siz, na.rm = TRUE)
+    class(siz) <- class(object.size("a"))
+
+    siz <- format(siz, unit = "auto")
+
     unlink(data_dir, recursive = TRUE, force = TRUE)
     if (verbose) {
       cli::cli_alert_warning(
-        "{.pkg giscoR} data deleted: {.file {data_dir}}"
+        "{.pkg giscoR} data deleted: {.file {data_dir}} ({siz})."
       )
     }
   }

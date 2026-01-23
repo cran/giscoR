@@ -11,7 +11,7 @@ Copyright:
 }
 \usage{
 gisco_get_urban_audit(
-  year = 2021,
+  year = 2024,
   epsg = 4326,
   cache = TRUE,
   update_cache = FALSE,
@@ -39,7 +39,7 @@ gisco_get_urban_audit(
 \item{cache}{logical. Whether to do caching. Default is \code{TRUE}. See
 \strong{Caching strategies} section in \code{\link[=gisco_set_cache_dir]{gisco_set_cache_dir()}}.}
 
-\item{update_cache}{logical. Should the cached file be refreshed?. Default
+\item{update_cache}{logical. Should the cached file be refreshed? Default
 is \code{FALSE}. When set to \code{TRUE} it would force a new download.}
 
 \item{cache_dir}{character string. A path to a cache directory. See
@@ -107,7 +107,7 @@ Please check the download and usage provisions on \code{\link[=gisco_attribution
 \dontshow{if (gisco_check_access()) withAutoprint(\{ # examplesIf}
 \donttest{
 
-cities <- gisco_get_urban_audit(year = 2021, level = "CITIES")
+cities <- gisco_get_urban_audit(year = 2024, level = "CITIES")
 
 if (!is.null(cities)) {
   bcn <- cities[cities$URAU_NAME == "Barcelona", ]

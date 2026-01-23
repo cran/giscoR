@@ -12,7 +12,7 @@
     Code
       get_url_db("communes", "9999", fn = "gisco_get_communes")
     Condition
-      Error in `get_url_db()`:
+      Error:
       ! Years available for `giscoR::gisco_get_communes()` are "2001", "2004", "2006", "2008", "2010", "2013", and "2016".
 
 ---
@@ -20,32 +20,12 @@
     Code
       get_url_db("communes", "2016", epsg = "1111", ext = "csv", fn = "gisco_get_communes")
     Condition
-      Error in `get_url_db()`:
+      Error:
       ! No results for `giscoR::gisco_get_communes()` with params:
       * `year` = "2016"
       * `epsg` = "1111"
       * `ext` = "csv"
       i Check available combinations in `giscoR::gisco_get_cached_db()`.
-
----
-
-    Code
-      ss <- get_url_db("communes", "2016", fn = "gisco_get_communes")
-    Message
-      ! `giscoR::gisco_get_communes()` has 25 results with params:
-      * `year` = "2016"
-      * `epsg` = "4326"
-      > Returning first value:
-      * `id_giscor` = "communes"
-      * `year` = "2016"
-      * `epsg` = "4326"
-      * `resolution` = "1"
-      * `spatialtype` = "BN"
-      * `nuts_level` = "NA"
-      * `level` = "NA"
-      * `ext` = "csv"
-      * `api_file` = "csv/COMM_BN_01M_2016_4326.csv"
-      * `api_entry` = "https://gisco-services.ec.europa.eu/distribution/v2/communes"
 
 # No connection body
 

@@ -6,7 +6,7 @@
 \title{Set your \CRANpkg{giscoR} cache dir}
 \usage{
 gisco_set_cache_dir(
-  cache_dir,
+  cache_dir = NULL,
   overwrite = FALSE,
   install = FALSE,
   verbose = TRUE
@@ -15,14 +15,14 @@ gisco_set_cache_dir(
 gisco_detect_cache_dir()
 }
 \arguments{
-\item{cache_dir}{A path to a cache directory. On missing value the function
+\item{cache_dir}{A path to a cache directory. On \code{NULL} the function
 would store the cached files on a temporary dir (See \code{\link[base:tempfile]{base::tempdir()}}).}
 
 \item{overwrite}{If this is set to \code{TRUE}, it will overwrite an existing
 \code{GISCO_CACHE_DIR} that you already have in local machine.}
 
 \item{install}{If \code{TRUE}, will install the key in your local machine for
-use in future sessions.  Defaults to \code{FALSE.} If \code{cache_dir} is \code{FALSE}
+use in future sessions. Defaults to \code{FALSE}. If \code{cache_dir} is \code{FALSE}
 this argument is set to \code{FALSE} automatically.}
 
 \item{verbose}{logical. If \code{TRUE} displays informational messages.}
@@ -58,16 +58,16 @@ migration.
 \section{Caching strategies}{
 
 
-Some files can be read from its online source without caching using the
+Some files can be read from their online source without caching using the
 option \code{cache = FALSE}. Otherwise the source file would be downloaded to
 your computer. \CRANpkg{giscoR} implements the following caching options:
 \itemize{
 \item For occasional use, rely on the default \code{\link[=tempdir]{tempdir()}}-based cache (no
 install).
 \item Modify the cache for a single session setting
-\verb{gisco_set_cache_dir(cache_dir = "a/path/here)}.
+\code{gisco_set_cache_dir(cache_dir = "a/path/here")}.
 \item For reproducible workflows, install a persistent cache with
-\verb{gisco_set_cache_dir(cache_dir = "a/path/here, install = TRUE)} that would
+\code{gisco_set_cache_dir(cache_dir = "a/path/here", install = TRUE)} that would
 be kept across \strong{R} sessions.
 \item For caching specific files, use the \code{cache_dir} argument in the
 corresponding function. See example in \code{\link[=gisco_get_nuts]{gisco_get_nuts()}}.
