@@ -41,7 +41,7 @@ cache the result due to the size. See \strong{Caching strategies} section
 in \code{\link[=gisco_set_cache_dir]{gisco_set_cache_dir()}}.}
 
 \item{update_cache}{logical. Should the cached file be refreshed? Default
-is \code{FALSE}. When set to \code{TRUE} it would force a new download.}
+is \code{FALSE}. When set to \code{TRUE} it forces a new download.}
 
 \item{cache_dir}{character string. A path to a cache directory. See
 \strong{Caching strategies} section in \code{\link[=gisco_set_cache_dir]{gisco_set_cache_dir()}}.}
@@ -74,7 +74,7 @@ levels (NUTS 1, 2 and 3 and LAU, respectively, moving from larger to smaller
 territorial units).
 
 The LAU classification is not covered by any legislative act. Geographical
-extent covers the European Union, EFTA countries, and candidate countries.
+extent covers the European Union, EFTA countries and candidate countries.
 The scale of the dataset is 1:100 000.
 
 The data contains the National Statistical agency LAU code which can be

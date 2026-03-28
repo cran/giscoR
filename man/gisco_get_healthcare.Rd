@@ -34,7 +34,7 @@ gisco_get_healthcare(
 \strong{Caching strategies} section in \code{\link[=gisco_set_cache_dir]{gisco_set_cache_dir()}}.}
 
 \item{update_cache}{logical. Should the cached file be refreshed? Default
-is \code{FALSE}. When set to \code{TRUE} it would force a new download.}
+is \code{FALSE}. When set to \code{TRUE} it forces a new download.}
 
 \item{cache_dir}{character string. A path to a cache directory. See
 \strong{Caching strategies} section in \code{\link[=gisco_set_cache_dir]{gisco_set_cache_dir()}}.}
@@ -54,8 +54,8 @@ be 'hospitals' by Member States. The definition varies slightly from country
 to country, but roughly includes the following:
 
 \emph{"'Hospitals' comprises licensed establishments primarily engaged in
-providing medical, diagnostic, and treatment services that include physician,
-nursing, and other health services to in-patients and the specialised
+providing medical, diagnostic and treatment services that include physician,
+nursing and other health services to in-patients and the specialised
 accommodation services required by inpatients."}
 }
 \details{

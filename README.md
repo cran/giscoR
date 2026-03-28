@@ -1,7 +1,8 @@
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# giscoR <a href='https://ropengov.github.io/giscoR/'><img src="man/figures/logo.png" align="right" height="139"/></a>
+<!-- README.md is generated from README.qmd. Please edit that file -->
+
+# giscoR <a href="https://ropengov.github.io/giscoR/"><img src="man/figures/logo.png" alt="giscoR website" align="right" height="139"/></a>
 
 <!-- badges: start -->
 
@@ -14,7 +15,6 @@ results](https://badges.cranchecks.info/worst/giscoR.svg)](https://cran.r-projec
 [![Downloads](https://cranlogs.r-pkg.org/badges/giscoR)](https://CRAN.R-project.org/package=giscoR)
 [![r-universe](https://ropengov.r-universe.dev/badges/giscoR)](https://ropengov.r-universe.dev/giscoR)
 [![R-CMD-check](https://github.com/rOpenGov/giscoR/actions/workflows/check-full.yaml/badge.svg)](https://github.com/rOpenGov/giscoR/actions/workflows/check-full.yaml)
-[![R-hub](https://github.com/rOpenGov/giscoR/actions/workflows/rhub.yaml/badge.svg)](https://github.com/rOpenGov/giscoR/actions/workflows/rhub.yaml)
 [![codecov](https://codecov.io/gh/ropengov/giscoR/branch/main/graph/badge.svg)](https://app.codecov.io/gh/ropengov/giscoR)
 [![CodeFactor](https://www.codefactor.io/repository/github/ropengov/giscor/badge)](https://www.codefactor.io/repository/github/ropengov/giscor)
 [![DOI](https://img.shields.io/badge/DOI-10.32614/CRAN.package.giscoR-blue)](https://doi.org/10.32614/CRAN.package.giscoR)
@@ -27,8 +27,8 @@ Active](https://www.repostatus.org/badges/latest/active.svg)](https://www.repost
 that provides a simple interface to
 [GISCO](https://ec.europa.eu/eurostat/web/gisco) data from Eurostat. It
 allows you to download and work with global and European geospatial
-datasets — such as country boundaries, NUTS regions, coastlines, and
-labels — directly in **R**.
+datasets (such as country boundaries, NUTS regions, coastlines, and
+labels) directly in **R**.
 
 ## Key features
 
@@ -36,11 +36,14 @@ labels — directly in **R**.
   units.
 - Access data at multiple resolutions: `60M`, `20M`, `10M`, `03M`,
   `01M`.
-- Choose from three projections: **EPSG 4326**, **3035**, or **3857**.
+- Choose from three projections: **EPSG:4326**, **EPSG:3035**, or
+  **EPSG:3857**.
 - Works seamlessly with **sf** objects for spatial analysis.
 - Includes **caching** for faster repeated access.
 
 ## Installation
+
+<div class="pkgdown-release">
 
 Install **giscoR** from
 [**CRAN**](https://CRAN.R-project.org/package=giscoR):
@@ -48,6 +51,13 @@ Install **giscoR** from
 ``` r
 install.packages("giscoR")
 ```
+
+</div>
+
+<div class="pkgdown-devel">
+
+Check the docs of the developing version in
+<https://ropengov.github.io/giscoR/dev/>.
 
 You can install the development version of **giscoR** with:
 
@@ -61,12 +71,17 @@ Alternatively, you can install **giscoR** via
 [r-universe](https://ropengov.r-universe.dev/giscoR):
 
 ``` r
-install.packages("giscoR", repos = c("https://ropengov.r-universe.dev", "https://cloud.r-project.org"))
+install.packages(
+  "giscoR",
+  repos = c("https://ropengov.r-universe.dev", "https://cloud.r-project.org")
+)
 ```
 
-## Quick Example
+</div>
 
-This script highlights some features of **giscoR** :
+## Quick example
+
+This script highlights some features of **giscoR**:
 
 ``` r
 library(giscoR)
@@ -94,8 +109,8 @@ glimpse(nl_all)
 #> $ EFTA_STAT <chr> "F", "F", "F", "F"
 #> $ CC_STAT   <chr> "F", "F", "F", "F"
 #> $ NAME_GERM <chr> "Niederlande", "Niederlande", "Niederlande", "Niederlande"
-#> $ geometry  <MULTIPOLYGON [°]> MULTIPOLYGON (((7.208935 53..., MULTIPOLYGON (((7.202794 53.…
 #> $ res       <chr> "60M", "20M", "10M", "03M"
+#> $ geometry  <MULTIPOLYGON [°]> MULTIPOLYGON (((7.208935 53..., MULTIPOLYGON (((7.202794 53.…
 
 # Plot with ggplot2
 
@@ -112,14 +127,14 @@ ggplot(nl_all) +
   theme_minimal()
 ```
 
-<img src="man/figures/README-resolution-map-1.png" alt="The Netherlands boundaries at different resolutions" width="100%" />
+<img src="man/figures/README-resolution-map-1.png" style="width:100.0%"
+alt="The Netherlands boundaries at different resolutions" />
 
-## Advanced Example: Thematic maps
+## Advanced example: Thematic maps
 
 This example shows a thematic map created with the **ggplot2** package.
 The data are obtained via the **eurostat** package. This follows the
-approach presented by [Milos Popovic](https://milospopovic.net/) in
-[this post](https://milospopovic.net/how-to-make-choropleth-map-in-r/).
+work of [Milos Popovic](https://milospopovic.net/).
 
 We start by extracting the corresponding geographic data:
 
@@ -154,6 +169,10 @@ We now download the data from Eurostat:
 # Use eurostat
 popdens <- get_eurostat("demo_r_d3dens") |>
   filter(TIME_PERIOD == "2021-01-01")
+#> 
+indexed 0B in  0s, 0B/s
+indexed 2.15GB in  0s, 2.15GB/s
+                                                                              
 ```
 
 Finally, we merge and manipulate the data to create the final plot:
@@ -194,27 +213,33 @@ ggplot(nuts3_sf) +
     values = pal,
     # Label for NA
     labels = labeller_plot,
-    drop = FALSE, guide = guide_legend(direction = "horizontal", nrow = 1)
+    drop = FALSE,
+    guide = guide_legend(direction = "horizontal", nrow = 1)
   ) +
   # Theming
   theme_void() +
   # Theme
   theme(
     plot.title = element_text(
-      color = rev(pal)[2], size = rel(1.5),
-      hjust = 0.5, vjust = -6
+      color = rev(pal)[2],
+      size = rel(1.5),
+      hjust = 0.5,
+      vjust = -6
     ),
     plot.subtitle = element_text(
-      color = rev(pal)[2], size = rel(1.25),
-      hjust = 0.5, vjust = -10, face = "bold"
+      color = rev(pal)[2],
+      size = rel(1.25),
+      hjust = 0.5,
+      vjust = -10,
+      face = "bold"
     ),
     plot.caption = element_text(color = "grey60", hjust = 0.5, vjust = 0),
-    legend.text = element_text(color = "grey20", hjust = .5),
-    legend.title = element_text(color = "grey20", hjust = .5),
+    legend.text = element_text(color = "grey20", hjust = 0.5),
+    legend.title = element_text(color = "grey20", hjust = 0.5),
     legend.position = "bottom",
     legend.title.position = "top",
     legend.text.position = "bottom",
-    legend.key.height = unit(.5, "line"),
+    legend.key.height = unit(0.5, "line"),
     legend.key.width = unit(2.5, "line")
   ) +
   # Annotate and labs
@@ -223,14 +248,15 @@ ggplot(nuts3_sf) +
     subtitle = "NUTS-3 level",
     fill = "people per sq. kilometer",
     caption = paste0(
-      "Source: Eurostat, ", gisco_attributions(),
-      "\nBased on Milos Popovic: ",
-      "https://milospopovic.net/how-to-make-choropleth-map-in-r/"
+      "Source: Eurostat, ",
+      gisco_attributions(),
+      "\nBased on Milos Popovic's work"
     )
   )
 ```
 
-<img src="man/figures/README-thematic-map-1.png" alt="Population density in 2021" width="100%" />
+<img src="man/figures/README-thematic-map-1.png" style="width:100.0%"
+alt="Population density in 2021" />
 
 ## Caching
 
@@ -260,7 +286,7 @@ Contributions are welcome:
 To cite ‘giscoR’ in publications use:
 
 Hernangómez D (2026). *giscoR: Download Map Data from GISCO API -
-Eurostat*. <doi:10.32614/CRAN.package.giscoR>
+Eurostat*. doi:10.32614/CRAN.package.giscoR
 <https://doi.org/10.32614/CRAN.package.giscoR>,
 <https://ropengov.github.io/giscoR/>.
 
@@ -271,25 +297,35 @@ A BibTeX entry for LaTeX users is
       doi = {10.32614/CRAN.package.giscoR},
       author = {Diego Hernangómez},
       year = {2026},
-      version = {1.0.1},
+      version = {1.1.0},
       url = {https://ropengov.github.io/giscoR/},
       abstract = {Tools to download data from the GISCO (Geographic Information System of the Commission) Eurostat database <https://ec.europa.eu/eurostat/web/gisco>. Global and European map data available. This package is in no way officially related to or endorsed by Eurostat.},
     }
 
 ## General copyright
 
-> [Eurostat’s general copyright notice and licence
-> policy](https://ec.europa.eu/eurostat/web/main/help/copyright-notice)
-> applies. Moreover, there are specific rules that apply to some of the
-> following datasets available for downloading. The download and use of
-> these data are subject to these rules being accepted. See our
-> [administrative
-> units](https://ec.europa.eu/eurostat/web/gisco/geodata/administrative-units)
-> and [statistical
-> units](https://ec.europa.eu/eurostat/web/gisco/geodata/statistical-units)
-> for more details.
->
-> Source: <https://ec.europa.eu/eurostat/web/gisco/geodata>
+<figure>
+
+<blockquote class="blockquote">
+
+[Eurostat’s general copyright notice and licence
+policy](https://ec.europa.eu/eurostat/web/main/help/copyright-notice)
+applies. Moreover, there are specific rules that apply to some of the
+following datasets available for downloading. The download and use of
+these data are subject to these rules being accepted. See our
+[administrative
+units](https://ec.europa.eu/eurostat/web/gisco/geodata/administrative-units)
+and [statistical
+units](https://ec.europa.eu/eurostat/web/gisco/geodata/statistical-units)
+for more details.
+
+</blockquote>
+
+<figcaption class="blockquote-footer">Source:
+<cite title="GISCO"><https://ec.europa.eu/eurostat/web/gisco/geodata></cite>
+</figcaption>
+
+</figure>
 
 ## Disclaimer
 

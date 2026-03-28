@@ -175,15 +175,13 @@ download_url <- function(
     max_age = 3600
   )
 
-  req <- httr2::req_timeout(req, 300)
+  req <- httr2::req_timeout(req, getOption("gisco_timeout", 300L))
   req <- httr2::req_retry(req, max_tries = 3)
   if (verbose) {
     req <- httr2::req_progress(req)
   }
 
-  test_off <- getOption("gisco_test_offline", FALSE)
-
-  if (any(!httr2::is_online(), test_off)) {
+  if (!is_online_fun()) {
     cli::cli_alert_danger("Offline")
     cli::cli_alert("Returning {.val NULL}")
     return(NULL)
@@ -205,7 +203,7 @@ download_url <- function(
   }
 
   # Testing
-  test_offline <- getOption("gisco_test_404", FALSE)
+  test_offline <- is_404()
   if (test_offline) {
     # Modify to redirect to fake url
     req <- httr2::req_url(
@@ -257,6 +255,7 @@ get_request_body <- function(url, verbose = TRUE) {
   make_msg("info", verbose, msg)
 
   req <- httr2::request(url)
+  req <- httr2::req_timeout(req, getOption("gisco_timeout", 300L))
   req <- httr2::req_error(req, is_error = function(x) {
     FALSE
   })
@@ -278,16 +277,14 @@ get_request_body <- function(url, verbose = TRUE) {
     req <- httr2::req_progress(req)
   }
 
-  test_off <- getOption("gisco_test_offline", FALSE)
-
-  if (any(!httr2::is_online(), test_off)) {
+  if (!is_online_fun()) {
     cli::cli_alert_danger("Offline")
     cli::cli_alert("Returning {.val NULL}")
     return(NULL)
   }
 
   # Testing
-  test_offline <- getOption("gisco_test_404", FALSE)
+  test_offline <- is_404()
   if (test_offline) {
     # Modify to redirect to fake url
     req <- httr2::req_url(
@@ -326,7 +323,7 @@ get_request_body <- function(url, verbose = TRUE) {
 #'
 #' The only purpose of this function is to use \CRANpkg{jsonlite} in the
 #' source package code, so it should be included in the Imports file. Otherwise
-#' CRAN would complain as it is not directly used.
+#' CRAN complains as it is not directly used.
 #'
 #' We need to import \CRANpkg{jsonlite} because the package makes heavy use of
 #' it under the hood with [httr2::resp_body_json()], but \CRANpkg{httr2} lists
@@ -343,4 +340,16 @@ for_import_jsonlite <- function() {
   local <- jsonlite::parse_json(txt)
   local <- NULL
   invisible(local)
+}
+
+#' Wrapper is_online for testing
+#' @noRd
+is_online_fun <- function(...) {
+  httr2::is_online()
+}
+
+#' Wrapper is_404 for testing
+#' @noRd
+is_404 <- function(...) {
+  FALSE
 }

@@ -30,19 +30,19 @@
 #'
 #'   This argument replaces the previous (deprecated) argument `id_giscoR`.
 #' @param recursive `r lifecycle::badge("deprecated")` `recursive` is no
-#'   longer supported; this function will never perform recursive extraction of
-#'   child `.zip` files. This is the case of "`shp.zip` inside the top-level
+#'   longer supported, and this function will never perform recursive extraction
+#'   of child `.zip` files. This is the case of "`shp.zip` inside the top-level
 #'   `.zip`, that won't be unzipped.
 #' @param ... Ignored. The argument `id_giscoR`
-#'   (`r lifecycle::badge("deprecated")`) would be captured via `...` and
-#'   re-directed to `id` with a [warning][lifecycle::deprecate_warn].
+#'   (`r lifecycle::badge("deprecated")`) is captured via `...` and redirected
+#'   to `id` with a [warning][lifecycle::deprecate_warn].
 #'
 #' @param ext Extension of the file(s) to be downloaded. Formats available are
 #' `"shp"`, `"geojson"`, `"svg"`, `"json"`, `"gdb"`. See **Details**.
 #'
 #' @details
 #' Some arguments only apply to a specific value of `"id"`. For example
-#' `"resolution"` would be ignored for values `"communes"`, `"lau"`,
+#' `"resolution"` is ignored for values `"communes"`, `"lau"`,
 #' `"urban_audit"` and `"postal_codes"`.
 #'
 #' See years available in the corresponding functions:
@@ -80,7 +80,7 @@
 #'   cache_dir = tmp, verbose = TRUE
 #' )
 #'
-#' # Message shows that file is already cached ;)
+#' # Message shows that file is already cached
 #' }
 #' # Clean
 #' unlink(tmp, force = TRUE)

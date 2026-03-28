@@ -1,5 +1,6 @@
-#' Help Documentation for giscor Package
-#' #' @description
+#' Help Documentation for giscoR package
+#'
+#' @description
 #' Internal function to get possible values from the cached `gisco_db` database.
 #'
 #' @param id character string. The `id_giscor` value to filter the database.
@@ -46,6 +47,7 @@ docs_id_years <- function(endpoint) {
   )
 
   req <- httr2::request(apiurl)
+  req <- httr2::req_timeout(req, getOption("gisco_timeout", 300L))
   req <- httr2::req_error(req, is_error = function(x) {
     FALSE
   })

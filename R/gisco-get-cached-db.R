@@ -4,23 +4,24 @@
 #' GISCO API.
 #'
 #' @family database
+#' @encoding UTF-8
 #' @export
 #' @inherit gisco_get_metadata return source
 #'
-#' @param update_cache logical. On `TRUE` the cached database would be rebuilt
+#' @param update_cache logical. On `TRUE` the cached database is rebuilt
 #'   with the most updated information of the GISCO API.
 #'
 #' @details
 #' The cached database is stored in the \CRANpkg{giscoR} cache path, see
-#' [gisco_set_cache_dir()] for details. The cached database would be used
+#' [gisco_set_cache_dir()] for details. The cached database is used
 #' in subsequent **R** sessions.
 #'
 #' On new GISCO data releases, you can access the new updated data simply by
 #' refreshing the cached database without waiting for a new version of
 #' \CRANpkg{giscoR}.
 #'
-#' A static database [gisco_db] is shipped with the package. This database would
-#' be used in case there is any problem on update.
+#' A static database [gisco_db] is shipped with the package. This database is
+#' used in case there is any problem on update.
 #'
 #'
 #' @examplesIf gisco_check_access()
@@ -203,18 +204,17 @@ scrap_api_data <- function(entry_point) {
     max_size = 1024^3 / 2,
     max_age = 3600
   )
+  req <- httr2::req_timeout(req, getOption("gisco_timeout", 300L))
   req <- httr2::req_error(req, is_error = function(x) {
     FALSE
   })
 
-  test_off <- getOption("gisco_test_offline", FALSE)
-
-  if (any(!httr2::is_online(), test_off)) {
+  if (!is_online_fun()) {
     return(NULL)
   }
 
   # Testing
-  test_offline <- getOption("gisco_test_404", FALSE)
+  test_offline <- is_404()
   if (test_offline) {
     # Modify to redirect to fake url
     req <- httr2::req_url(
@@ -247,6 +247,7 @@ scrap_api_data <- function(entry_point) {
       max_size = 1024^3 / 2,
       max_age = 3600
     )
+    req <- httr2::req_timeout(req, getOption("gisco_timeout", 300L))
     req <- httr2::req_error(req, is_error = function(x) {
       FALSE
     })

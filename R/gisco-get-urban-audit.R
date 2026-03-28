@@ -11,6 +11,7 @@
 #' please use [gisco_get_unit_urban_audit()].
 #'
 #' @family stats
+#' @encoding UTF-8
 #' @export
 #' @inheritParams gisco_get_countries
 #' @inheritSection gisco_get_countries Note
@@ -31,7 +32,7 @@
 #'   * `"LB"`: Labels - `POINT` object.
 #'
 #' @param level character string. Level of Urban Audit. Possible values `"all"`
-#'   (the default), that would download the full dataset or `"CITIES"`, `"FUA"`,
+#'   (the default), that downloads the full dataset or `"CITIES"`, `"FUA"`,
 #'   and (for versions prior to `year = 2020`) `"GREATER_CITIES"`, `"CITY"`,
 #'   `"KERN"` or `"LUZ"`.
 #' @param ext character. Extension of the file (default `"gpkg"`). One of
@@ -132,8 +133,8 @@ gisco_get_urban_audit <- function(
     return(NULL)
   }
 
-  # Improve speed using querys if country(es) are selected
-  # We construct the query and passed it to the st_read fun
+  # Improve speed using queries if country(es) are selected
+  # We construct the query and pass it to the st_read function
 
   filter_col <- get_col_name(file_local)
   if (all(!is.null(country), !is.null(filter_col))) {

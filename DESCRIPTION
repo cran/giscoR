@@ -1,7 +1,7 @@
 Type: Package
 Package: giscoR
 Title: Download Map Data from GISCO API - Eurostat
-Version: 1.0.1
+Version: 1.1.0
 Authors@R: c(
     person("Diego", "Hernangómez", , "diego.hernangomezherrero@gmail.com", role = c("aut", "cre", "cph"),
            comment = c(ORCID = "0000-0001-8457-4658")),
@@ -19,13 +19,11 @@ URL: https://ropengov.github.io/giscoR/,
         https://github.com/rOpenGov/giscoR
 BugReports: https://github.com/rOpenGov/giscoR/issues
 Depends: R (>= 4.1)
-Imports: cli, countrycode (>= 1.2.0), httr2, jsonlite, lifecycle,
-        rappdirs (>= 0.3.0), sf (>= 1.0.0), tibble, utils
-Suggests: dplyr, eurostat, ggplot2 (>= 3.5.0), knitr, lwgeom (>=
-        0.2-2), rmarkdown, testthat (>= 3.0.0)
-VignetteBuilder: knitr
-Config/Needs/website: ropengov/rogtemplate, ragg, reactable, styler,
-        devtools, remotes, geometries, rapidjsonr, sfheaders, jsonify
+Imports: cli, countrycode (>= 1.2.0), httr2 (>= 1.2.0), jsonlite,
+        lifecycle, rappdirs (>= 0.3.0), sf (>= 1.0.0), testthat (>=
+        3.0.0), tibble, tools, utils
+Suggests: dplyr, eurostat, ggplot2 (>= 3.5.0), knitr, quarto, withr
+VignetteBuilder: quarto
 Config/testthat/edition: 3
 Config/testthat/parallel: true
 Copyright: Eurostat's general copyright notice and licence policy
@@ -41,11 +39,11 @@ X-schema.org-keywords: ropengov, r, spatial, api-wrapper, rstats,
         r-package, eurostat, gisco, thematic-maps, eurostat-data, cran,
         ggplot2, gis, cran-r
 NeedsCompilation: no
-Packaged: 2026-01-22 22:38:40 UTC; diego
+Packaged: 2026-03-27 09:31:52 UTC; diego
 Author: Diego Hernangómez [aut, cre, cph] (ORCID:
     <https://orcid.org/0000-0001-8457-4658>),
   Eurostat [cph] (ROR: <https://ror.org/033d3q980>),
   EuroGeographics [cph]
 Maintainer: Diego Hernangómez <diego.hernangomezherrero@gmail.com>
 Repository: CRAN
-Date/Publication: 2026-01-23 06:40:59 UTC
+Date/Publication: 2026-03-28 06:11:06 UTC

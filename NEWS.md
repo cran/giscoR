@@ -1,3 +1,12 @@
+# giscoR 1.1.0
+
+-   Use `testthat::local_mocked_bindings()` on API error testing.
+-   Adapt vignettes to Quarto.
+-   Bump minimal **httr2** version to **1.2.0** (#126).
+-   Query timeout can be controlled with `options(gisco_timeout)` using
+    `httr2::req_timeout()`. The default value is
+    `httr2::req_timeout(..., seconds = 300)` (5 minutes) (#123).
+
 # giscoR 1.0.1
 
 -   Fix a bug that overwrites the internal data base on a new session with the
@@ -9,7 +18,7 @@
 # giscoR 1.0.0
 
 This major release introduces a full overhaul of the codebase and test suite.
-Requests now use **httr2**, and **GeoPackage** (`”gpkg”`) becomes the preferred
+Requests now use **httr2**, and **GeoPackage** (`"gpkg"`) becomes the preferred
 download format when available. Cached files are reorganized into topic-based
 subfolders for easier management.
 
@@ -48,7 +57,7 @@ We recommend reviewing the updated documentation at
 
 -   Refactor code and test suite for improved stability.
 -   Switch API requests to **httr2**.
--   Adopt GeoPackage (`”gpkg”`) as the preferred download format.
+-   Adopt GeoPackage (`"gpkg"`) as the preferred download format.
 -   Reorganize cache into topic-based subfolders.
 
 > **Note:** Previous caches must be recreated.
@@ -95,7 +104,7 @@ We renamed several functions to improve clarity and consistency:
 
 ## Argument updates
 
--   Add `ext` argument to control file format (`”gpkg”`, `”shp”`, `”geojson”`).
+-   Add `ext` argument to control file format (`"gpkg"`, `"shp"`, `"geojson"`).
 -   Update default `year` to the latest release (#105).
 
 ## Dataset updates
@@ -158,8 +167,8 @@ We updated all bundled datasets to their latest versions and added new ones:
 -   Add **jsonlite** to Imports.
 -   Update `?gisco_db`.
 -   Update defaults:
-    -   `gisco_get_lau()` → `”2021”`
-    -   `gisco_get_urban_audit()` → `”2021”`
+    -   `gisco_get_lau()` → `"2021"`
+    -   `gisco_get_urban_audit()` → `"2021"`
 -   Update documentation URLs.
 
 # giscoR 0.4.2

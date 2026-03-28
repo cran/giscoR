@@ -32,7 +32,7 @@
 #'   * `"LB"`: Labels - `POINT` object.
 #'   * `"BN"`: Boundaries - `LINESTRING` object.
 #'
-#'   **Note that** argument `country` would be only applied when
+#'   **Note that** argument `country` is only applied when
 #'   `spatialtype` is `"RG"` or `"LB"`.
 #' @param ext character. Extension of the file (default `"shp"`). One of
 #'   \Sexpr[stage=render,results=rd]{giscoR:::db_values("communes",
@@ -47,7 +47,7 @@
 #'
 #' The dataset is based on EuroBoundaryMap from
 #' [EuroGeographics](https://eurogeographics.org/). Geographical extent covers
-#' the European Union 28, EFTA countries, and candidate countries. The scale of
+#' the European Union 28, EFTA countries and candidate countries. The scale of
 #' the dataset is 1:100 000.
 #'
 #' The LAU classification is not covered by any legislative act.
@@ -118,8 +118,8 @@ gisco_get_communes <- function(
     return(NULL)
   }
 
-  # Improve speed using querys if country(es) are selected
-  # We construct the query and passed it to the st_read fun
+  # Improve speed using queries if country(es) are selected
+  # We construct the query and pass it to the st_read function
 
   filter_col <- get_col_name(file_local)
   if (all(!is.null(country), !is.null(filter_col))) {
