@@ -8,23 +8,23 @@
 gisco_attributions(lang = "en", copyright = FALSE)
 }
 \arguments{
-\item{lang}{character. Language (two-letter ISO code). See
+\item{lang}{A character value with the language (two-letter ISO code). See
 \link[countrycode:codelist]{countrycode::codelist} and \strong{Details}.}
 
-\item{copyright}{logical \code{TRUE/FALSE}. Whether to display the copyright
-notice or not on the console.}
+\item{copyright}{A logical value indicating whether to display the
+copyright notice on the console.}
 }
 \value{
 A string with the attribution to be used.
 }
 \description{
-Get the legal text to be used for administrative and statistical data
-downloaded from GISCO, see section \strong{Copyright information}.
+Get the legal text to use for administrative and statistical data
+downloaded from GISCO. See section \strong{Copyright information}.
 
-For other datasets you may abide by the \href{https://ec.europa.eu/eurostat/web/main/help/copyright-notice}{Eurostat's general copyright notice and licence policy}.
+For other datasets you may follow the \href{https://ec.europa.eu/eurostat/web/main/help/copyright-notice}{Eurostat general copyright notice and license policy}.
 }
 \details{
-Current languages supported are:
+Supported languages are:
 \itemize{
 \item \code{"en"}: English.
 \item \code{"da"}: Danish.
@@ -37,7 +37,7 @@ Current languages supported are:
 }
 
 Please consider
-\href{https://github.com/rOpenGov/giscoR/issues}{contributing} if you spot any
+\href{https://github.com/rOpenGov/giscoR/issues}{contributing} if you spot a
 mistake or want to add a new language.
 }
 \section{Copyright information}{
@@ -46,25 +46,25 @@ statistical data provided by the following functions:
 
 \strong{Administrative units}
 \itemize{
-\item \code{\link[=gisco_get_communes]{gisco_get_communes()}}
-\item \code{\link[=gisco_get_countries]{gisco_get_countries()}}
-\item \code{\link[=gisco_get_postal_codes]{gisco_get_postal_codes()}}
+\item \code{\link[=gisco_get_communes]{gisco_get_communes()}}.
+\item \code{\link[=gisco_get_countries]{gisco_get_countries()}}.
+\item \code{\link[=gisco_get_postal_codes]{gisco_get_postal_codes()}}.
 }
 
 \strong{Statistical units}
 \itemize{
-\item \code{\link[=gisco_get_census]{gisco_get_census()}}
-\item \code{\link[=gisco_get_coastal_lines]{gisco_get_coastal_lines()}}
-\item \code{\link[=gisco_get_lau]{gisco_get_lau()}}
-\item \code{\link[=gisco_get_nuts]{gisco_get_nuts()}}
-\item \code{\link[=gisco_get_urban_audit]{gisco_get_urban_audit()}}
+\item \code{\link[=gisco_get_census]{gisco_get_census()}}.
+\item \code{\link[=gisco_get_coastal_lines]{gisco_get_coastal_lines()}}.
+\item \code{\link[=gisco_get_lau]{gisco_get_lau()}}.
+\item \code{\link[=gisco_get_nuts]{gisco_get_nuts()}}.
+\item \code{\link[=gisco_get_urban_audit]{gisco_get_urban_audit()}}.
 }
-\subsection{Copyright Notice}{
+\subsection{Copyright notice}{
 
 When data downloaded from GISCO is used in any printed or electronic
 publication, in addition to any other provisions applicable to the whole
-Eurostat website, data source will have to be acknowledged in the legend of
-the map and in the introductory page of the publication with the following
+Eurostat website, the data source must be acknowledged in the legend of
+the map and on the introductory page of the publication with the following
 copyright notice:
 \itemize{
 \item EN: © EuroGeographics for the administrative boundaries.
@@ -77,7 +77,7 @@ the translation of the copyright notice in the language of the publication
 shall be used.
 
 If you intend to use the data commercially, please contact EuroGeographics
-for information regarding their licence agreements.
+for information about their license agreements.
 }
 }
 
@@ -88,7 +88,7 @@ gisco_attributions(lang = "es", copyright = TRUE)
 
 gisco_attributions(lang = "XXX")
 
-# Get list of codes from countrycodes
+# Get the list of codes from countrycode.
 library(dplyr)
 
 countrycode::codelist |>

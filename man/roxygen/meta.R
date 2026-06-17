@@ -1,10 +1,10 @@
 list(
   rd_family_title = list(
-    admin = "Other administrative units datasets: ",
-    stats = "Other statistical units datasets: ",
-    transport = "Other transport networks datasets: ",
-    services = "Other basic services datasets: ",
-    extra = "Additional utils for downloading datasets: ",
-    database = "Other database utils: "
+    admin = "Administrative unit datasets:",
+    stats = "Statistical unit datasets:",
+    transport = "Transport network datasets:",
+    services = "Basic service datasets:",
+    extra = "Single-unit and additional download utilities:",
+    database = "Database utilities:"
   )
 )

@@ -1,49 +1,41 @@
 #' Communes dataset
 #'
 #' @description
-#' This dataset shows pan European administrative boundaries down to commune
-#' level. Communes are equivalent to Local Administrative Units,
-#' see [gisco_get_lau()].
-#'
-#' @family admin
-#' @inheritParams gisco_get_countries
-#' @inherit gisco_get_countries source return
-#' @inheritSection gisco_get_countries Note
-#' @encoding UTF-8
-#' @export
-#'
-#' @seealso
+#' This dataset shows pan-European administrative boundaries down to commune
+#' level. Communes are equivalent to Local Administrative Units. See
 #' [gisco_get_lau()].
 #'
-#' See [gisco_bulk_download()] to perform a bulk download of datasets.
-#'
-#' @export
-#'
-#' @param year character string or number. Release year of the file. One of
+#' @family admin
+#' @encoding UTF-8
+#' @inheritParams gisco_get_countries
+#' @param year A character string or numeric value with the release year of the
+#'   file. One of
 #'   \Sexpr[stage=render,results=rd]{giscoR:::db_values("communes",
 #'   "year",TRUE)}.
 #' @param cache `r lifecycle::badge('deprecated')`. These functions always
-#'   cache the result due to the size. See **Caching strategies** section
+#'   cache the result because of its size. See **Caching strategies** section
 #'   in [gisco_set_cache_dir()].
 #'
-#' @param spatialtype character string. Type of geometry to be returned. Options
-#'   available are:
-#'   * `"RG"`: Regions - `MULTIPOLYGON/POLYGON` object.
-#'   * `"LB"`: Labels - `POINT` object.
-#'   * `"BN"`: Boundaries - `LINESTRING` object.
+#' @param spatialtype A character string with the type of geometry to return.
+#'   Options available are:
+#' - `"RG"`: Regions - `MULTIPOLYGON/POLYGON` object.
+#' - `"LB"`: Labels - `POINT` object.
+#' - `"BN"`: Boundaries - `LINESTRING` object.
 #'
-#'   **Note that** argument `country` is only applied when
-#'   `spatialtype` is `"RG"` or `"LB"`.
-#' @param ext character. Extension of the file (default `"shp"`). One of
+#'   Argument `country` is only applied when `spatialtype` is `"RG"` or
+#'   `"LB"`.
+#' @param ext A character value with the extension of the file (default
+#'   `"shp"`). One of
 #'   \Sexpr[stage=render,results=rd]{giscoR:::db_values("communes",
 #'   "ext",TRUE)}.
 #'
+#' @inherit gisco_get_countries return
 #' @details
 #' The Nomenclature of Territorial Units for Statistics (NUTS) and the LAU
 #' nomenclature are hierarchical classifications of statistical regions that
 #' together subdivide the EU economic territory into regions of five different
-#' levels (NUTS 1, 2 and 3 and LAU, respectively, moving from larger to smaller
-#' territorial units).
+#' levels, moving from larger to smaller territorial units: NUTS 1, 2 and 3
+#' and LAU.
 #'
 #' The dataset is based on EuroBoundaryMap from
 #' [EuroGeographics](https://eurogeographics.org/). Geographical extent covers
@@ -51,6 +43,13 @@
 #' the dataset is 1:100 000.
 #'
 #' The LAU classification is not covered by any legislative act.
+#'
+#' @inheritSection gisco_get_countries Note
+#' @inherit gisco_get_countries source
+#' @seealso
+#' [gisco_get_lau()].
+#'
+#' See [gisco_bulk_download()] to perform a bulk download of datasets.
 #'
 #' @examplesIf gisco_check_access()
 #' ire_comm <- gisco_get_communes(spatialtype = "LB", country = "Ireland")
@@ -71,6 +70,8 @@
 #'       family = "serif", face = "bold"
 #'     ))
 #' }
+#' @export
+#'
 gisco_get_communes <- function(
   year = 2016,
   epsg = 4326,
@@ -82,19 +83,11 @@ gisco_get_communes <- function(
   country = NULL,
   ext = "shp"
 ) {
-  if (lifecycle::is_present(cache)) {
-    lifecycle::deprecate_warn(
-      when = "1.0.0",
-      what = "giscoR::gisco_get_communes(cache)",
-      details = paste0(
-        "Results are always cached. To avoid persistency use ",
-        "`cache_dir = tempdir()`."
-      )
-    )
-  }
+  warn_deprecated_cache(cache, "giscoR::gisco_get_communes(cache)")
+
   valid_ext <- c("geojson", "gpkg", "shp")
   ext <- match_arg_pretty(ext, valid_ext)
-  url <- get_url_db(
+  file <- resolve_gisco_file(
     "communes",
     year = year,
     epsg = epsg,
@@ -103,51 +96,17 @@ gisco_get_communes <- function(
     fn = "gisco_get_communes"
   )
 
-  basename <- basename(url)
-
-  file_local <- download_url(
-    url,
-    basename,
+  country <- convert_country_code_or_null(country)
+  read_gisco_dataset(
+    url = file$url,
+    name = file$name,
+    cache = TRUE,
     cache_dir = cache_dir,
     subdir = "communes",
     update_cache = update_cache,
-    verbose = verbose
+    verbose = verbose,
+    filters = function(file_local) {
+      make_sf_filter(file_local, country)
+    }
   )
-
-  if (is.null(file_local)) {
-    return(NULL)
-  }
-
-  # Improve speed using queries if country(es) are selected
-  # We construct the query and pass it to the st_read function
-
-  filter_col <- get_col_name(file_local)
-  if (all(!is.null(country), !is.null(filter_col))) {
-    make_msg("info", verbose, "Speed up using {.pkg sf} query")
-
-    country <- convert_country_code(country)
-
-    # Get layer name
-    layer <- get_sf_layer_name(file_local)
-
-    # Construct query
-    q <- paste0(
-      "SELECT * from \"",
-      layer,
-      "\" WHERE ",
-      filter_col[1],
-      " IN (",
-      paste0("'", country, "'", collapse = ", "),
-      ")"
-    )
-
-    msg <- paste0("{.code ", q, "}")
-    make_msg("info", verbose, "Using query:\n   ", msg)
-
-    data_sf <- read_geo_file_sf(file_local, q)
-  } else {
-    data_sf <- read_geo_file_sf(file_local)
-  }
-
-  data_sf
 }

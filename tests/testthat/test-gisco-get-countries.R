@@ -6,16 +6,56 @@ test_that("Offline", {
     TRUE
   })
   expect_message(
-    n <- gisco_get_countries(
-      update_cache = TRUE,
-      resolution = 60
-    ),
+    n <- gisco_get_countries(update_cache = TRUE, resolution = 60),
     "Error"
   )
   expect_null(n)
   local_mocked_bindings(is_404 = function(...) {
     FALSE
   })
+})
+
+test_that("Countries use resolved GISCO files", {
+  local_mocked_bindings(
+    resolve_gisco_file = function(...) {
+      list(
+        url = "https://example.com/CNTR_RG_60M_2024_4326.gpkg",
+        name = "CNTR_RG_60M_2024_4326.gpkg"
+      )
+    },
+    read_gisco_dataset = function(url,
+                                  name,
+                                  cache = TRUE,
+                                  cache_dir = NULL,
+                                  subdir,
+                                  update_cache = FALSE,
+                                  verbose = FALSE,
+                                  filters = NULL,
+                                  post_process = NULL,
+                                  ...) {
+      expect_match(url, "CNTR_RG_60M_2024_4326[.]gpkg$")
+      expect_identical(name, "CNTR_RG_60M_2024_4326.gpkg")
+      expect_false(cache)
+      expect_identical(cache_dir, "cache")
+      expect_identical(subdir, "countries")
+      expect_true(update_cache)
+      expect_true(verbose)
+      expect_true(is.function(filters))
+      expect_true(is.function(post_process))
+      data <- data.frame(CNTR_ID = c("ES", "FR"), name = c("a", "b"))
+      post_process(data)
+    }
+  )
+
+  countries <- gisco_get_countries(
+    resolution = 60,
+    country = "ES",
+    cache = FALSE,
+    cache_dir = "cache",
+    update_cache = TRUE,
+    verbose = TRUE
+  )
+  expect_identical(countries$CNTR_ID, "ES")
 })
 
 test_that("Cached dataset vs updated", {
@@ -27,18 +67,12 @@ test_that("Cached dataset vs updated", {
     unlink(cdir, recursive = TRUE, force = TRUE)
   }
 
-  expect_identical(
-    list.files(cdir, recursive = TRUE),
-    character(0)
-  )
+  expect_identical(list.files(cdir, recursive = TRUE), character(0))
   expect_snapshot(db_cached <- gisco_get_countries(verbose = TRUE))
 
   # Force download
 
-  db_cached2 <- gisco_get_countries(
-    update_cache = TRUE,
-    cache_dir = cdir
-  )
+  db_cached2 <- gisco_get_countries(update_cache = TRUE, cache_dir = cdir)
 
   expect_s3_class(db_cached, "sf")
   expect_s3_class(db_cached, "tbl_df")
@@ -61,10 +95,7 @@ test_that("Cache vs non-cached", {
     unlink(cdir, recursive = TRUE, force = TRUE)
   }
 
-  expect_identical(
-    list.files(cdir, recursive = TRUE),
-    character(0)
-  )
+  expect_identical(list.files(cdir, recursive = TRUE), character(0))
   expect_message(
     db_online <- gisco_get_countries(
       resolution = "60",
@@ -75,10 +106,7 @@ test_that("Cache vs non-cached", {
     "Reading from"
   )
 
-  expect_identical(
-    list.files(cdir, recursive = TRUE),
-    character(0)
-  )
+  expect_identical(list.files(cdir, recursive = TRUE), character(0))
 
   # vs cache TRUE
   expect_silent(
@@ -161,19 +189,13 @@ test_that("Filter countries no cached", {
   skip_if_gisco_offline()
 
   db_cached <- gisco_get_countries(region = "Africa")
-  db_no_cache <- gisco_get_countries(
-    region = "Africa",
-    cache = FALSE
-  )
+  db_no_cache <- gisco_get_countries(region = "Africa", cache = FALSE)
   expect_lt(nrow(db_cached), 70)
   expect_s3_class(db_cached, "sf")
   expect_s3_class(db_cached, "tbl_df")
 
   # See EU
-  db_cached_eu <- gisco_get_countries(
-    region = "EU",
-    cache = FALSE
-  )
+  db_cached_eu <- gisco_get_countries(region = "EU", cache = FALSE)
   expect_identical(nrow(db_cached_eu), 27L)
 
   # Combine
@@ -219,7 +241,6 @@ test_that("Filter countries no cached", {
 
   expect_identical(nrow(bn), nrow(bn_nocach))
 })
-
 
 test_that("Spatial types", {
   skip_on_cran()
@@ -275,20 +296,14 @@ test_that("Extensions", {
   skip_if_gisco_offline()
 
   # Error
-  expect_snapshot(
-    gisco_get_countries(ext = "docx"),
-    error = TRUE
-  )
+  expect_snapshot(gisco_get_countries(ext = "docx"), error = TRUE)
 
   cdir <- file.path(tempdir(), "testcountry")
   if (dir.exists(cdir)) {
     unlink(cdir, recursive = TRUE, force = TRUE)
   }
 
-  expect_identical(
-    list.files(cdir, recursive = TRUE),
-    character(0)
-  )
+  expect_identical(list.files(cdir, recursive = TRUE), character(0))
 
   db_geojson <- gisco_get_countries(
     resolution = "60",
@@ -298,10 +313,7 @@ test_that("Extensions", {
   expect_s3_class(db_geojson, "sf")
   expect_s3_class(db_geojson, "tbl_df")
 
-  expect_length(
-    list.files(cdir, recursive = TRUE, pattern = "geojson"),
-    1
-  )
+  expect_length(list.files(cdir, recursive = TRUE, pattern = "geojson"), 1)
 
   db_zip <- gisco_get_countries(
     resolution = "60",
@@ -313,10 +325,7 @@ test_that("Extensions", {
   expect_s3_class(db_zip, "sf")
   expect_s3_class(db_zip, "tbl_df")
 
-  expect_length(
-    list.files(cdir, recursive = TRUE, pattern = "shp.zip"),
-    1
-  )
+  expect_length(list.files(cdir, recursive = TRUE, pattern = "shp.zip"), 1)
 
   # Cleanup
   unlink(cdir, recursive = TRUE, force = TRUE)

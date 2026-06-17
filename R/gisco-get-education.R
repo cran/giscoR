@@ -1,44 +1,42 @@
 #' Education services in Europe
 #'
 #' @description
-#' This dataset is an integration of Member States official data on the
-#' location of education services. Additional information on these services is
-#' included when available (see **Details**).
+#' This dataset integrates Member States' official data on the location of
+#' education services. Additional information on these services is included
+#' when available. See **Details**.
 #'
 #' @family services
-#' @inherit gisco_get_countries return
-#' @inheritParams gisco_get_countries
 #' @encoding UTF-8
-#' @export
-#'
-#' @param year character string or number. Release year of the file. One of
+#' @inheritParams gisco_get_countries
+#' @param year A character string or numeric value with the release year of the
+#'   file. One of
 #'   `2023`, `2020`.
+#'
+#' @inherit gisco_get_countries return
+#' @details
+#' Files are distributed in [EPSG:4326](https://epsg.io/4326).
+#'
+#' ```{r child = "man/chunks/education_meta.Rmd"}
+#' ```
 #'
 #' @source
 #' <https://ec.europa.eu/eurostat/web/gisco/geodata/basic-services>.
 #'
 #' There are no specific download rules for the datasets shown below. However,
 #' please refer to [the general copyright
-#' notice](https://ec.europa.eu/eurostat/web/gisco/geodata) and licence
-#' provisions, which must be complied with. Permission to download and use
-#' these data are subject to these rules being accepted.
+#' notice](https://ec.europa.eu/eurostat/web/gisco/geodata) and license
+#' provisions, which apply to these datasets. Permission to download and use
+#' these data is subject to acceptance of those rules.
 #'
 #' The data are extracted from official national registers. They may contain
-#' inconsistencies, inaccuracies and gaps, due to the heterogeneity of the
-#' input national data.
-#'
-#'
-#' @details
-#' Files are distributed on [EPSG:4326](https://epsg.io/4326).
-#'
-#' ```{r child = "man/chunks/education_meta.Rmd"}
-#' ```
+#' inconsistencies, inaccuracies and gaps due to the heterogeneity of the
+#' national input data.
 #'
 #' @examplesIf gisco_check_access()
 #' \donttest{
 #' edu_austria <- gisco_get_education(country = "Austria", year = 2023)
 #'
-#' # Plot if downloaded
+#' # Plot if downloaded.
 #' if (!is.null(edu_austria)) {
 #'   austria_nuts3 <- gisco_get_nuts(country = "Austria", nuts_level = 3)
 #'
@@ -66,6 +64,8 @@
 #' }
 #' }
 #'
+#' @export
+#'
 gisco_get_education <- function(
   year = c(2023, 2020),
   cache = TRUE,
@@ -74,50 +74,31 @@ gisco_get_education <- function(
   verbose = FALSE,
   country = NULL
 ) {
-  # Given vars
+  # Set required variables.
   year <- match_arg_pretty(year)
 
-  if (!is.null(country)) {
-    country_get <- convert_country_code(country)
-  } else {
+  country_get <- convert_country_code_or_null(country)
+  if (is.null(country_get)) {
     country_get <- "EU"
   }
 
-  api_entry <- paste0(
-    "https://gisco-services.ec.europa.eu/pub/education/",
-    year,
-    "/gpkg/",
-    country_get,
-    ".gpkg"
-  )
+  api_entry <- basic_service_url("education", year, country_get)
 
   n_cnt <- seq_along(api_entry)
 
   ress <- lapply(n_cnt, function(x) {
     api <- api_entry[x]
-    filename <- paste0("edu_", year, "_", basename(api))
+    filename <- basic_service_filename("edu", year, api)
 
-    if (cache) {
-      # Guess source to load
-      namefileload <- download_url(
-        api,
-        filename,
-        cache_dir,
-        "education",
-        update_cache,
-        verbose
-      )
-    } else {
-      namefileload <- api
-    }
-
-    if (is.null(namefileload)) {
-      return(NULL)
-    }
-
-    data_sf <- read_geo_file_sf(namefileload)
-
-    data_sf
+    read_gisco_dataset(
+      url = api,
+      name = filename,
+      cache = cache,
+      cache_dir = cache_dir,
+      subdir = "education",
+      update_cache = update_cache,
+      verbose = verbose
+    )
   })
 
   data_sf_all <- rbind_fill(ress)
@@ -126,4 +107,28 @@ gisco_get_education <- function(
   }
 
   data_sf_all
+}
+
+#' Build a basic service dataset URL
+#'
+#' @param service A basic service name.
+#' @param year A dataset year.
+#' @param country A country code.
+#'
+#' @return A character string with the dataset URL.
+#' @noRd
+basic_service_url <- function(service, year, country = "EU") {
+  paste0(gisco_pub_url(), service, "/", year, "/gpkg/", country, ".gpkg")
+}
+
+#' Build a cached basic service file name
+#'
+#' @param prefix A cache file prefix.
+#' @param year A dataset year.
+#' @param url A dataset URL.
+#'
+#' @return A character string with the cache file name.
+#' @noRd
+basic_service_filename <- function(prefix, year, url) {
+  paste0(prefix, "_", year, "_", basename(url))
 }

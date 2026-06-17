@@ -20,29 +20,31 @@ gisco_get_census(
 )
 }
 \arguments{
-\item{year}{character string or number. Release year of the file. Currently
-only \code{"2011"} is provided.}
+\item{year}{A character string or numeric value with the release year of the
+file.
+Currently only \code{"2011"} is provided.}
 
-\item{cache_dir}{character string. A path to a cache directory. See
+\item{cache_dir}{A character string with a path to a cache directory. See
 \strong{Caching strategies} section in \code{\link[=gisco_set_cache_dir]{gisco_set_cache_dir()}}.}
 
-\item{update_cache}{logical. Should the cached file be refreshed? Default
-is \code{FALSE}. When set to \code{TRUE} it forces a new download.}
+\item{update_cache}{A logical value indicating whether to refresh the
+cached file. Defaults to \code{FALSE}. When set to \code{TRUE}, it forces a new
+download.}
 
-\item{verbose}{logical. If \code{TRUE} displays informational messages.}
+\item{verbose}{A logical value. If \code{TRUE} displays informational messages.}
 
-\item{spatialtype}{Type of geometry to be returned:
+\item{spatialtype}{The type of geometry to return:
 \itemize{
 \item \code{"PT"}: Points - \code{POINT} object.
 \item \code{"RG"}: Regions - \code{MULTIPOLYGON/POLYGON} object.
 }}
 }
 \value{
-A \code{\link[sf:sf]{sf}} object.
+A \code{\link[sf:st_sf]{sf}} object.
 }
 \description{
-This dataset shows pan European communal boundaries depicting the situation
-at the corresponding Census.
+This dataset shows pan-European communal boundaries for the corresponding
+census.
 }
 \examples{
 \dontshow{if (gisco_check_access()) withAutoprint(\{ # examplesIf}
@@ -58,10 +60,10 @@ pts
 \seealso{
 See \code{\link[=gisco_id_api_census_grid]{gisco_id_api_census_grid()}} to download via GISCO ID service API.
 
-Other statistical units datasets:
-\code{\link{gisco_get_coastal_lines}()},
-\code{\link{gisco_get_lau}()},
-\code{\link{gisco_get_nuts}()},
-\code{\link{gisco_get_urban_audit}()}
+Statistical unit datasets:
+\code{\link[=gisco_get_coastal_lines]{gisco_get_coastal_lines()}},
+\code{\link[=gisco_get_lau]{gisco_get_lau()}},
+\code{\link[=gisco_get_nuts]{gisco_get_nuts()}},
+\code{\link[=gisco_get_urban_audit]{gisco_get_urban_audit()}}
 }
 \concept{stats}

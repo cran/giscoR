@@ -1,17 +1,18 @@
-#' Help Documentation for giscoR package
+#' Documentation helpers for \CRANpkg{giscoR}
 #'
 #' @description
-#' Internal function to get possible values from the cached `gisco_db` database.
+#' Internal function to get possible values from the cached GISCO database.
 #'
-#' @param id character string. The `id_giscor` value to filter the database.
-#' @param field character string. The field/column name from which to extract
-#'   values.
-#' @param decreasing logical. Whether to sort the values in decreasing order.
-#'   Default is `FALSE`.
-#' @param formatted logical. Whether to format the output values for
-#'   documentation. Default is `TRUE`.
+#' @param id A character string with the `id_giscor` value to filter the
+#'   database.
+#' @param field A character string with the field/column name from which to
+#'   extract values.
+#' @param decreasing A logical value indicating whether to sort the values in
+#'   decreasing order. Defaults to `FALSE`.
+#' @param formatted A logical value indicating whether to format the output
+#'   values for documentation. Defaults to `TRUE`.
 #'
-#' @returns
+#' @return
 #' A character string with the possible values for the specified field.
 #' @noRd
 db_values <- function(id, field, decreasing = FALSE, formatted = TRUE) {
@@ -33,25 +34,29 @@ db_values <- function(id, field, decreasing = FALSE, formatted = TRUE) {
   paste0(ftext, collapse = ", ")
 }
 
-#' Helper function to get available years for GISCO ID endpoints
+#' Get available years for GISCO ID endpoints
 #'
-#' @param endpoint character string. The GISCO ID endpoint to query.
-#' @returns
+#' @param endpoint A character string with the GISCO ID endpoint to query.
+#' @return
 #' A character string with the available years for the specified endpoint.
 #' @noRd
 docs_id_years <- function(endpoint) {
   apiurl <- paste0(
-    "https://gisco-services.ec.europa.eu/id/",
+    gisco_id_url(),
     endpoint,
     "?year=9999"
   )
 
-  req <- httr2::request(apiurl)
-  req <- httr2::req_timeout(req, getOption("gisco_timeout", 300L))
-  req <- httr2::req_error(req, is_error = function(x) {
-    FALSE
-  })
-  resp <- httr2::req_perform(req)
+  req <- gisco_request(apiurl, cache = FALSE, retry = FALSE)
+  resp <- gisco_perform_request(
+    req,
+    apiurl,
+    fake_404 = FALSE,
+    check_error = FALSE
+  )
+  if (is.null(resp)) {
+    return("are unavailable")
+  }
   get_years <- httr2::resp_body_json(resp, simplifyVector = TRUE)
   get_years <- get_years$details
   available_years <- gsub("[^0-9]", " ", get_years)

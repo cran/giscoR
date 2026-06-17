@@ -1,16 +1,17 @@
-#' Convert country names or codes to desired code
+#' Convert country names or codes to the desired code
 #'
-#' @param names vector of names or codes
+#' @param names A vector of names or codes.
 #'
-#' @param out out code
+#' @param out A character string with the output code.
 #'
-#' @return a vector of names
+#' @return A character vector with country codes.
 #'
 #' @noRd
 convert_country_code <- function(names, out = "eurostat") {
+  names[tolower(names) == "antarctica"] <- "Antarctica"
   names[tolower(names) == "antartica"] <- "Antarctica"
 
-  # Vectorize
+  # Vectorize country conversion.
   outnames <- lapply(names, function(x) {
     if (
       any(
@@ -37,7 +38,7 @@ convert_country_code <- function(names, out = "eurostat") {
       cli::cli_abort(
         paste0(
           "Invalid country name {.str {x}}. ",
-          "Try a vector of names or ISO3/Eurostat codes"
+          "Try a vector of names, ISO 3166-1 alpha-3 codes or Eurostat codes."
         ),
         call = NULL
       )
@@ -52,20 +53,52 @@ convert_country_code <- function(names, out = "eurostat") {
   if (linit != lend) {
     ff <- names[is.na(outnames)] # nolint
     cli::cli_alert_warning(
-      "Some country/codes were not matched unambiguously: {.str {ff}}"
+      "Some country names or codes were not matched unambiguously: {.str {ff}}."
     )
-    cli::cli_alert_info("Review the names/codes or switch to ISO3 codes.")
+    cli::cli_alert_info(
+      "Review the names or codes, or switch to ISO 3166-1 alpha-3 codes."
+    )
   }
 
   outnames2
 }
 
+#' Convert country names or codes unless the input is `NULL`
+#'
+#' @inheritParams convert_country_code
+#'
+#' @return A vector of names, or `NULL` when `names` is `NULL`.
+#' @noRd
+convert_country_code_or_null <- function(names, out = "eurostat") {
+  if (is.null(names)) {
+    return(NULL)
+  }
+
+  convert_country_code(names, out)
+}
+
+#' Filter a data frame by country values in one column
+#'
+#' @param data A data frame or `sf` object.
+#' @param country A character vector of country codes.
+#' @param col A character string with the column to filter.
+#'
+#' @return `data`, filtered when `country` is not `NULL` and `col` exists.
+#' @noRd
+filter_by_country_col <- function(data, country = NULL, col = "CNTR_CODE") {
+  if (is.null(country) || !col %in% names(data)) {
+    return(data)
+  }
+
+  data[data[[col]] %in% country, ]
+}
+
 #' Get country codes from country names and/or region names
 #'
-#' @param country character vector of country codes or names
-#' @param region character vector of region codes or names
-#' @param code desired output code, default is "eurostat"
-#' @return character vector of country codes
+#' @param country A character vector of country codes or names.
+#' @param region A character vector of region codes or names.
+#' @param code Desired output code. Defaults to `"eurostat"`.
+#' @return A character vector of country codes.
 #'
 #' @noRd
 get_countrycodes_region <- function(
@@ -74,10 +107,8 @@ get_countrycodes_region <- function(
   code = "eurostat"
 ) {
   store <- NULL
-  if (!is.null(country)) {
-    country <- convert_country_code(country, code)
-    store <- c(store, country)
-  }
+  country <- convert_country_code_or_null(country, code)
+  store <- c(store, country)
 
   if (!is.null(region)) {
     region_df <- giscoR::gisco_countrycode
@@ -91,8 +122,7 @@ get_countrycodes_region <- function(
     cnt_region <- cnt_region[!is.na(cnt_region)]
     cnt_region <- convert_country_code(cnt_region, code)
 
-    # Condition in both country and region is AND
-    # so we intersect
+    # Intersect when both country and region are provided.
     if (!is.null(store)) {
       store <- sort(unique(intersect(store, cnt_region)))
     } else {

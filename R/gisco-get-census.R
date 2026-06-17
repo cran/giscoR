@@ -1,30 +1,28 @@
 #' Census dataset
 #'
-#' This dataset shows pan European communal boundaries depicting the situation
-#' at the corresponding Census.
+#' This dataset shows pan-European communal boundaries for the corresponding
+#' census.
 #'
 #' @family stats
 #' @encoding UTF-8
 #' @inheritParams gisco_get_countries
+#' @param year A character string or numeric value with the release year of the
+#'   file.
+#'   Currently only `"2011"` is provided.
+#' @param spatialtype The type of geometry to return:
+#' - `"PT"`: Points - `POINT` object.
+#' - `"RG"`: Regions - `MULTIPOLYGON/POLYGON` object.
+#'
 #' @inherit gisco_get_countries return
-#' @export
-#'
-#' @seealso
-#'
-#' See [gisco_id_api_census_grid()] to download via GISCO ID service API.
-
-#'
-#' @param year character string or number. Release year of the file. Currently
-#'   only `"2011"` is provided.
-#' @param spatialtype Type of geometry to be returned:
-#'  * `"PT"`: Points - `POINT` object.
-#'  * `"RG"`: Regions - `MULTIPOLYGON/POLYGON` object.
-#'
 #' @source
 #' <https://ec.europa.eu/eurostat/web/gisco/geodata/statistical-units/census>.
 #'
 #' Copyright:
 #' <https://ec.europa.eu/eurostat/web/gisco/geodata/statistical-units>.
+#'
+#' @seealso
+#'
+#' See [gisco_id_api_census_grid()] to download via GISCO ID service API.
 #'
 #' @examplesIf gisco_check_access()
 #' \donttest{
@@ -34,6 +32,8 @@
 #'
 #' pts
 #' }
+#' @export
+#'
 gisco_get_census <- function(
   year = 2011,
   cache_dir = NULL,
@@ -44,34 +44,17 @@ gisco_get_census <- function(
   year <- match_arg_pretty(year)
 
   spatialtype <- match_arg_pretty(spatialtype)
-  if (spatialtype == "PT") {
-    url <- paste0(
-      "https://ec.europa.eu/eurostat/cache/GISCO/",
-      "geodatafiles/CENSUS_UNITS_PT_2011_SH.zip"
-    )
-  } else {
-    url <- paste0(
-      "https://ec.europa.eu/eurostat/cache/GISCO/",
-      "geodatafiles/CENSUS_UNITS_2011_RG_SH.zip"
-    )
-  }
-  filename <- basename(url)
-  namefileload <- download_url(
-    url,
-    filename,
-    cache_dir,
-    "census",
-    update_cache,
-    verbose
+  files <- c(
+    "PT" = "CENSUS_UNITS_PT_2011_SH.zip",
+    "RG" = "CENSUS_UNITS_2011_RG_SH.zip"
   )
-
-  if (is.null(namefileload)) {
-    return(NULL)
-  }
-
-  data_sf <- read_geo_file_sf(namefileload)
-
-  # Normalize to lonlat
-  data_sf <- sf::st_transform(data_sf, 4326)
-  data_sf
+  url <- eurostat_gisco_geodata_url(files[[spatialtype]])
+  read_gisco_dataset(
+    url,
+    cache_dir = cache_dir,
+    subdir = "census",
+    update_cache = update_cache,
+    verbose = verbose,
+    post_process = transform_to_wgs84
+  )
 }

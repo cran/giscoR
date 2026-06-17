@@ -1,64 +1,62 @@
-#' GISCO API bulk download
+#' GISCO geodata bulk download
 #'
 #' @description
 #' Download zipped data from GISCO to the [`cache_dir`][gisco_set_cache_dir()]
-#' and extract the relevant ones.
+#' and extract the relevant files.
 #'
 #' @family extra
 #' @encoding UTF-8
 #' @inheritParams gisco_get_countries
-#' @export
+#' @param year A character string or numeric value with the release year of the
+#'   file, see **Details**.
 #'
-#' @source <https://gisco-services.ec.europa.eu/distribution/v2/>.
-#'
-#' @return
-#' A (invisible) character vector with the full path of the files extracted.
-#' See **Examples**.
-#'
-#' @param year character string or number. Release year of the file, see
-#'   **Details**.
-#'
-#' @param id character string or number. Type of dataset to be
-#'   downloaded, see **Details**. Values supported are:
-#'   - `"countries"`
-#'   - `"coastal_lines"`
-#'   - `"communes"`
-#'   - `"lau"`
-#'   - `"nuts"`
-#'   - `"urban_audit"`
-#'   - `"postal_codes"`
+#' @param id A character string or numeric value with the dataset type to
+#'   download, see **Details**. Supported values are:
+#' - `"countries"`.
+#' - `"coastal_lines"`.
+#' - `"communes"`.
+#' - `"lau"`.
+#' - `"nuts"`.
+#' - `"urban_audit"`.
+#' - `"postal_codes"`.
 #'
 #'   This argument replaces the previous (deprecated) argument `id_giscoR`.
 #' @param recursive `r lifecycle::badge("deprecated")` `recursive` is no
-#'   longer supported, and this function will never perform recursive extraction
-#'   of child `.zip` files. This is the case of "`shp.zip` inside the top-level
-#'   `.zip`, that won't be unzipped.
+#'   longer supported. It will never perform recursive extraction of child
+#'   `.zip` files. This is the case for `shp.zip` inside the top-level `.zip`,
+#'   which will not be unzipped.
 #' @param ... Ignored. The argument `id_giscoR`
 #'   (`r lifecycle::badge("deprecated")`) is captured via `...` and redirected
 #'   to `id` with a [warning][lifecycle::deprecate_warn].
 #'
-#' @param ext Extension of the file(s) to be downloaded. Formats available are
-#' `"shp"`, `"geojson"`, `"svg"`, `"json"`, `"gdb"`. See **Details**.
+#' @param ext The extension of the file or files to download. Available
+#'   formats are `"shp"`, `"geojson"`, `"svg"`, `"json"` and `"gdb"`. See
+#'   **Details**.
+#'
+#' @return
+#' An invisible character vector with the full path of the files extracted.
+#' See **Examples**.
 #'
 #' @details
 #' Some arguments only apply to a specific value of `"id"`. For example
 #' `"resolution"` is ignored for values `"communes"`, `"lau"`,
 #' `"urban_audit"` and `"postal_codes"`.
 #'
-#' See years available in the corresponding functions:
-#'  * [gisco_get_countries()].
-#'  * [gisco_get_coastal_lines()].
-#'  * [gisco_get_communes()].
-#'  * [gisco_get_lau()].
-#'  * [gisco_get_nuts()].
-#'  * [gisco_get_urban_audit()].
-#'  * [gisco_get_postal_codes()].
+#' See available years in the corresponding functions:
+#' - [gisco_get_countries()].
+#' - [gisco_get_coastal_lines()].
+#' - [gisco_get_communes()].
+#' - [gisco_get_lau()].
+#' - [gisco_get_nuts()].
+#' - [gisco_get_urban_audit()].
+#' - [gisco_get_postal_codes()].
 #'
 #' The usual extensions used across \CRANpkg{giscoR} are `"gpkg"` and `"shp"`,
-#' however other formats are already available on GISCO. Note that after
-#' performing a bulk download you may need to adjust the default `"ext"` value
-#' in the corresponding function to connect it with the downloaded files (see
-#' **Examples**).
+#' but other formats are already available on GISCO. After a bulk download, you
+#' may need to adjust the default `ext` value in the corresponding function
+#' to connect it with the downloaded files (see **Examples**).
+#'
+#' @source <https://gisco-services.ec.europa.eu/distribution/v2/>.
 #'
 #' @examplesIf gisco_check_access()
 #' tmp <- file.path(tempdir(), "testexample")
@@ -68,11 +66,11 @@
 #'   year = 2024, ext = "geojson",
 #'   cache_dir = tmp
 #' )
-#' # Read one
+#' # Read one file.
 #' library(sf)
 #' read_sf(dest_files[1]) |> head()
 #'
-#' # Now we can connect the function with the downloaded data like:
+#' # Connect the function with the downloaded data.
 #'
 #' connect <- gisco_get_countries(
 #'   resolution = 60,
@@ -80,10 +78,12 @@
 #'   cache_dir = tmp, verbose = TRUE
 #' )
 #'
-#' # Message shows that file is already cached
+#' # The message shows that the file is already cached.
 #' }
-#' # Clean
+#' # Clean up.
 #' unlink(tmp, force = TRUE)
+#' @export
+#'
 gisco_bulk_download <- function(
   id = c(
     "countries",
@@ -110,7 +110,7 @@ gisco_bulk_download <- function(
       "1.0.0",
       "giscoR::gisco_bulk_download(recursive)",
       details = paste0(
-        "Child `.zip` files inside the top-level `.zip` won't be unzipped."
+        "Child `.zip` files inside the top-level `.zip` will not be unzipped."
       )
     )
   }
@@ -127,14 +127,10 @@ gisco_bulk_download <- function(
   id <- match_arg_pretty(id)
   ext <- match_arg_pretty(ext)
 
-  # Standard arguments for the call
+  # Set standard arguments for the call.
   year <- as.character(year)
 
-  make_params <- make_bulk_params(
-    id = id,
-    year = year,
-    resolution = resolution
-  )
+  make_params <- make_bulk_params(id = id, year = year, resolution = resolution)
 
   routes <- get_url_db(
     id = id,
@@ -148,35 +144,20 @@ gisco_bulk_download <- function(
     fn = "gisco_bulk_download"
   )
 
-  # Restore
+  # Restore legacy commune resolution handling.
   if (id == "communes" && as.character(year) %in% c("2004", "2006", "2008")) {
     make_params$resolution <- 1
   }
 
-  api_entry <- gsub("/shp/.*", "/download", routes)
-  get_alias <- switch(id,
-    "coastal_lines" = "coastline",
-    "urban_audit" = "urau",
-    "postal_codes" = "pcode",
-    id
+  api_entry <- bulk_download_api_entry(routes)
+  zipname <- build_bulk_zip_name(
+    id,
+    year,
+    make_params$resolution,
+    ext
   )
-  zipname <- paste0("ref-", get_alias)
-  zipname <- paste0(zipname, "-", year)
-  if (!is.null(make_params$resolution)) {
-    r <- sprintf("%02dm", as.numeric(make_params$resolution))
-    if (make_params$resolution == "100") {
-      r <- "100k"
-    }
-    zipname <- paste0(zipname, "-", r)
-  }
-  zipname <- paste0(zipname, ".", ext, ".zip")
-
   url <- file.path(api_entry, zipname)
-
-  subdir <- switch(id,
-    "coastal_lines" = "coastal",
-    id
-  )
+  subdir <- bulk_download_subdir(id)
 
   destfile <- download_url(
     url,
@@ -191,39 +172,116 @@ gisco_bulk_download <- function(
     return(NULL)
   }
 
-  # Clean cache dir name for extracting
+  # Clean the cache directory name before extracting.
   unzip_dir <- gsub(paste0("/", zipname), "", destfile)
 
-  infiles <- unzip(destfile, list = TRUE, junkpaths = TRUE)
-  # Extract files
+  infiles <- list_bulk_zip_files(destfile)
+  # Extract files.
   outfiles <- infiles[grep(ext, infiles$Name), ]$Name
 
   if (verbose) {
     for_bullets <- outfiles
     names(for_bullets) <- rep(">", length(for_bullets))
-    cli::cli_alert_info(c("Extracting files:"))
+    cli::cli_alert_info("Extracting files:")
     cli::cli_bullets(for_bullets)
   }
 
   unlink(file.path(unzip_dir, outfiles))
 
-  unzip(destfile, files = outfiles, exdir = unzip_dir)
+  extract_bulk_zip_files(destfile, files = outfiles, exdir = unzip_dir)
 
   out_full <- file.path(unzip_dir, outfiles)
 
   invisible(out_full)
 }
 
-#' Internal function to set arguments for bulk download
+#' Get the bulk-download API entry from a distribution route
 #'
-#' @param id Dataset ID
-#' @param year Year
-#' @param resolution Resolution
+#' @param route A distribution API route.
 #'
-#' @return A list with arguments
+#' @return A character string with the bulk-download API entry.
+#' @noRd
+bulk_download_api_entry <- function(route) {
+  gsub("/shp/.*", "/download", route)
+}
+
+#' Get the dataset alias used in bulk-download file names
+#'
+#' @param id A dataset ID.
+#'
+#' @return A character string with the bulk-download alias.
+#' @noRd
+bulk_download_alias <- function(id) {
+  switch(id,
+    "coastal_lines" = "coastline",
+    "urban_audit" = "urau",
+    "postal_codes" = "pcode",
+    id
+  )
+}
+
+#' Get the cache subdirectory used by bulk download
+#'
+#' @param id A dataset ID.
+#'
+#' @return A character string with the cache subdirectory.
+#' @noRd
+bulk_download_subdir <- function(id) {
+  switch(id,
+    "coastal_lines" = "coastal",
+    id
+  )
+}
+
+#' Build a bulk-download ZIP file name
+#'
+#' @param id A dataset ID.
+#' @param year A year.
+#' @param resolution A resolution, or `NULL`.
+#' @param ext A file extension.
+#'
+#' @return A character string with the ZIP file name.
+#' @noRd
+build_bulk_zip_name <- function(id, year, resolution = NULL, ext) {
+  zipname <- paste0("ref-", bulk_download_alias(id), "-", year)
+  if (!is.null(resolution)) {
+    zipname <- paste0(zipname, "-", format_bulk_resolution(resolution))
+  }
+  paste0(zipname, ".", ext, ".zip")
+}
+
+#' List files in a bulk-download ZIP
+#'
+#' @param zipfile A ZIP file path.
+#'
+#' @return A data frame returned by [unzip()].
+#' @noRd
+list_bulk_zip_files <- function(zipfile) {
+  unzip(zipfile, list = TRUE, junkpaths = TRUE)
+}
+
+#' Extract selected files from a bulk-download ZIP
+#'
+#' @param zipfile A ZIP file path.
+#' @param files Files to extract.
+#' @param exdir Extraction directory.
+#'
+#' @return The result of [unzip()].
+#' @noRd
+extract_bulk_zip_files <- function(zipfile, files, exdir) {
+  unzip(zipfile, files = files, exdir = exdir)
+}
+
+#' Set arguments for bulk download
+#'
+#' @param id A dataset ID.
+#' @param year A year.
+#' @param resolution A resolution.
+#'
+#' @return A list of arguments.
 #' @noRd
 make_bulk_params <- function(id, year, resolution = NULL) {
-  # Need this to ensure everything is captured
+  # Keep every bulk-download parameter explicit.
   make_params <- list(
     year = year,
     epsg = 4326,

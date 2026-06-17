@@ -4,23 +4,23 @@
 \encoding{UTF-8}
 \name{gisco_nuts_2024}
 \alias{gisco_nuts_2024}
-\title{NUTS 2024 \code{\link[sf:sf]{sf}} object}
+\title{NUTS 2024 \code{\link[sf:st_sf]{sf}} object}
 \format{
-A \code{\link[sf:sf]{sf}} object with \code{MULTIPOLYGON} geometries, resolution:
-1:20 million and \href{https://epsg.io/4326}{EPSG:4326}. with
+A \code{\link[sf:st_sf]{sf}} object with \code{MULTIPOLYGON} geometries, resolution:
+1:20 million and \href{https://epsg.io/4326}{EPSG:4326}. It has
 1798 rows and 10 variables:
 \describe{
 \item{\code{NUTS_ID}}{NUTS identifier.}
 \item{\code{LEVL_CODE}}{NUTS level code \verb{(0,1,2,3)}.}
-\item{\code{CNTR_CODE}}{Eurostat Country code.}
-\item{\code{NAME_LATN}}{NUTS name on Latin characters.}
-\item{\code{NUTS_NAME}}{NUTS name on local alphabet.}
-\item{\code{MOUNT_TYPE}}{Mount Type, see \strong{Details}.}
-\item{\code{URBN_TYPE}}{Urban Type, see \strong{Details}.}
-\item{\code{COAST_TYPE}}{Coast Type, see \strong{Details}.}
-\item{\code{geo}}{Same as \code{NUTS_ID}, provided for compatibility with
+\item{\code{CNTR_CODE}}{Eurostat country code.}
+\item{\code{NAME_LATN}}{NUTS name in Latin characters.}
+\item{\code{NUTS_NAME}}{NUTS name in the local alphabet.}
+\item{\code{MOUNT_TYPE}}{Mountain type, see \strong{Details}.}
+\item{\code{URBN_TYPE}}{Urban type, see \strong{Details}.}
+\item{\code{COAST_TYPE}}{Coastal type, see \strong{Details}.}
+\item{\code{geo}}{Same value as \code{NUTS_ID}, provided for compatibility with
 \CRANpkg{eurostat}.}
-\item{\code{geometry}}{geometry field.}
+\item{\code{geometry}}{Geometry field.}
 }
 }
 \source{
@@ -55,7 +55,7 @@ mountain areas.
 \code{COAST_TYPE}: Coastal typology:
 \itemize{
 \item \code{1}: Coastal (on coast).
-\item \code{2}: Coastal (less than 50\% of population living within 50 km. of the
+\item \code{2}: Coastal (less than 50 \% of population living within 50 km of the
 coastline).
 \item \code{3}: Non-coastal region.
 \item \code{0}: No classification provided.
@@ -69,7 +69,7 @@ head(gisco_nuts_2024)
 \seealso{
 \code{\link[=gisco_get_nuts]{gisco_get_nuts()}}
 
-Other datasets: 
+Other datasets:
 \code{\link{gisco_coastal_lines}},
 \code{\link{gisco_countries_2024}},
 \code{\link{gisco_countrycode}},

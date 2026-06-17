@@ -6,19 +6,19 @@
 \alias{gisco_db}
 \title{Cached GISCO database}
 \format{
-A \link[tibble:tbl_df-class]{tibble} with
+A \link[tibble:tbl_df]{tibble} with
 9,714 rows.
 }
 \source{
-GISCO API \code{datasets.json}.
+GISCO geodata distribution \code{datasets.json}.
 }
 \description{
-Database with the list of files in the GISCO API as of
+Database with the list of files in the GISCO geodata distribution as of
 2026-01-12.
 }
 \details{
 This database is used to redirect the corresponding functions to the
-right API endpoints.
+correct API endpoints.
 
 This version of the database is used if there is a problem during update.
 Please use \code{\link[=gisco_get_cached_db]{gisco_get_cached_db()}} with \code{update_cache = TRUE} to update the
@@ -30,15 +30,15 @@ gisco_db |>
   dplyr::glimpse()
 }
 \seealso{
-Other datasets: 
+Other datasets:
 \code{\link{gisco_coastal_lines}},
 \code{\link{gisco_countries_2024}},
 \code{\link{gisco_countrycode}},
 \code{\link{gisco_nuts_2024}}
 
-Other database utils:
-\code{\link{gisco_get_cached_db}()},
-\code{\link{gisco_get_metadata}()}
+Database utilities:
+\code{\link[=gisco_get_cached_db]{gisco_get_cached_db()}},
+\code{\link[=gisco_get_metadata]{gisco_get_metadata()}}
 }
 \concept{database}
 \concept{datasets}

@@ -20,33 +20,35 @@ gisco_get_ports(
 )
 }
 \arguments{
-\item{year}{character string or number. Release year of the file. One of
+\item{year}{A character string or numeric value with the release year of the
+file. One of
 \code{2013}, \code{2009}.}
 
-\item{country}{character vector of country codes. It could be either a
-vector of country names, a vector of ISO3 country codes or a vector of
-Eurostat country codes. See also \code{\link[countrycode:countrycode]{countrycode::countrycode()}}.}
+\item{country}{A character vector of country codes. It can be either a
+vector of country names, a vector of ISO 3166-1 alpha-3 country codes or a
+vector of Eurostat country codes. See also \code{\link[countrycode:countrycode]{countrycode::countrycode()}}.}
 
-\item{cache_dir}{character string. A path to a cache directory. See
+\item{cache_dir}{A character string with a path to a cache directory. See
 \strong{Caching strategies} section in \code{\link[=gisco_set_cache_dir]{gisco_set_cache_dir()}}.}
 
-\item{update_cache}{logical. Should the cached file be refreshed? Default
-is \code{FALSE}. When set to \code{TRUE} it forces a new download.}
+\item{update_cache}{A logical value indicating whether to refresh the
+cached file. Defaults to \code{FALSE}. When set to \code{TRUE}, it forces a new
+download.}
 
-\item{verbose}{logical. If \code{TRUE} displays informational messages.}
+\item{verbose}{A logical value. If \code{TRUE} displays informational messages.}
 }
 \value{
-A \code{\link[sf:sf]{sf}} object.
+A \code{\link[sf:st_sf]{sf}} object.
 }
 \description{
-This dataset includes the location of over 2,440 Pan European ports. The
+This dataset includes the location of over 2,440 pan-European ports. The
 ports are identified following the UN LOCODE list.
 }
 \details{
-Dataset includes objects in \href{https://epsg.io/4326}{EPSG:4326}.
+Files are distributed in \href{https://epsg.io/4326}{EPSG:4326}.
 
-\code{\link[=gisco_get_ports]{gisco_get_ports()}} adds a new field CNTR_ISO2 to the original data
-identifying the country of the port.
+\code{\link[=gisco_get_ports]{gisco_get_ports()}} adds a new field, \code{CNTR_ISO2}, to identify the country
+of the port.
 }
 \examples{
 \dontshow{if (gisco_check_access()) withAutoprint(\{ # examplesIf}
@@ -73,7 +75,7 @@ if (!is.null(ports)) {
       plot.subtitle = element_text(face = "italic", hjust = 0.5)
     ) +
     labs(
-      title = "Ports Worldwide", subtitle = "Year 2013",
+      title = "Ports worldwide", subtitle = "Year 2013",
       caption = "Source: Eurostat, Ports 2013 dataset."
     ) +
     coord_sf(crs = "ESRI:54030")
@@ -81,7 +83,7 @@ if (!is.null(ports)) {
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-Other transport networks datasets:
-\code{\link{gisco_get_airports}()}
+Transport network datasets:
+\code{\link[=gisco_get_airports]{gisco_get_airports()}}
 }
 \concept{transport}

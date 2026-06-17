@@ -7,11 +7,11 @@
 \alias{gisco_get_unit_country}
 \alias{gisco_get_unit_nuts}
 \alias{gisco_get_unit_urban_audit}
-\title{GISCO API single download}
+\title{GISCO geodata single-unit download}
 \source{
 \url{https://gisco-services.ec.europa.eu/distribution/v2/}
 
-All the source files are \code{.geojson} files.
+All source files are \code{.geojson} files.
 }
 \usage{
 gisco_get_unit_country(
@@ -50,31 +50,33 @@ gisco_get_unit_urban_audit(
 )
 }
 \arguments{
-\item{unit}{character vector of unit ids to be downloaded. See \strong{Details}.}
+\item{unit}{A character vector of unit IDs to download. See \strong{Details}.}
 
-\item{year}{character string or number. Release year of the file.}
+\item{year}{A character string or numeric value with the release year of the
+file.}
 
-\item{epsg}{character string or number. Projection of the map: 4-digit
-\href{https://epsg.io/}{EPSG code}. One of:
+\item{epsg}{A character string or numeric value with the coordinate
+reference system as a 4-digit \href{https://epsg.io/}{EPSG code}. One of:
 \itemize{
 \item \code{"4326"}: \href{https://epsg.io/4326}{WGS84}.
 \item \code{"3035"}: \href{https://epsg.io/3035}{ETRS89 / ETRS-LAEA}.
 \item \code{"3857"}: \href{https://epsg.io/3857}{Pseudo-Mercator}.
 }}
 
-\item{cache}{logical. Whether to do caching. Default is \code{TRUE}. See
+\item{cache}{A logical value indicating whether to cache results. Defaults
+to \code{TRUE}. See \strong{Caching strategies} section in \code{\link[=gisco_set_cache_dir]{gisco_set_cache_dir()}}.}
+
+\item{update_cache}{A logical value indicating whether to refresh the
+cached file. Defaults to \code{FALSE}. When set to \code{TRUE}, it forces a new
+download.}
+
+\item{cache_dir}{A character string with a path to a cache directory. See
 \strong{Caching strategies} section in \code{\link[=gisco_set_cache_dir]{gisco_set_cache_dir()}}.}
 
-\item{update_cache}{logical. Should the cached file be refreshed? Default
-is \code{FALSE}. When set to \code{TRUE} it forces a new download.}
+\item{verbose}{A logical value. If \code{TRUE} displays informational messages.}
 
-\item{cache_dir}{character string. A path to a cache directory. See
-\strong{Caching strategies} section in \code{\link[=gisco_set_cache_dir]{gisco_set_cache_dir()}}.}
-
-\item{verbose}{logical. If \code{TRUE} displays informational messages.}
-
-\item{resolution}{character string or number. Resolution of the geospatial
-data. One of:
+\item{resolution}{A character string or numeric value with the geospatial
+data resolution. One of:
 \itemize{
 \item \code{"60"}: 1:60 million.
 \item \code{"20"}: 1:20 million.
@@ -83,7 +85,7 @@ data. One of:
 \item \code{"01"}: 1:1 million.
 }}
 
-\item{spatialtype}{character string. Type of geometry to be returned.
+\item{spatialtype}{A character string with the type of geometry to return.
 Options available are:
 \itemize{
 \item \code{"RG"}: Regions - \code{MULTIPOLYGON/POLYGON} object.
@@ -91,42 +93,41 @@ Options available are:
 }}
 }
 \value{
-A \code{\link[sf:sf]{sf}} object.
+A \code{\link[sf:st_sf]{sf}} object.
 }
 \description{
 Download datasets of single spatial units from GISCO to the
 \code{\link[=gisco_set_cache_dir]{cache_dir}}.
 
 Unlike \code{\link[=gisco_get_countries]{gisco_get_countries()}}, \code{\link[=gisco_get_nuts]{gisco_get_nuts()}} or
-\code{\link[=gisco_get_urban_audit]{gisco_get_urban_audit()}} (that downloads a full dataset and applies
-filters), these functions download a single per unit, reducing the time
-of downloading and reading into your \strong{R} session.
+\code{\link[=gisco_get_urban_audit]{gisco_get_urban_audit()}} (which download full datasets and apply filters),
+these functions download a single-unit file, reducing the time
+needed to download and read data into your \R session.
 }
 \details{
-Check the available \code{unit} ids with the required
-combination of arguments with \code{\link[=gisco_get_metadata]{gisco_get_metadata()}}.
+Check the available \code{unit} IDs for the required argument combination with
+\code{\link[=gisco_get_metadata]{gisco_get_metadata()}}.
 }
 \section{Note}{
-Please check the download and usage provisions on \code{\link[=gisco_attributions]{gisco_attributions()}}.
+Check the download and usage provisions in \code{\link[=gisco_attributions]{gisco_attributions()}}.
 }
 
 \examples{
 \dontshow{if (gisco_check_access()) withAutoprint(\{ # examplesIf}
-# Get metadata
+# Get metadata.
 cities <- gisco_get_metadata("urban_audit", year = 2024)
 
-
-# Valencia, Spain
-valencia <- cities[grep("Valencia", cities$URAU_NAME), ]
+# Valencia, Spain.
+valencia <- cities[grep("Valencia", cities$URAU_NAME, fixed = TRUE), ]
 valencia
 library(dplyr)
-# Now get the sf objects and order by AREA_SQM
+# Get `sf` objects and order by `AREA_SQM`.
 valencia_sf <- gisco_get_unit_urban_audit(
   unit = valencia$URAU_CODE,
-  year = 2024,
+  year = 2024
 ) |>
   arrange(desc(AREA_SQM))
-# Plot
+# Plot.
 library(ggplot2)
 
 ggplot(valencia_sf) +
@@ -143,10 +144,10 @@ ggplot(valencia_sf) +
 \code{\link[=gisco_get_metadata]{gisco_get_metadata()}}, \code{\link[=gisco_get_countries]{gisco_get_countries()}},
 \code{\link[=gisco_get_nuts]{gisco_get_nuts()}}, \code{\link[=gisco_get_urban_audit]{gisco_get_urban_audit()}}.
 
-See \code{\link[=gisco_id_api]{gisco_id_api}} to download via GISCO ID service
+See \code{\link{gisco_id_api}} to download via GISCO ID service
 API.
 
-Additional utils for downloading datasets:
-\code{\link{gisco_bulk_download}()}
+Single-unit and additional download utilities:
+\code{\link[=gisco_bulk_download]{gisco_bulk_download()}}
 }
 \concept{extra}

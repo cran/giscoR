@@ -82,69 +82,70 @@ gisco_id_api_census_grid(
 )
 }
 \arguments{
-\item{x, y}{character string or numeric. x and y coordinates (as longitude
-and latitude) to be identified.}
+\item{x, y}{A character string or numeric value with the longitude and
+latitude coordinates to identify.}
 
-\item{xmin, ymin, xmax, ymax}{character string or numeric. Bounding box
-coordinates to identify all geonames within the box.}
+\item{xmin, ymin, xmax, ymax}{A character string or numeric value with bounding
+box coordinates to identify all geonames within the box.}
 
-\item{verbose}{logical. If \code{TRUE} displays informational messages.}
+\item{verbose}{A logical value. If \code{TRUE} displays informational messages.}
 
-\item{year}{character string or numeric. Year of the dataset, see
+\item{year}{A character string or numeric value with the dataset year, see
 \strong{Details}.}
 
-\item{epsg}{character string or numeric. EPSG code for the coordinate
-reference system.}
+\item{epsg}{A character string or numeric value with the EPSG code for the
+coordinate reference system.}
 
-\item{nuts_id}{character. NUTS ID code.}
+\item{nuts_id}{A character value with the NUTS ID code.}
 
-\item{nuts_level}{character string. NUTS level. One of \code{0},
+\item{nuts_level}{A character string with the NUTS level. One of \code{0},
 \code{1}, \code{2} or \code{3}.}
 
-\item{geometry}{logical. Whether to return geometry. On \code{TRUE} a
-\code{\link[sf:sf]{sf}} object is returned. On \code{FALSE} a
-\link[tibble:tbl_df-class]{tibble} is returned.}
+\item{geometry}{A logical value indicating whether to return geometry. If
+\code{TRUE}, a \code{\link[sf:st_sf]{sf}} object is returned. If \code{FALSE}, a
+\link[tibble:tbl_df]{tibble} is returned.}
 }
 \value{
-A \link[tibble:tbl_df-class]{tibble} or a \code{\link[sf:sf]{sf}} object.
+A \link[tibble:tbl_df]{tibble} or a \code{\link[sf:st_sf]{sf}} object.
 }
 \description{
 Functions to interact with the \href{https://gisco-services.ec.europa.eu/id/api-docs/}{GISCO ID service API}, which returns
 attributes and, optionally, geometry for different datasets at specified
 longitude and latitude coordinates.
 
-Each endpoint available is implemented through a specific function, see
+Each available endpoint is implemented through a specific function. See
 \strong{Details}.
 }
 \details{
 The available endpoints are:
 \itemize{
-\item \code{gisco_id_api_geonames()}: Get geographic placenames either from x/y
-coordinates or a bounding box.
-\item \code{gisco_id_api_nuts()}: Returns NUTS regions from either a specified
-longitude and latitude (x,y) or id. Accepted \code{year}
+\item \code{gisco_id_api_geonames()}: Get geographic placenames from longitude and
+latitude coordinates or a bounding box.
+\item \code{gisco_id_api_nuts()}: Return NUTS regions from longitude and latitude
+coordinates or an ID. Accepted values for \code{year} are
 \Sexpr[stage=render,results=rd]{giscoR:::docs_id_years("nuts")}.
-\item \code{gisco_id_api_lau()}: Returns the id and - optionally - geometry for Large
-Urban Areas (LAU) at specified longitude and latitude (x,y). Accepted
-\code{year}
+\item \code{gisco_id_api_lau()}: Return the ID and, optionally, geometry for Local
+Administrative Units (LAU) at specified longitude and latitude coordinates.
+Accepted values for \code{year} are
 \Sexpr[stage=render,results=rd]{giscoR:::docs_id_years("lau")}.
-\item \code{gisco_id_api_country()}: Returns the id and - optionally - geometry for
-countries at specified longitude and latitude (x,y). Accepted \code{year}
+\item \code{gisco_id_api_country()}: Return the ID and, optionally, geometry for
+countries at specified longitude and latitude coordinates. Accepted values
+for \code{year} are
 \Sexpr[stage=render,results=rd]{giscoR:::docs_id_years("country")}.
-\item \code{gisco_id_api_river_basin()}: Returns the id and - optionally - geometry
-for river basins at specified longitude and latitude (x,y), based on the
-Water Framework Directive (WFD) reference spatial data sets. Accepted
-\code{year}
+\item \code{gisco_id_api_river_basin()}: Return the ID and, optionally, geometry
+for river basins at specified longitude and latitude coordinates, based on
+the Water Framework Directive (WFD) reference spatial datasets. Accepted
+values for \code{year} are
 \Sexpr[stage=render,results=rd]{giscoR:::docs_id_years("riverbasin")}.
-\item \code{gisco_id_api_biogeo_region()}: Returns the id and - optionally - geometry
-for biogeo regions at specified longitude and latitude (x,y). The
-biogeographical regions dataset contains the official delineations used in
-the Habitats Directive (92/43/EEC) and for the EMERALD Network. Accepted
-\code{year}
+\item \code{gisco_id_api_biogeo_region()}: Return the ID and, optionally,
+geometry for biogeographical regions at specified longitude and latitude
+coordinates. The biogeographical regions dataset contains the official
+delineations used in the Habitats Directive (92/43/EEC) and for the
+EMERALD Network. Accepted values for \code{year} are
 \Sexpr[stage=render,results=rd]{giscoR:::docs_id_years("biogeoregion")}.
-\item \code{gisco_id_api_census_grid()}: Returns the id and - optionally - geometry
-for census grid cells at specified longitude and latitude (x,y). Accepted
-\code{year}
+\item \code{gisco_id_api_census_grid()}: Return the ID and, optionally, geometry
+for census grid cells at specified longitude and latitude coordinates.
+Accepted values for \code{year} are
 \Sexpr[stage=render,results=rd]{giscoR:::docs_id_years("censusgrid")}.
 }
 }
@@ -163,7 +164,7 @@ if (all(!is.null(lau), !is.null(nuts3))) {
     geom_sf(fill = "lightblue", color = "black") +
     geom_sf(data = lau, fill = "orange", color = "red") +
     labs(
-      title = "NUTS3 and LAU boundaries",
+      title = "NUTS 3 and LAU boundaries",
       subtitle = "Arrasate, Basque Country, Spain",
       caption = "Source: GISCO ID service API"
     )
@@ -175,7 +176,7 @@ if (all(!is.null(lau), !is.null(nuts3))) {
 \code{\link[=gisco_get_nuts]{gisco_get_nuts()}}, \code{\link[=gisco_get_lau]{gisco_get_lau()}}, \code{\link[=gisco_get_countries]{gisco_get_countries()}},
 \code{\link[=gisco_get_census]{gisco_get_census()}}.
 
-Other API tools: 
+Other API tools:
 \code{\link{gisco_address_api}}
 }
 \concept{API tools}

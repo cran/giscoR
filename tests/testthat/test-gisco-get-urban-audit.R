@@ -16,18 +16,55 @@ test_that("Mock offline", {
   local_mocked_bindings(is_404 = function(...) {
     TRUE
   })
-  expect_message(
-    n <- gisco_get_urban_audit(
-      update_cache = TRUE
-    ),
-    "Error"
-  )
+  expect_message(n <- gisco_get_urban_audit(update_cache = TRUE), "Error")
   expect_null(n)
   local_mocked_bindings(is_404 = function(...) {
     FALSE
   })
 })
 
+test_that("Urban Audit uses resolved GISCO files", {
+  local_mocked_bindings(
+    resolve_gisco_file = function(...) {
+      list(
+        url = "https://example.com/URAU_RG_100K_2024_4326_CITIES.gpkg",
+        name = "URAU_RG_100K_2024_4326_CITIES.gpkg"
+      )
+    },
+    read_gisco_dataset = function(url,
+                                  name,
+                                  cache = TRUE,
+                                  cache_dir = NULL,
+                                  subdir,
+                                  update_cache = FALSE,
+                                  verbose = FALSE,
+                                  filters = NULL,
+                                  post_process = NULL,
+                                  ...) {
+      expect_match(url, "URAU_RG_100K_2024_4326_CITIES[.]gpkg$")
+      expect_identical(name, "URAU_RG_100K_2024_4326_CITIES.gpkg")
+      expect_false(cache)
+      expect_identical(cache_dir, "cache")
+      expect_identical(subdir, "urban_audit")
+      expect_true(update_cache)
+      expect_true(verbose)
+      expect_true(is.function(filters))
+      expect_true(is.function(post_process))
+      data <- data.frame(CNTR_CODE = c("LU", "BE"), name = c("a", "b"))
+      post_process(data)
+    }
+  )
+
+  urban <- gisco_get_urban_audit(
+    level = "CITIES",
+    country = "LU",
+    cache = FALSE,
+    cache_dir = "cache",
+    update_cache = TRUE,
+    verbose = TRUE
+  )
+  expect_identical(urban$CNTR_CODE, "LU")
+})
 
 test_that("Urban Audit online", {
   skip_on_cran()
@@ -45,11 +82,7 @@ test_that("Urban Audit online", {
   expect_silent(gisco_get_urban_audit(level = "CITIES", spatialtype = "LB"))
 
   # Test CITIES vs GREATER_CITIES for regex
-  a <- gisco_get_urban_audit(
-    year = 2020,
-    spatialtype = "LB",
-    level = "CITIES"
-  )
+  a <- gisco_get_urban_audit(year = 2020, spatialtype = "LB", level = "CITIES")
   b <- gisco_get_urban_audit(
     year = 2020,
     spatialtype = "LB",
@@ -57,38 +90,28 @@ test_that("Urban Audit online", {
   )
   expect_false(nrow(a) == nrow(b))
 
-  check <- expect_silent(
-    gisco_get_urban_audit(
-      level = "GREATER_CITIES",
-      spatialtype = "LB",
-      year = 2020,
-      epsg = 3857,
-      country = c("ITA", "POL")
-    )
-  )
+  check <- expect_silent(gisco_get_urban_audit(
+    level = "GREATER_CITIES",
+    spatialtype = "LB",
+    year = 2020,
+    epsg = 3857,
+    country = c("ITA", "POL")
+  ))
 
   expect_identical(sf::st_crs(check)$epsg, sf::st_crs(3857)$epsg)
 
-  expect_length(
-    setdiff(unique(check$CNTR_CODE), c("IT", "PL")),
-    0
-  )
+  expect_length(setdiff(unique(check$CNTR_CODE), c("IT", "PL")), 0)
 
-  check <- expect_silent(
-    gisco_get_urban_audit(
-      year = 2014,
-      spatialtype = "LB",
-      level = "GREATER_CITIES",
-      epsg = 3857,
-      country = c("ITA", "POL")
-    )
-  )
+  check <- expect_silent(gisco_get_urban_audit(
+    year = 2014,
+    spatialtype = "LB",
+    level = "GREATER_CITIES",
+    epsg = 3857,
+    country = c("ITA", "POL")
+  ))
   expect_identical(sf::st_crs(check)$epsg, sf::st_crs(3857)$epsg)
 
-  expect_length(
-    setdiff(unique(check$CNTR_CODE), c("IT", "PL")),
-    0
-  )
+  expect_length(setdiff(unique(check$CNTR_CODE), c("IT", "PL")), 0)
 
   check <- expect_silent(gisco_get_urban_audit(
     year = 2018,
@@ -99,37 +122,27 @@ test_that("Urban Audit online", {
 
   expect_identical(sf::st_crs(check)$epsg, sf::st_crs(3857)$epsg)
 
-  expect_length(
-    setdiff(unique(check$CNTR_CODE), c("IT", "PL")),
-    0
-  )
+  expect_length(setdiff(unique(check$CNTR_CODE), c("IT", "PL")), 0)
 
-  expect_message(
-    gisco_get_urban_audit(
-      year = 2018,
-      spatialtype = "LB",
-      epsg = 3857,
-      country = c("ITA", "POL"),
-      verbose = TRUE
-    )
-  )
+  expect_message(gisco_get_urban_audit(
+    year = 2018,
+    spatialtype = "LB",
+    epsg = 3857,
+    country = c("ITA", "POL"),
+    verbose = TRUE
+  ))
 
-  check <- expect_silent(
-    gisco_get_urban_audit(
-      year = 2020,
-      spatialtype = "LB",
-      level = "GREATER_CITIES",
-      epsg = 3857,
-      country = c("ITA", "POL")
-    )
-  )
+  check <- expect_silent(gisco_get_urban_audit(
+    year = 2020,
+    spatialtype = "LB",
+    level = "GREATER_CITIES",
+    epsg = 3857,
+    country = c("ITA", "POL")
+  ))
 
   expect_identical(sf::st_crs(check)$epsg, sf::st_crs(3857)$epsg)
 
-  expect_length(
-    setdiff(unique(check$CNTR_CODE), c("IT", "PL")),
-    0
-  )
+  expect_length(setdiff(unique(check$CNTR_CODE), c("IT", "PL")), 0)
 })
 
 test_that("Test inputs", {
@@ -154,10 +167,7 @@ test_that("Cache vs non-cached", {
     unlink(cdir, recursive = TRUE, force = TRUE)
   }
 
-  expect_identical(
-    list.files(cdir, recursive = TRUE),
-    character(0)
-  )
+  expect_identical(list.files(cdir, recursive = TRUE), character(0))
   expect_message(
     db_online <- gisco_get_urban_audit(
       level = "CITIES",
@@ -169,10 +179,7 @@ test_that("Cache vs non-cached", {
     "Reading from"
   )
 
-  expect_identical(
-    list.files(cdir, recursive = TRUE),
-    character(0)
-  )
+  expect_identical(list.files(cdir, recursive = TRUE), character(0))
 
   # vs cache TRUE
   expect_silent(
@@ -216,10 +223,7 @@ test_that("Extensions", {
     unlink(cdir, recursive = TRUE, force = TRUE)
   }
 
-  expect_identical(
-    list.files(cdir, recursive = TRUE),
-    character(0)
-  )
+  expect_identical(list.files(cdir, recursive = TRUE), character(0))
 
   db_geojson <- gisco_get_urban_audit(
     cache_dir = cdir,
@@ -229,10 +233,7 @@ test_that("Extensions", {
   expect_s3_class(db_geojson, "sf")
   expect_s3_class(db_geojson, "tbl_df")
 
-  expect_length(
-    list.files(cdir, recursive = TRUE, pattern = "geojson"),
-    1
-  )
+  expect_length(list.files(cdir, recursive = TRUE, pattern = "geojson"), 1)
 
   db_zip <- gisco_get_urban_audit(
     spatialtype = "LB",
@@ -244,10 +245,7 @@ test_that("Extensions", {
   expect_s3_class(db_zip, "sf")
   expect_s3_class(db_zip, "tbl_df")
 
-  expect_length(
-    list.files(cdir, recursive = TRUE, pattern = "shp.zip"),
-    1
-  )
+  expect_length(list.files(cdir, recursive = TRUE, pattern = "shp.zip"), 1)
 
   # Cleanup
   unlink(cdir, recursive = TRUE, force = TRUE)

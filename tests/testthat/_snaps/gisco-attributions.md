@@ -3,13 +3,13 @@
     Code
       gisco_attributions(copyright = TRUE)
     Message
-      i COPYRIGHT NOTICE
+      i Copyright notice
       
       When data downloaded from GISCO
       is used in any printed or electronic publication,
       in addition to any other provisions applicable to
-      the whole Eurostat website, data source will have
-      to be acknowledged in the legend of the map and in
+      the whole Eurostat website, the data source must
+      be acknowledged in the legend of the map and on
       the introductory page of the publication with the
       following copyright notice:
       
@@ -23,8 +23,8 @@
       used.
       
       If you intend to use the data commercially, please
-      contact EuroGeographics for information regarding
-      their licence agreements.
+      contact EuroGeographics for information about
+      their license agreements.
       
     Output
       [1] "© EuroGeographics for the administrative boundaries"
@@ -83,8 +83,8 @@
     Code
       gisco_attributions("xx")
     Message
-      ! Language xx not supported. Switching to English.
-      i Consider contributing: <https://github.com/rOpenGov/giscoR/issues>
+      ! `lang` = "xx" is not supported. Switching to English.
+      i Consider contributing a translation: <https://github.com/rOpenGov/giscoR/issues>.
     Output
       [1] "© EuroGeographics for the administrative boundaries"
 

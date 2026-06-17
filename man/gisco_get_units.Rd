@@ -3,11 +3,11 @@
 \encoding{UTF-8}
 \name{gisco_get_units}
 \alias{gisco_get_units}
-\title{Get geospatial units data from GISCO API}
+\title{Get geospatial unit data from GISCO}
 \source{
 \url{https://gisco-services.ec.europa.eu/distribution/v2/}
 
-All the source files are \code{.geojson} files.
+All source files are \code{.geojson} files.
 }
 \usage{
 gisco_get_units(
@@ -25,37 +25,39 @@ gisco_get_units(
 )
 }
 \arguments{
-\item{id_giscoR}{Select the \code{unit} type to be downloaded. Accepted values are
-\code{"nuts"}, \code{"countries"} or \code{"urban_audit"}.}
+\item{id_giscoR}{A character string with the \code{unit} type to download.
+Accepted values are \code{"nuts"}, \code{"countries"} or \code{"urban_audit"}.}
 
-\item{unit}{Unit ID to be downloaded.}
+\item{unit}{A unit ID to download.}
 
-\item{mode}{Controls the output of the function. Possible values are \code{"sf"}
-or \code{"df"}. See \strong{Value}.}
+\item{mode}{A character string controlling the output of the function.
+Possible values are \code{"sf"} or \code{"df"}. See \strong{Value}.}
 
-\item{year}{character string or number. Release year of the file.}
+\item{year}{A character string or numeric value with the release year of the
+file.}
 
-\item{epsg}{character string or number. Projection of the map: 4-digit
-\href{https://epsg.io/}{EPSG code}. One of:
+\item{epsg}{A character string or numeric value with the coordinate
+reference system as a 4-digit \href{https://epsg.io/}{EPSG code}. One of:
 \itemize{
 \item \code{"4326"}: \href{https://epsg.io/4326}{WGS84}.
 \item \code{"3035"}: \href{https://epsg.io/3035}{ETRS89 / ETRS-LAEA}.
 \item \code{"3857"}: \href{https://epsg.io/3857}{Pseudo-Mercator}.
 }}
 
-\item{cache}{logical. Whether to do caching. Default is \code{TRUE}. See
+\item{cache}{A logical value indicating whether to cache results. Defaults
+to \code{TRUE}. See \strong{Caching strategies} section in \code{\link[=gisco_set_cache_dir]{gisco_set_cache_dir()}}.}
+
+\item{update_cache}{A logical value indicating whether to refresh the
+cached file. Defaults to \code{FALSE}. When set to \code{TRUE}, it forces a new
+download.}
+
+\item{cache_dir}{A character string with a path to a cache directory. See
 \strong{Caching strategies} section in \code{\link[=gisco_set_cache_dir]{gisco_set_cache_dir()}}.}
 
-\item{update_cache}{logical. Should the cached file be refreshed? Default
-is \code{FALSE}. When set to \code{TRUE} it forces a new download.}
+\item{verbose}{A logical value. If \code{TRUE} displays informational messages.}
 
-\item{cache_dir}{character string. A path to a cache directory. See
-\strong{Caching strategies} section in \code{\link[=gisco_set_cache_dir]{gisco_set_cache_dir()}}.}
-
-\item{verbose}{logical. If \code{TRUE} displays informational messages.}
-
-\item{resolution}{character string or number. Resolution of the geospatial
-data. One of:
+\item{resolution}{A character string or numeric value with the geospatial
+data resolution. One of:
 \itemize{
 \item \code{"60"}: 1:60 million.
 \item \code{"20"}: 1:20 million.
@@ -64,7 +66,7 @@ data. One of:
 \item \code{"01"}: 1:1 million.
 }}
 
-\item{spatialtype}{character string. Type of geometry to be returned.
+\item{spatialtype}{A character string with the type of geometry to return.
 Options available are:
 \itemize{
 \item \code{"RG"}: Regions - \code{MULTIPOLYGON/POLYGON} object.
@@ -72,32 +74,31 @@ Options available are:
 }}
 }
 \value{
-A \code{\link[sf:sf]{sf}} object on \code{mode = "sf"} or a \link[tibble:tbl_df-class]{tibble}
-on \code{mode = "df"}.
+A \code{\link[sf:st_sf]{sf}} object when \code{mode = "sf"} or a
+\link[tibble:tbl_df]{tibble} when \code{mode = "df"}.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 
-This function is deprecated. Use:
+Deprecated. Use one of these replacements:
 \itemize{
-\item \code{\link[=gisco_get_metadata]{gisco_get_metadata()}} (equivalent to \code{mode = "df"}).
-\item \code{\link[=gisco_get_unit]{?gisco_get_unit}}functions (equivalent to
-\code{mode = "sf"})
+\item \code{\link[=gisco_get_metadata]{gisco_get_metadata()}} for \code{mode = "df"}.
+\item \code{\link[=gisco_get_unit]{?gisco_get_unit}} functions for \code{mode = "sf"}.
 }
 }
 \section{Note}{
-Please check the download and usage provisions on \code{\link[=gisco_attributions]{gisco_attributions()}}.
+Check the download and usage provisions in \code{\link[=gisco_attributions]{gisco_attributions()}}.
 }
 
 \examples{
 \dontshow{if (gisco_check_access()) withAutoprint(\{ # examplesIf}
 \donttest{
-# mode df
+# Equivalent metadata call.
 gisco_get_units("nuts", mode = "df", year = 2016)
 # ->
 gisco_get_metadata("nuts", year = 2016)
 
-# mode sf for NUTS
+# Equivalent `sf` call for NUTS.
 gisco_get_units("nuts", unit = "ES111", mode = "sf", year = 2016)
 # ->
 gisco_get_unit_nuts(unit = "ES111", year = 2016)

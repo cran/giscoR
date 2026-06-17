@@ -22,51 +22,53 @@ gisco_get_postal_codes(
 )
 }
 \arguments{
-\item{year}{character string or number. Release year of the file. One of
+\item{year}{A character string or numeric value with the release year of the
+file. One of
 \Sexpr[stage=render,results=rd]{giscoR:::db_values("postal_codes",
 "year",TRUE)}.}
 
-\item{country}{character vector of country codes. It could be either a
-vector of country names, a vector of ISO3 country codes or a vector of
-Eurostat country codes. See also \code{\link[countrycode:countrycode]{countrycode::countrycode()}}.}
+\item{country}{A character vector of country codes. It can be either a
+vector of country names, a vector of ISO 3166-1 alpha-3 country codes or a
+vector of Eurostat country codes. See also \code{\link[countrycode:countrycode]{countrycode::countrycode()}}.}
 
-\item{cache_dir}{character string. A path to a cache directory. See
+\item{cache_dir}{A character string with a path to a cache directory. See
 \strong{Caching strategies} section in \code{\link[=gisco_set_cache_dir]{gisco_set_cache_dir()}}.}
 
-\item{update_cache}{logical. Should the cached file be refreshed? Default
-is \code{FALSE}. When set to \code{TRUE} it forces a new download.}
+\item{update_cache}{A logical value indicating whether to refresh the
+cached file. Defaults to \code{FALSE}. When set to \code{TRUE}, it forces a new
+download.}
 
-\item{verbose}{logical. If \code{TRUE} displays informational messages.}
+\item{verbose}{A logical value. If \code{TRUE} displays informational messages.}
 
-\item{ext}{character. Extension of the file (default \code{"gpkg"}). One of
+\item{ext}{A character value with the extension of the file (default
+\code{"gpkg"}). One of
 \Sexpr[stage=render,results=rd]{giscoR:::db_values("postal_codes",
 "ext",TRUE)}.}
 }
 \value{
-A \code{\link[sf:sf]{sf}} object.
+A \code{\link[sf:st_sf]{sf}} object.
 }
 \description{
-The postal code point dataset shows the location of postal codes, NUTS codes
-and the Degree of Urbanisation classification across the EU, EFTA and
-candidate countries from a variety of sources. Its primary purpose is to
-create correspondence tables for the NUTS classification (EC) 1059/2003 as
-part of the Tercet Regulation (EU) 2017/2391.
+The postal code point dataset shows the location of postal codes, NUTS
+codes and the Degree of Urbanisation classification across the EU, EFTA
+and candidate countries from a variety of sources. Its primary purpose is
+to create correspondence tables for the NUTS classification (EC) 1059/2003
+as part of the Tercet Regulation (EU) 2017/2391.
 }
 \section{Copyright}{
-The dataset is released under the CC-BY-SA-4.0 licence and requires the
+The dataset is released under the CC-BY-SA-4.0 license and requires the
 following attribution whenever used:
-
-© European Union - GISCO, 2024, postal code point dataset, Licence CC-BY-SA 4.0.
+© European Union - GISCO, 2024, postal code point dataset, License CC-BY-SA 4.0.
 }
 
 \section{Note}{
-Please check the download and usage provisions on \code{\link[=gisco_attributions]{gisco_attributions()}}.
+Check the download and usage provisions in \code{\link[=gisco_attributions]{gisco_attributions()}}.
 }
 
 \examples{
 \dontshow{if (gisco_check_access()) withAutoprint(\{ # examplesIf}
 
-# Heavy-weight download!
+# Large download.
 \dontrun{
 
 pc_bel <- gisco_get_postal_codes(country = "BE")
@@ -82,7 +84,7 @@ if (!is.null(pc_bel)) {
       subtitle = "2024",
       caption = paste("\u00a9 European Union - GISCO, 2024,",
         "postal code point dataset",
-        "Licence CC-BY-SA 4.0",
+        "License CC-BY-SA 4.0",
         sep = "\n"
       )
     )
@@ -93,8 +95,8 @@ if (!is.null(pc_bel)) {
 \seealso{
 See \code{\link[=gisco_bulk_download]{gisco_bulk_download()}} to perform a bulk download of datasets.
 
-Other administrative units datasets:
-\code{\link{gisco_get_communes}()},
-\code{\link{gisco_get_countries}()}
+Administrative unit datasets:
+\code{\link[=gisco_get_communes]{gisco_get_communes()}},
+\code{\link[=gisco_get_countries]{gisco_get_countries()}}
 }
 \concept{admin}

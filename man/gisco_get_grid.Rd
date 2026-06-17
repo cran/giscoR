@@ -7,7 +7,7 @@
 \source{
 \url{https://ec.europa.eu/eurostat/web/gisco/geodata/grids}.
 
-There are specific downloading provisions, please see
+Specific download provisions apply. See
 \url{https://ec.europa.eu/eurostat/web/gisco/geodata/grids}.
 }
 \usage{
@@ -20,29 +20,31 @@ gisco_get_grid(
 )
 }
 \arguments{
-\item{resolution}{Resolution of the grid cells in km. Available values are
-\code{"1"}, \code{"2"}, \code{"5"}, \code{"10"}, \code{"20"}, \code{"50"}, \code{"100"}. See \strong{Details}.}
+\item{resolution}{The grid cell resolution in km. Available values are
+\code{"1"}, \code{"2"}, \code{"5"}, \code{"10"}, \code{"20"}, \code{"50"} and \code{"100"}. See
+\strong{Details}.}
 
-\item{spatialtype}{Select one of \code{"REGION"} or \code{"POINT"}.}
+\item{spatialtype}{A character string selecting \code{"REGION"} or \code{"POINT"}.}
 
-\item{cache_dir}{character string. A path to a cache directory. See
+\item{cache_dir}{A character string with a path to a cache directory. See
 \strong{Caching strategies} section in \code{\link[=gisco_set_cache_dir]{gisco_set_cache_dir()}}.}
 
-\item{update_cache}{logical. Should the cached file be refreshed? Default
-is \code{FALSE}. When set to \code{TRUE} it forces a new download.}
+\item{update_cache}{A logical value indicating whether to refresh the
+cached file. Defaults to \code{FALSE}. When set to \code{TRUE}, it forces a new
+download.}
 
-\item{verbose}{logical. If \code{TRUE} displays informational messages.}
+\item{verbose}{A logical value. If \code{TRUE} displays informational messages.}
 }
 \value{
-A \code{\link[sf:sf]{sf}} object.
+A \code{\link[sf:st_sf]{sf}} object.
 }
 \description{
-These datasets contain grid cells covering the European land
-territory, for various resolutions from 1km to 100km. Base statistics such
-as population figures are provided for these cells.
+These datasets contain grid cells covering the European land territory at
+resolutions from 1 km to 100 km. Base statistics such as population figures
+are provided for these cells.
 }
 \details{
-Files are distributed on \href{https://epsg.io/3035}{\code{EPSG:3035}}.
+Files are distributed in \href{https://epsg.io/3035}{\code{EPSG:3035}}.
 
 The file sizes range from 428 KB (\code{resolution = 100})
 to 1.7 GB (\code{resolution = 1}).
@@ -51,7 +53,7 @@ to 1.7 GB (\code{resolution = 1}).
 \dontshow{if (gisco_check_access()) withAutoprint(\{ # examplesIf}
 grid <- gisco_get_grid(resolution = 20)
 
-# If downloaded correctly proceed
+# Proceed if downloaded correctly.
 
 if (!is.null(grid)) {
   library(dplyr)
@@ -61,7 +63,7 @@ if (!is.null(grid)) {
 
   breaks <- c(0, 0.1, 100, 500, 1000, 5000, 10000, Inf)
 
-  # Cut groups
+  # Cut groups.
   grid <- grid |>
     mutate(popdens_cut = cut(popdens,
       breaks = breaks,
@@ -87,7 +89,7 @@ if (!is.null(grid)) {
     ) +
     scale_fill_manual(
       values = pal, na.value = "black",
-      name = "people per sq. kilometer",
+      name = "people per square kilometer",
       labels = cut_labs,
       guide = guide_legend(
         direction = "horizontal",

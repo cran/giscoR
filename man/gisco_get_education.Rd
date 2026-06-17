@@ -8,13 +8,13 @@
 \url{https://ec.europa.eu/eurostat/web/gisco/geodata/basic-services}.
 
 There are no specific download rules for the datasets shown below. However,
-please refer to \href{https://ec.europa.eu/eurostat/web/gisco/geodata}{the general copyright notice} and licence
-provisions, which must be complied with. Permission to download and use
-these data are subject to these rules being accepted.
+please refer to \href{https://ec.europa.eu/eurostat/web/gisco/geodata}{the general copyright notice} and license
+provisions, which apply to these datasets. Permission to download and use
+these data is subject to acceptance of those rules.
 
 The data are extracted from official national registers. They may contain
-inconsistencies, inaccuracies and gaps, due to the heterogeneity of the
-input national data.
+inconsistencies, inaccuracies and gaps due to the heterogeneity of the
+national input data.
 }
 \usage{
 gisco_get_education(
@@ -27,60 +27,62 @@ gisco_get_education(
 )
 }
 \arguments{
-\item{year}{character string or number. Release year of the file. One of
+\item{year}{A character string or numeric value with the release year of the
+file. One of
 \code{2023}, \code{2020}.}
 
-\item{cache}{logical. Whether to do caching. Default is \code{TRUE}. See
+\item{cache}{A logical value indicating whether to cache results. Defaults
+to \code{TRUE}. See \strong{Caching strategies} section in \code{\link[=gisco_set_cache_dir]{gisco_set_cache_dir()}}.}
+
+\item{update_cache}{A logical value indicating whether to refresh the
+cached file. Defaults to \code{FALSE}. When set to \code{TRUE}, it forces a new
+download.}
+
+\item{cache_dir}{A character string with a path to a cache directory. See
 \strong{Caching strategies} section in \code{\link[=gisco_set_cache_dir]{gisco_set_cache_dir()}}.}
 
-\item{update_cache}{logical. Should the cached file be refreshed? Default
-is \code{FALSE}. When set to \code{TRUE} it forces a new download.}
+\item{verbose}{A logical value. If \code{TRUE} displays informational messages.}
 
-\item{cache_dir}{character string. A path to a cache directory. See
-\strong{Caching strategies} section in \code{\link[=gisco_set_cache_dir]{gisco_set_cache_dir()}}.}
-
-\item{verbose}{logical. If \code{TRUE} displays informational messages.}
-
-\item{country}{character vector of country codes. It could be either a
-vector of country names, a vector of ISO3 country codes or a vector of
-Eurostat country codes. See also \code{\link[countrycode:countrycode]{countrycode::countrycode()}}.}
+\item{country}{A character vector of country codes. It can be either a
+vector of country names, a vector of ISO 3166-1 alpha-3 country codes or a
+vector of Eurostat country codes. See also \code{\link[countrycode:countrycode]{countrycode::countrycode()}}.}
 }
 \value{
-A \code{\link[sf:sf]{sf}} object.
+A \code{\link[sf:st_sf]{sf}} object.
 }
 \description{
-This dataset is an integration of Member States official data on the
-location of education services. Additional information on these services is
-included when available (see \strong{Details}).
+This dataset integrates Member States' official data on the location of
+education services. Additional information on these services is included
+when available. See \strong{Details}.
 }
 \details{
-Files are distributed on \href{https://epsg.io/4326}{EPSG:4326}.
+Files are distributed in \href{https://epsg.io/4326}{EPSG:4326}.
 
-Brief description of each attribute:\tabular{ll}{
+The following table describes the education service attributes:\tabular{ll}{
    \strong{Attribute} \tab \strong{Description} \cr
-   \code{id} \tab The education service identifier. This identifier is based on national identification codes, if it exists. \cr
+   \code{id} \tab The education service identifier, based on national identification codes when available. \cr
    \code{name} \tab The name of the education institution. \cr
-   \code{site_name} \tab The name of the specific site or branch of an education institution. \cr
+   \code{site_name} \tab The name of a specific site or branch of the education institution. \cr
    \code{lat} \tab Latitude (WGS 84). \cr
    \code{lon} \tab Longitude (WGS 84). \cr
    \code{street} \tab Street name. \cr
    \code{house_number} \tab House number. \cr
    \code{postcode} \tab Postcode. \cr
    \code{address} \tab Address information when the different components of the address are not separated in the source. \cr
-   \code{city} \tab City name (sometimes refers to a region or municipality). \cr
+   \code{city} \tab City name. In some sources, this refers to a region or municipality. \cr
    \code{cntr_id} \tab Country code (2 letters, ISO 3166-1 alpha-2). \cr
-   \code{levels} \tab Education levels represented by a single integer or range (ISCED 2011). \cr
+   \code{levels} \tab Education levels represented by a single integer or range, using ISCED 2011. \cr
    \code{max_students} \tab Measure of capacity by maximum number of students. \cr
    \code{enrollment} \tab Measure of capacity by number of enrolled students. \cr
-   \code{fields} \tab Academic disciplines the institution specializes in (ISCED-F 2013). \cr
-   \code{facility_type} \tab Type of institution in reference to ownership and operation e.g. Catholic, International, etc. \cr
-   \code{public_private} \tab The public or private status of the education service. \cr
+   \code{fields} \tab Academic disciplines in which the institution specializes, using ISCED-F 2013. \cr
+   \code{facility_type} \tab Type of institution by ownership and operation, such as Catholic or international. \cr
+   \code{public_private} \tab Public or private status of the education service. \cr
    \code{tel} \tab Telephone number. \cr
    \code{email} \tab Email address. \cr
-   \code{url} \tab URL link to the institution's website. \cr
-   \code{ref_date} \tab The reference date (\code{DD/MM/YYYY}) the data refers to. The dataset represents the reality as it was at this date. \cr
-   \code{geo_qual} \tab Geolocation quality indicator: 1=Good, 2=Medium, 3=Low, 4=From source, -1=Unknown, -2=Not geocoded. \cr
-   \code{comments} \tab Some additional information on the education service. \cr
+   \code{url} \tab URL for the institution's website. \cr
+   \code{ref_date} \tab The reference date (\code{DD/MM/YYYY}) for the data. The dataset represents the state on this date. \cr
+   \code{geo_qual} \tab Geolocation quality indicator: 1 = Good, 2 = Medium, 3 = Low, 4 = From source, -1 = Unknown, -2 = Not geocoded. \cr
+   \code{comments} \tab Additional information on the education service. \cr
 }
 }
 \examples{
@@ -88,7 +90,7 @@ Brief description of each attribute:\tabular{ll}{
 \donttest{
 edu_austria <- gisco_get_education(country = "Austria", year = 2023)
 
-# Plot if downloaded
+# Plot if downloaded.
 if (!is.null(edu_austria)) {
   austria_nuts3 <- gisco_get_nuts(country = "Austria", nuts_level = 3)
 
@@ -118,7 +120,7 @@ if (!is.null(edu_austria)) {
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-Other basic services datasets:
-\code{\link{gisco_get_healthcare}()}
+Basic service datasets:
+\code{\link[=gisco_get_healthcare]{gisco_get_healthcare()}}
 }
 \concept{services}

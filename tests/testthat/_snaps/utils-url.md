@@ -4,8 +4,8 @@
       fend <- download_url(url, cache_dir = cdir, subdir = "fixme", update_cache = FALSE,
         verbose = FALSE)
     Message
-      x Offline
-      > Returning "NULL"
+      x No internet connection available.
+      > Returning "NULL".
 
 # Get urls
 
@@ -13,7 +13,7 @@
       get_url_db("communes", "9999", fn = "gisco_get_communes")
     Condition
       Error:
-      ! Years available for `giscoR::gisco_get_communes()` are "2001", "2004", "2006", "2008", "2010", "2013", and "2016".
+      ! Years available for `giscoR::gisco_get_communes()` are 2001, 2004, 2006, 2008, 2010, 2013, and 2016.
 
 ---
 
@@ -21,7 +21,7 @@
       get_url_db("communes", "2016", epsg = "1111", ext = "csv", fn = "gisco_get_communes")
     Condition
       Error:
-      ! No results for `giscoR::gisco_get_communes()` with params:
+      ! No results for `giscoR::gisco_get_communes()` with these parameters:
       * `year` = "2016"
       * `epsg` = "1111"
       * `ext` = "csv"
@@ -32,8 +32,8 @@
     Code
       fend <- get_request_body(url, verbose = FALSE)
     Message
-      x Offline
-      > Returning "NULL"
+      x No internet connection available.
+      > Returning "NULL".
 
 # Error body
 
@@ -41,6 +41,6 @@
       fend <- get_request_body(url, verbose = FALSE)
     Message
       x Error 404 (Not Found): <https://gisco-services.ec.europa.eu/distribution/v2/themes.json>.
-      ! If you think this is a bug please consider opening an issue on <https://github.com/ropengov/giscoR/issues>
-      > Returning "NULL"
+      ! If this looks like a bug, please open an issue at <https://github.com/ropengov/giscoR/issues>.
+      > Returning "NULL".
 

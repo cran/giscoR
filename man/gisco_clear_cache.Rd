@@ -3,47 +3,46 @@
 \encoding{UTF-8}
 \name{gisco_clear_cache}
 \alias{gisco_clear_cache}
-\title{Clear your \CRANpkg{giscoR} cache dir}
+\title{Clear your \CRANpkg{giscoR} cache directory}
 \usage{
 gisco_clear_cache(config = FALSE, cached_data = TRUE, verbose = FALSE)
 }
 \arguments{
-\item{config}{if \code{TRUE}, will delete the configuration folder of
+\item{config}{If \code{TRUE}, delete the configuration folder of
 \CRANpkg{giscoR}.}
 
-\item{cached_data}{If this is set to \code{TRUE}, it will delete your
-\code{cache_dir} and all its content.}
+\item{cached_data}{If \code{TRUE}, delete your \code{cache_dir} and all its content.}
 
-\item{verbose}{logical. If \code{TRUE} displays informational messages.}
+\item{verbose}{A logical value. If \code{TRUE} displays informational messages.}
 }
 \value{
-Invisible. This function is called for its side effects.
+Invisible. Called for its side effects.
 }
 \description{
-\strong{Use this function with caution}. This function clears your cached
-data and configuration, specifically:
+\strong{Use this function with caution}. It clears your cached data and
+configuration, specifically:
 \itemize{
 \item Deletes the \CRANpkg{giscoR} config directory
 (\code{tools::R_user_dir("giscoR", "config")}).
 \item Deletes the \code{cache_dir} directory.
-\item Deletes the values stored on \code{Sys.getenv("GISCO_CACHE_DIR")}.
+\item Deletes the value stored in \code{Sys.getenv("GISCO_CACHE_DIR")}.
 }
 }
 \details{
-This is an overkill function that is intended to reset your status
-as if you had never installed and/or used \CRANpkg{giscoR}.
+Fully resets your cache state as if you had never installed or used
+\CRANpkg{giscoR}.
 }
 \examples{
 
-# Don't run this! It modifies your current state
+# Do not run this. It modifies your current state.
 \dontrun{
 my_cache <- gisco_detect_cache_dir()
 
-# Set an example cache
+# Set an example cache.
 ex <- file.path(tempdir(), "example", "cache")
 gisco_set_cache_dir(ex, verbose = FALSE)
 
-# Restore initial cache
+# Restore the initial cache.
 gisco_clear_cache(verbose = TRUE)
 
 gisco_set_cache_dir(my_cache)
@@ -51,9 +50,9 @@ identical(my_cache, gisco_detect_cache_dir())
 }
 }
 \seealso{
-\code{\link[tools:userdir]{tools::R_user_dir()}}
+\code{\link[tools:R_user_dir]{tools::R_user_dir()}}
 
-Other cache utilities: 
-\code{\link{gisco_set_cache_dir}()}
+Other cache utilities:
+\code{\link[=gisco_set_cache_dir]{gisco_set_cache_dir()}}
 }
 \concept{cache utilities}

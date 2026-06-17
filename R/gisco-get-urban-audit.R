@@ -1,46 +1,39 @@
 #' Urban Audit dataset
 #'
 #' @description
-#' The dataset contains the boundaries of cities (`"CITIES"`), greater cities
-#' (`"GREATER_CITIES"`) and functional urban areas (`"FUA"`) as defined
-#' according to the EC-OECD city definition. This is used for the Eurostat Urban
-#' Audit data collection.
+#' This dataset contains the boundaries of cities (`"CITIES"`), greater cities
+#' (`"GREATER_CITIES"`) and functional urban areas (`"FUA"`) defined according
+#' to the EC-OECD city definition. It is used for the Eurostat Urban Audit data
+#' collection.
 #'
-#' **Please note that** this function gets data from the aggregated GISCO
-#' Urban Audit file. If you prefer to download individual urban audit files,
-#' please use [gisco_get_unit_urban_audit()].
+#' Downloads data from the aggregated GISCO Urban Audit file. To download
+#' single-unit Urban Audit files, use [gisco_get_unit_urban_audit()].
 #'
 #' @family stats
 #' @encoding UTF-8
-#' @export
 #' @inheritParams gisco_get_countries
-#' @inheritSection gisco_get_countries Note
-#' @inherit gisco_get_nuts source return
-#'
-#' @seealso
-#' See [gisco_bulk_download()] to perform a bulk download of datasets.
-#'
-#' See [gisco_get_unit_urban_audit()] to download single files.
-#'
-#' @param year character string or number. Release year of the file. One of
+#' @param year A character string or numeric value with the release year of the
+#'   file. One of
 #'   \Sexpr[stage=render,results=rd]{giscoR:::db_values("urban_audit",
 #'   "year",TRUE)}.
 #'
-#' @param spatialtype character string. Type of geometry to be returned. Options
-#'   available are:
-#'   * `"RG"`: Regions - `MULTIPOLYGON/POLYGON` object.
-#'   * `"LB"`: Labels - `POINT` object.
+#' @param spatialtype A character string with the type of geometry to return.
+#'   Options available are:
+#' - `"RG"`: Regions - `MULTIPOLYGON/POLYGON` object.
+#' - `"LB"`: Labels - `POINT` object.
 #'
-#' @param level character string. Level of Urban Audit. Possible values `"all"`
-#'   (the default), that downloads the full dataset or `"CITIES"`, `"FUA"`,
-#'   and (for versions prior to `year = 2020`) `"GREATER_CITIES"`, `"CITY"`,
-#'   `"KERN"` or `"LUZ"`.
-#' @param ext character. Extension of the file (default `"gpkg"`). One of
+#' @param level A character string with the Urban Audit level. Possible values
+#'   are `"all"` (the default), which downloads the full dataset, `"CITIES"`,
+#'   `"FUA"` and, for versions prior to `year = 2020`, `"GREATER_CITIES"`,
+#'   `"CITY"`, `"KERN"` or `"LUZ"`.
+#' @param ext A character value with the extension of the file (default
+#'   `"gpkg"`). One of
 #'   \Sexpr[stage=render,results=rd]{giscoR:::db_values("urban_audit",
 #'   "ext",TRUE)}.
 #'
+#' @inherit gisco_get_nuts return
 #' @details
-#' See more in
+#' For more information, see:
 #' ```{r, echo=FALSE, results='asis'}
 #' cat(paste0(" [Eurostat - Statistics Explained]",
 #' "(https://ec.europa.eu/eurostat/statistics-explained/index.php?",
@@ -49,18 +42,24 @@
 #'
 #' ```
 #'
-#' The cities are defined at several conceptual levels:
-#'   - The core city (`"CITIES"`), using an administrative definition.
-#'   - The Functional Urban Area/Large Urban Zone (`"FUA"`), approximating the
+#' Cities are defined at several conceptual levels:
+#' - The core city (`"CITIES"`), using an administrative definition.
+#' - The Functional Urban Area/Large Urban Zone (`"FUA"`), approximating the
 #'     functional urban region.
-#' The coverage is the EU plus Iceland, Norway and Switzerland . The dataset
+#' Coverage includes the EU, Iceland, Norway and Switzerland. The dataset
 #' includes polygon features, point features and a related attribute table
 #' which can be joined on the URAU code field.
 #'
 #' The `"URAU_CATG"` field defines the Urban Audit category:
-#'   - `"C"` = City.
-#'   - `"F"` = Functional Urban Area Service Type.
+#' - `"C"` = City.
+#' - `"F"` = Functional urban area service type.
 #'
+#' @inheritSection gisco_get_countries Note
+#' @inherit gisco_get_nuts source
+#' @seealso
+#' See [gisco_bulk_download()] to perform a bulk download of datasets.
+#'
+#' See [gisco_get_unit_urban_audit()] to download single-unit files.
 #'
 #' @examplesIf gisco_check_access()
 #' \donttest{
@@ -75,6 +74,7 @@
 #'     geom_sf()
 #' }
 #' }
+#' @export
 gisco_get_urban_audit <- function(
   year = 2024,
   epsg = 4326,
@@ -97,7 +97,7 @@ gisco_get_urban_audit <- function(
   level <- match_arg_pretty(level)
   spatialtype <- match_arg_pretty(spatialtype)
 
-  api_entry <- get_url_db(
+  file <- resolve_gisco_file(
     id = "urban_audit",
     year = year,
     epsg = epsg,
@@ -107,62 +107,24 @@ gisco_get_urban_audit <- function(
     fn = "gisco_get_urban_audit"
   )
 
-  if (all(isFALSE(cache), ext != "shp")) {
-    msg <- paste0("{.url ", api_entry, "}.")
-    make_msg("info", verbose, "Reading from", msg)
+  country <- convert_country_code_or_null(country)
 
-    data_sf <- read_geo_file_sf(api_entry)
-    if (!is.null(country) && "CNTR_CODE" %in% names(data_sf)) {
-      country <- convert_country_code(country)
-      data_sf <- data_sf[data_sf$CNTR_CODE %in% country, ]
+  read_gisco_dataset(
+    url = file$url,
+    name = file$name,
+    cache = cache,
+    cache_dir = cache_dir,
+    subdir = "urban_audit",
+    update_cache = update_cache,
+    verbose = verbose,
+    filters = function(file_local) {
+      make_sf_filter(file_local, country)
+    },
+    post_process = function(data_sf) {
+      if (!is.null(country) && "CNTR_CODE" %in% names(data_sf)) {
+        data_sf <- data_sf[data_sf$CNTR_CODE %in% country, ]
+      }
+      data_sf
     }
-    return(data_sf)
-  }
-
-  filename <- basename(api_entry)
-  file_local <- download_url(
-    api_entry,
-    filename,
-    cache_dir,
-    "urban_audit",
-    update_cache,
-    verbose
   )
-
-  if (is.null(file_local)) {
-    return(NULL)
-  }
-
-  # Improve speed using queries if country(es) are selected
-  # We construct the query and pass it to the st_read function
-
-  filter_col <- get_col_name(file_local)
-  if (all(!is.null(country), !is.null(filter_col))) {
-    make_msg("info", verbose, "Speed up using {.pkg sf} query")
-
-    country <- convert_country_code(country)
-
-    # Get layer name
-    layer <- get_sf_layer_name(file_local)
-
-    # Construct query
-    q <- paste0(
-      "SELECT * from \"",
-      layer,
-      "\" WHERE ",
-      filter_col[1],
-      " IN (",
-      paste0("'", country, "'", collapse = ", "),
-      ")"
-    )
-
-    msg <- paste0("{.code ", q, "}")
-    make_msg("info", verbose, "Using query:\n   ", msg)
-
-    data_sf <- read_geo_file_sf(file_local, q)
-  } else {
-    data_sf <- read_geo_file_sf(file_local)
-  }
-
-  data_sf
 }

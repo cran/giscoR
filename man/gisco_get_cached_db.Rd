@@ -3,7 +3,7 @@
 \encoding{UTF-8}
 \name{gisco_get_cached_db}
 \alias{gisco_get_cached_db}
-\title{Retrieve and update the GISCO database in use by \CRANpkg{giscoR}}
+\title{Retrieve and update the GISCO database used by \CRANpkg{giscoR}}
 \source{
 \url{https://gisco-services.ec.europa.eu/distribution/v2/}.
 }
@@ -11,27 +11,27 @@
 gisco_get_cached_db(update_cache = FALSE)
 }
 \arguments{
-\item{update_cache}{logical. On \code{TRUE} the cached database is rebuilt
-with the most updated information of the GISCO API.}
+\item{update_cache}{A logical value. If \code{TRUE}, rebuild the cached database
+with the most recent information from the GISCO geodata distribution.}
 }
 \value{
-A \link[tibble:tbl_df-class]{tibble}.
+A \link[tibble:tbl_df]{tibble}.
 }
 \description{
-Returns or optionally updates the cached database with the endpoints of the
-GISCO API.
+Returns or optionally updates the cached database with endpoints from the
+GISCO geodata distribution.
 }
 \details{
-The cached database is stored in the \CRANpkg{giscoR} cache path, see
-\code{\link[=gisco_set_cache_dir]{gisco_set_cache_dir()}} for details. The cached database is used
-in subsequent \strong{R} sessions.
+The cached database is stored in the \CRANpkg{giscoR} cache path. See
+\code{\link[=gisco_set_cache_dir]{gisco_set_cache_dir()}} for details. The cached database is used in
+subsequent \R sessions.
 
-On new GISCO data releases, you can access the new updated data simply by
-refreshing the cached database without waiting for a new version of
+On new GISCO data releases, you can access the updated data by refreshing
+the cached database without waiting for a new version of
 \CRANpkg{giscoR}.
 
 A static database \link{gisco_db} is shipped with the package. This database is
-used in case there is any problem on update.
+used if there is any problem during the update.
 }
 \examples{
 \dontshow{if (gisco_check_access()) withAutoprint(\{ # examplesIf}
@@ -41,8 +41,8 @@ gisco_get_cached_db() |>
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-Other database utils:
+Database utilities:
 \code{\link{gisco_db}},
-\code{\link{gisco_get_metadata}()}
+\code{\link[=gisco_get_metadata]{gisco_get_metadata()}}
 }
 \concept{database}

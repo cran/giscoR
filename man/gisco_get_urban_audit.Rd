@@ -25,71 +25,73 @@ gisco_get_urban_audit(
 )
 }
 \arguments{
-\item{year}{character string or number. Release year of the file. One of
+\item{year}{A character string or numeric value with the release year of the
+file. One of
 \Sexpr[stage=render,results=rd]{giscoR:::db_values("urban_audit",
 "year",TRUE)}.}
 
-\item{epsg}{character string or number. Projection of the map: 4-digit
-\href{https://epsg.io/}{EPSG code}. One of:
+\item{epsg}{A character string or numeric value with the coordinate
+reference system as a 4-digit \href{https://epsg.io/}{EPSG code}. One of:
 \itemize{
 \item \code{"4326"}: \href{https://epsg.io/4326}{WGS84}.
 \item \code{"3035"}: \href{https://epsg.io/3035}{ETRS89 / ETRS-LAEA}.
 \item \code{"3857"}: \href{https://epsg.io/3857}{Pseudo-Mercator}.
 }}
 
-\item{cache}{logical. Whether to do caching. Default is \code{TRUE}. See
+\item{cache}{A logical value indicating whether to cache results. Defaults
+to \code{TRUE}. See \strong{Caching strategies} section in \code{\link[=gisco_set_cache_dir]{gisco_set_cache_dir()}}.}
+
+\item{update_cache}{A logical value indicating whether to refresh the
+cached file. Defaults to \code{FALSE}. When set to \code{TRUE}, it forces a new
+download.}
+
+\item{cache_dir}{A character string with a path to a cache directory. See
 \strong{Caching strategies} section in \code{\link[=gisco_set_cache_dir]{gisco_set_cache_dir()}}.}
 
-\item{update_cache}{logical. Should the cached file be refreshed? Default
-is \code{FALSE}. When set to \code{TRUE} it forces a new download.}
+\item{verbose}{A logical value. If \code{TRUE} displays informational messages.}
 
-\item{cache_dir}{character string. A path to a cache directory. See
-\strong{Caching strategies} section in \code{\link[=gisco_set_cache_dir]{gisco_set_cache_dir()}}.}
-
-\item{verbose}{logical. If \code{TRUE} displays informational messages.}
-
-\item{spatialtype}{character string. Type of geometry to be returned. Options
-available are:
+\item{spatialtype}{A character string with the type of geometry to return.
+Options available are:
 \itemize{
 \item \code{"RG"}: Regions - \code{MULTIPOLYGON/POLYGON} object.
 \item \code{"LB"}: Labels - \code{POINT} object.
 }}
 
-\item{country}{character vector of country codes. It could be either a
-vector of country names, a vector of ISO3 country codes or a vector of
-Eurostat country codes. See also \code{\link[countrycode:countrycode]{countrycode::countrycode()}}.}
+\item{country}{A character vector of country codes. It can be either a
+vector of country names, a vector of ISO 3166-1 alpha-3 country codes or a
+vector of Eurostat country codes. See also \code{\link[countrycode:countrycode]{countrycode::countrycode()}}.}
 
-\item{level}{character string. Level of Urban Audit. Possible values \code{"all"}
-(the default), that downloads the full dataset or \code{"CITIES"}, \code{"FUA"},
-and (for versions prior to \code{year = 2020}) \code{"GREATER_CITIES"}, \code{"CITY"},
-\code{"KERN"} or \code{"LUZ"}.}
+\item{level}{A character string with the Urban Audit level. Possible values
+are \code{"all"} (the default), which downloads the full dataset, \code{"CITIES"},
+\code{"FUA"} and, for versions prior to \code{year = 2020}, \code{"GREATER_CITIES"},
+\code{"CITY"}, \code{"KERN"} or \code{"LUZ"}.}
 
-\item{ext}{character. Extension of the file (default \code{"gpkg"}). One of
+\item{ext}{A character value with the extension of the file (default
+\code{"gpkg"}). One of
 \Sexpr[stage=render,results=rd]{giscoR:::db_values("urban_audit",
 "ext",TRUE)}.}
 }
 \value{
-A \code{\link[sf:sf]{sf}} object.
+A \code{\link[sf:st_sf]{sf}} object.
 }
 \description{
-The dataset contains the boundaries of cities (\code{"CITIES"}), greater cities
-(\code{"GREATER_CITIES"}) and functional urban areas (\code{"FUA"}) as defined
-according to the EC-OECD city definition. This is used for the Eurostat Urban
-Audit data collection.
+This dataset contains the boundaries of cities (\code{"CITIES"}), greater cities
+(\code{"GREATER_CITIES"}) and functional urban areas (\code{"FUA"}) defined according
+to the EC-OECD city definition. It is used for the Eurostat Urban Audit data
+collection.
 
-\strong{Please note that} this function gets data from the aggregated GISCO
-Urban Audit file. If you prefer to download individual urban audit files,
-please use \code{\link[=gisco_get_unit_urban_audit]{gisco_get_unit_urban_audit()}}.
+Downloads data from the aggregated GISCO Urban Audit file. To download
+single-unit Urban Audit files, use \code{\link[=gisco_get_unit_urban_audit]{gisco_get_unit_urban_audit()}}.
 }
 \details{
-See more in \href{https://ec.europa.eu/eurostat/statistics-explained/index.php?title=Territorial_typologies_for_European_cities_and_metropolitan_regions}{Eurostat - Statistics Explained}.
+For more information, see: \href{https://ec.europa.eu/eurostat/statistics-explained/index.php?title=Territorial_typologies_for_European_cities_and_metropolitan_regions}{Eurostat - Statistics Explained}.
 
-The cities are defined at several conceptual levels:
+Cities are defined at several conceptual levels:
 \itemize{
 \item The core city (\code{"CITIES"}), using an administrative definition.
 \item The Functional Urban Area/Large Urban Zone (\code{"FUA"}), approximating the
 functional urban region.
-The coverage is the EU plus Iceland, Norway and Switzerland . The dataset
+Coverage includes the EU, Iceland, Norway and Switzerland. The dataset
 includes polygon features, point features and a related attribute table
 which can be joined on the URAU code field.
 }
@@ -97,11 +99,11 @@ which can be joined on the URAU code field.
 The \code{"URAU_CATG"} field defines the Urban Audit category:
 \itemize{
 \item \code{"C"} = City.
-\item \code{"F"} = Functional Urban Area Service Type.
+\item \code{"F"} = Functional urban area service type.
 }
 }
 \section{Note}{
-Please check the download and usage provisions on \code{\link[=gisco_attributions]{gisco_attributions()}}.
+Check the download and usage provisions in \code{\link[=gisco_attributions]{gisco_attributions()}}.
 }
 
 \examples{
@@ -123,12 +125,12 @@ if (!is.null(cities)) {
 \seealso{
 See \code{\link[=gisco_bulk_download]{gisco_bulk_download()}} to perform a bulk download of datasets.
 
-See \code{\link[=gisco_get_unit_urban_audit]{gisco_get_unit_urban_audit()}} to download single files.
+See \code{\link[=gisco_get_unit_urban_audit]{gisco_get_unit_urban_audit()}} to download single-unit files.
 
-Other statistical units datasets:
-\code{\link{gisco_get_census}()},
-\code{\link{gisco_get_coastal_lines}()},
-\code{\link{gisco_get_lau}()},
-\code{\link{gisco_get_nuts}()}
+Statistical unit datasets:
+\code{\link[=gisco_get_census]{gisco_get_census()}},
+\code{\link[=gisco_get_coastal_lines]{gisco_get_coastal_lines()}},
+\code{\link[=gisco_get_lau]{gisco_get_lau()}},
+\code{\link[=gisco_get_nuts]{gisco_get_nuts()}}
 }
 \concept{stats}

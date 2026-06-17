@@ -15,7 +15,7 @@
     Condition
       Warning:
       The `recursive` argument of `gisco_bulk_download()` is deprecated as of giscoR 1.0.0.
-      i Child `.zip` files inside the top-level `.zip` won't be unzipped.
+      i Child `.zip` files inside the top-level `.zip` will not be unzipped.
 
 # Errors
 
@@ -26,5 +26,5 @@
       The `id_giscoR` argument of `gisco_bulk_download()` is deprecated as of giscoR 1.0.0.
       i Please use the `id` argument instead.
       Error:
-      ! `id` should be one of "countries", "coastal_lines", "communes", "lau", "nuts", "urban_audit" or "postal_codes", not "nutes".
+      ! `id` must be "countries", "coastal_lines", "communes", "lau", "nuts", "urban_audit", or "postal_codes", not "nutes".
 

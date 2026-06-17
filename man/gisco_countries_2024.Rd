@@ -4,19 +4,19 @@
 \encoding{UTF-8}
 \name{gisco_countries_2024}
 \alias{gisco_countries_2024}
-\title{Countries 2024 \code{\link[sf:sf]{sf}} object}
+\title{Countries 2024 \code{\link[sf:st_sf]{sf}} object}
 \format{
-A \code{\link[sf:sf]{sf}} object with \code{MULTIPOLYGON} geometries, resolution:
-1:20 million and \href{https://epsg.io/4326}{EPSG:4326}. with
+A \code{\link[sf:st_sf]{sf}} object with \code{MULTIPOLYGON} geometries, resolution:
+1:20 million and \href{https://epsg.io/4326}{EPSG:4326}. It has
 263 rows and 12 variables:
 \describe{
-\item{\code{CNTR_ID}}{Country ID as per Eurostat.}
+\item{\code{CNTR_ID}}{Country ID from Eurostat.}
 \item{\code{CNTR_NAME}}{Official country name in local language.}
 \item{\code{NAME_ENGL}}{Country name in English.}
 \item{\code{NAME_FREN}}{Country name in French.}
-\item{\code{ISO3_CODE}}{ISO 3166-1 alpha-3 code of each country, as provided by
+\item{\code{ISO3_CODE}}{ISO 3166-1 alpha-3 code of each country from
 GISCO.}
-\item{\code{SVRG_UN}}{Sovereign status as per United Nations.}
+\item{\code{SVRG_UN}}{Sovereign status according to the United Nations.}
 \item{\code{CAPT}}{Capital city.}
 \item{\code{EU_STAT}}{European Union member.}
 \item{\code{EFTA_STAT}}{EFTA member.}
@@ -29,8 +29,7 @@ GISCO.}
 \href{https://gisco-services.ec.europa.eu/distribution/v2/countries/gpkg/}{CNTR_RG_20M_2024_4326.gpkg} file.
 }
 \description{
-This object contains the administrative boundaries at country level of the
-world.
+This object contains world administrative boundaries at the country level.
 }
 \examples{
 
@@ -41,7 +40,7 @@ head(gisco_countries_2024)
 \seealso{
 \code{\link[=gisco_get_countries]{gisco_get_countries()}}
 
-Other datasets: 
+Other datasets:
 \code{\link{gisco_coastal_lines}},
 \code{\link{gisco_countrycode}},
 \code{\link{gisco_db}},

@@ -15,18 +15,19 @@ gisco_get_metadata(
 )
 }
 \arguments{
-\item{id}{character string. Select the unit type to be downloaded. Accepted
-values are \code{"nuts"}, \code{"countries"} or \code{"urban_audit"}.}
+\item{id}{A character string with the unit type to download. Accepted values
+are \code{"nuts"}, \code{"countries"} or \code{"urban_audit"}.}
 
-\item{year}{character string or number. Release year of the metadata.}
+\item{year}{A character string or numeric value with the release year of the
+metadata.}
 
-\item{verbose}{logical. If \code{TRUE} displays informational messages.}
+\item{verbose}{A logical value. If \code{TRUE} displays informational messages.}
 }
 \value{
-A \link[tibble:tbl_df-class]{tibble}.
+A \link[tibble:tbl_df]{tibble}.
 }
 \description{
-Get a table with the names and ids of administrative and statistical units.
+Get a table with names and IDs of administrative and statistical units.
 }
 \examples{
 \dontshow{if (gisco_check_access()) withAutoprint(\{ # examplesIf}
@@ -38,8 +39,8 @@ cities
 \seealso{
 \code{\link[=gisco_get_nuts]{gisco_get_nuts()}}, \code{\link[=gisco_get_countries]{gisco_get_countries()}}, \code{\link[=gisco_get_urban_audit]{gisco_get_urban_audit()}}.
 
-Other database utils:
+Database utilities:
 \code{\link{gisco_db}},
-\code{\link{gisco_get_cached_db}()}
+\code{\link[=gisco_get_cached_db]{gisco_get_cached_db()}}
 }
 \concept{database}

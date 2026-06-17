@@ -27,31 +27,33 @@ gisco_get_countries(
 )
 }
 \arguments{
-\item{year}{character string or number. Release year of the file. One of
+\item{year}{A character string or numeric value with the release year of the
+file. One of
 \Sexpr[stage=render,results=rd]{giscoR:::db_values("countries",
 "year",TRUE)}.}
 
-\item{epsg}{character string or number. Projection of the map: 4-digit
-\href{https://epsg.io/}{EPSG code}. One of:
+\item{epsg}{A character string or numeric value with the coordinate
+reference system as a 4-digit \href{https://epsg.io/}{EPSG code}. One of:
 \itemize{
 \item \code{"4326"}: \href{https://epsg.io/4326}{WGS84}.
 \item \code{"3035"}: \href{https://epsg.io/3035}{ETRS89 / ETRS-LAEA}.
 \item \code{"3857"}: \href{https://epsg.io/3857}{Pseudo-Mercator}.
 }}
 
-\item{cache}{logical. Whether to do caching. Default is \code{TRUE}. See
+\item{cache}{A logical value indicating whether to cache results. Defaults
+to \code{TRUE}. See \strong{Caching strategies} section in \code{\link[=gisco_set_cache_dir]{gisco_set_cache_dir()}}.}
+
+\item{update_cache}{A logical value indicating whether to refresh the
+cached file. Defaults to \code{FALSE}. When set to \code{TRUE}, it forces a new
+download.}
+
+\item{cache_dir}{A character string with a path to a cache directory. See
 \strong{Caching strategies} section in \code{\link[=gisco_set_cache_dir]{gisco_set_cache_dir()}}.}
 
-\item{update_cache}{logical. Should the cached file be refreshed? Default
-is \code{FALSE}. When set to \code{TRUE} it forces a new download.}
+\item{verbose}{A logical value. If \code{TRUE} displays informational messages.}
 
-\item{cache_dir}{character string. A path to a cache directory. See
-\strong{Caching strategies} section in \code{\link[=gisco_set_cache_dir]{gisco_set_cache_dir()}}.}
-
-\item{verbose}{logical. If \code{TRUE} displays informational messages.}
-
-\item{resolution}{character string or number. Resolution of the geospatial
-data. One of:
+\item{resolution}{A character string or numeric value with the geospatial
+data resolution. One of:
 \itemize{
 \item \code{"60"}: 1:60 million.
 \item \code{"20"}: 1:20 million.
@@ -60,54 +62,53 @@ data. One of:
 \item \code{"01"}: 1:1 million.
 }}
 
-\item{spatialtype}{character string. Type of geometry to be returned.
+\item{spatialtype}{A character string with the type of geometry to return.
 Options available are:
 \itemize{
 \item \code{"RG"}: Regions - \code{MULTIPOLYGON/POLYGON} object.
 \item \code{"LB"}: Labels - \code{POINT} object.
 \item \code{"BN"}: Boundaries - \code{LINESTRING} object.
-\item \code{"COASTL"}: coastlines - \code{LINESTRING} object.
-\item \code{"INLAND"}: inland boundaries - \code{LINESTRING} object.
-}
+\item \code{"COASTL"}: Coastal lines - \code{LINESTRING} object.
+\item \code{"INLAND"}: Inland boundaries - \code{LINESTRING} object.
 
-\strong{Note that} arguments \code{country} and \code{region} are
-only applied when \code{spatialtype} is \code{"RG"} or \code{"LB"}.}
+Arguments \code{country} and \code{region} are only applied when \code{spatialtype} is
+\code{"RG"} or \code{"LB"}.
+}}
 
-\item{country}{character vector of country codes. It could be either a
-vector of country names, a vector of ISO3 country codes or a vector of
-Eurostat country codes. See also \code{\link[countrycode:countrycode]{countrycode::countrycode()}}.}
+\item{country}{A character vector of country codes. It can be either a
+vector of country names, a vector of ISO 3166-1 alpha-3 country codes or a
+vector of Eurostat country codes. See also \code{\link[countrycode:countrycode]{countrycode::countrycode()}}.}
 
-\item{region}{Optional. A character vector of UN M49 region codes or
+\item{region}{An optional character vector of UN M49 region codes or
 European Union membership. Possible values are \code{"Africa"}, \code{"Americas"},
-\code{"Asia"}, \code{"Europe"}, \code{"Oceania"} or \code{"EU"} for countries belonging to the
-European Union (as per 2021). See \strong{World Regions} and
+\code{"Asia"}, \code{"Europe"}, \code{"Oceania"} or \code{"EU"} for countries belonging to
+the European Union as of 2021. See \strong{World Regions} and
 \link{gisco_countrycode}.}
 
-\item{ext}{character. Extension of the file (default \code{"gpkg"}). One of
+\item{ext}{A character value with the extension of the file (default
+\code{"gpkg"}). One of
 \Sexpr[stage=render,results=rd]{giscoR:::db_values("countries",
 "ext",TRUE)}.}
 }
 \value{
-A \code{\link[sf:sf]{sf}} object.
+A \code{\link[sf:st_sf]{sf}} object.
 }
 \description{
-This dataset contains the administrative boundaries at country level of the
-world. This dataset consists of 2 feature classes (regions, boundaries) per
-scale level and there are 5 different scale levels (1M, 3M, 10M, 20M and
-60M).
+This dataset contains world administrative boundaries at the country level.
+It provides two feature classes, regions and boundaries, at five scale
+levels: 1M, 3M, 10M, 20M and 60M.
 
-\strong{Please note that} this function gets data from the aggregated GISCO
-country file. If you prefer to download individual country files, please use
-\code{\link[=gisco_get_unit_country]{gisco_get_unit_country()}}.
+Downloads data from the aggregated GISCO country file. To download
+single-unit country files, use \code{\link[=gisco_get_unit_country]{gisco_get_unit_country()}}.
 }
 \section{World Regions}{
-Regions are defined as per the geographic regions defined by the
-UN (see \url{https://unstats.un.org/unsd/methodology/m49/}.
+Regions follow the UN geographic regions
+(see \url{https://unstats.un.org/unsd/methodology/m49/}).
 Under this scheme Cyprus is assigned to Asia.
 }
 
 \section{Note}{
-Please check the download and usage provisions on \code{\link[=gisco_attributions]{gisco_attributions()}}.
+Check the download and usage provisions in \code{\link[=gisco_attributions]{gisco_attributions()}}.
 }
 
 \examples{
@@ -130,12 +131,12 @@ ggplot(africa) +
 
 See \code{\link[=gisco_bulk_download]{gisco_bulk_download()}} to perform a bulk download of datasets.
 
-See \code{\link[=gisco_get_unit_country]{gisco_get_unit_country()}} to download single files.
+See \code{\link[=gisco_get_unit_country]{gisco_get_unit_country()}} to download single-unit files.
 
 See \code{\link[=gisco_id_api_country]{gisco_id_api_country()}} to download via GISCO ID service API.
 
-Other administrative units datasets:
-\code{\link{gisco_get_communes}()},
-\code{\link{gisco_get_postal_codes}()}
+Administrative unit datasets:
+\code{\link[=gisco_get_communes]{gisco_get_communes()}},
+\code{\link[=gisco_get_postal_codes]{gisco_get_postal_codes()}}
 }
 \concept{admin}

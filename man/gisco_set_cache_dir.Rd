@@ -4,7 +4,7 @@
 \name{gisco_set_cache_dir}
 \alias{gisco_set_cache_dir}
 \alias{gisco_detect_cache_dir}
-\title{Set your \CRANpkg{giscoR} cache dir}
+\title{Set your \CRANpkg{giscoR} cache directory}
 \usage{
 gisco_set_cache_dir(
   cache_dir = NULL,
@@ -16,35 +16,35 @@ gisco_set_cache_dir(
 gisco_detect_cache_dir()
 }
 \arguments{
-\item{cache_dir}{A path to a cache directory. On \code{NULL}, the function
-stores the cached files on a temporary dir (see \code{\link[base:tempfile]{base::tempdir()}}).}
+\item{cache_dir}{A path to a cache directory. If \code{NULL}, the function
+stores cached files in a temporary directory (see \code{\link[base:tempdir]{base::tempdir()}}).}
 
-\item{overwrite}{If this is set to \code{TRUE}, it will overwrite an existing
+\item{overwrite}{If \code{TRUE}, overwrite an existing
 \code{GISCO_CACHE_DIR} that you already have on your local machine.}
 
-\item{install}{If \code{TRUE}, will install the key in your local machine for
-use in future sessions. Defaults to \code{FALSE}. If \code{cache_dir} is \code{FALSE}
-this argument is set to \code{FALSE} automatically.}
+\item{install}{If \code{TRUE}, install the cache path on your local machine for
+use in future sessions. Defaults to \code{FALSE}. If \code{cache_dir} is \code{FALSE},
+\code{install} is automatically set to \code{FALSE}.}
 
-\item{verbose}{logical. If \code{TRUE} displays informational messages.}
+\item{verbose}{A logical value. If \code{TRUE} displays informational messages.}
 }
 \value{
-\code{gisco_set_cache_dir()} returns an (invisible) character with the path to
-your \code{cache_dir}, but it is mainly called for its side effect.
+\code{gisco_set_cache_dir()} invisibly returns a character string with the path
+to your \code{cache_dir}, but it is mainly called for its side effect.
 
 \code{gisco_detect_cache_dir()} returns the path to the \code{cache_dir} used in this
 session.
 }
 \description{
-This function stores your \code{cache_dir} path on your local machine and
-loads it for future sessions. Type \code{Sys.getenv("GISCO_CACHE_DIR")} to
-find your cached path or use \code{\link[=gisco_detect_cache_dir]{gisco_detect_cache_dir()}}.
+Stores your \code{cache_dir} path on your local machine and loads it in future
+sessions. Use \code{Sys.getenv("GISCO_CACHE_DIR")} or
+\code{\link[=gisco_detect_cache_dir]{gisco_detect_cache_dir()}} to find your cached path.
 }
 \details{
-By default, when no cache \code{cache_dir} is set the package uses a folder inside
-\code{\link[base:tempfile]{base::tempdir()}} (so files are temporary and are removed when the \strong{R}
-session ends). To persist a cache across \strong{R} sessions, use
-\code{gisco_set_cache_dir(cache_dir, install = TRUE)} which writes the chosen
+By default, when no cache \code{cache_dir} is set, the package uses a folder
+inside \code{\link[base:tempdir]{base::tempdir()}} (so files are temporary and are removed when the
+\R session ends). To persist a cache across \R sessions, use
+\code{gisco_set_cache_dir(cache_dir, install = TRUE)}, which writes the chosen
 path to a small configuration file under
 \code{tools::R_user_dir("giscoR", "config")}.
 }
@@ -53,7 +53,8 @@ In \CRANpkg{giscoR} >= 1.0.0 the location of the configuration file has
 moved from \code{rappdirs::user_config_dir("giscoR", "R")} to
 \code{tools::R_user_dir("giscoR", "config")}. We have implemented a function
 that migrates previous configuration files from one location to another
-with a message. This message appears only once informing of the migration.
+with a message. The message appears only once to inform you of the
+migration.
 }
 \section{Caching strategies}{
 
@@ -64,37 +65,37 @@ your computer. \CRANpkg{giscoR} implements the following caching options:
 \itemize{
 \item For occasional use, rely on the default \code{\link[=tempdir]{tempdir()}}-based cache (no
 install).
-\item Modify the cache for a single session setting
+\item Modify the cache for a single session by setting
 \code{gisco_set_cache_dir(cache_dir = "a/path/here")}.
 \item For reproducible workflows, install a persistent cache with
-\code{gisco_set_cache_dir(cache_dir = "a/path/here", install = TRUE)} that is
-be kept across \strong{R} sessions.
+\code{gisco_set_cache_dir(cache_dir = "a/path/here", install = TRUE)}, which
+keeps the path across \R sessions.
 \item For caching specific files, use the \code{cache_dir} argument in the
 corresponding function. See example in \code{\link[=gisco_get_nuts]{gisco_get_nuts()}}.
 }
 
-Sometimes cached files may be corrupt. In that case, try re-downloading
-the data setting \code{update_cache = TRUE} in the corresponding function.
+Sometimes cached files may be corrupt. In that case, try downloading the
+data by setting \code{update_cache = TRUE} in the corresponding function.
 
-If you experience any problem on download, try to download the
-corresponding file by any other method and save it on your
-\code{cache_dir}. Use the option \code{verbose = TRUE} for debugging the API query
-and \code{\link[=gisco_detect_cache_dir]{gisco_detect_cache_dir()}} to identify your cached path.
+If you experience a download problem, try to download the corresponding
+file by another method and save it in your \code{cache_dir}. Use
+\code{verbose = TRUE} to debug the API query and \code{\link[=gisco_detect_cache_dir]{gisco_detect_cache_dir()}} to
+identify your cached path.
 }
 
 \examples{
 
-# Don't run this! It modifies your current state
+# Do not run this. It modifies your current state.
 \dontrun{
 my_cache <- gisco_detect_cache_dir()
 
-# Set an example cache
+# Set an example cache.
 ex <- file.path(tempdir(), "example", "cachenew")
 gisco_set_cache_dir(ex)
 
 gisco_detect_cache_dir()
 
-# Restore initial cache
+# Restore the initial cache.
 gisco_set_cache_dir(my_cache)
 identical(my_cache, gisco_detect_cache_dir())
 }
@@ -104,9 +105,9 @@ gisco_detect_cache_dir()
 
 }
 \seealso{
-\code{\link[tools:userdir]{tools::R_user_dir()}}
+\code{\link[tools:R_user_dir]{tools::R_user_dir()}}
 
-Other cache utilities: 
-\code{\link{gisco_clear_cache}()}
+Other cache utilities:
+\code{\link[=gisco_clear_cache]{gisco_clear_cache()}}
 }
 \concept{cache utilities}

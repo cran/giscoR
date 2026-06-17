@@ -3,8 +3,8 @@
     Code
       fend <- gisco_get_cached_db(update_cache = TRUE)
     Message
-      ! Can't access <https://gisco-services.ec.europa.eu/distribution/v2/>. If you think this is a bug please consider opening an issue on <https://github.com/ropengov/giscoR/issues>
-      > Returning "NULL"
+      ! Could not access <https://gisco-services.ec.europa.eu/distribution/v2/>. If this looks like a bug, please open an issue at <https://github.com/ropengov/giscoR/issues>.
+      > Returning "NULL".
 
 # Get database
 
@@ -19,7 +19,7 @@
     Code
       unique(new_db$ext)
     Output
-      [1] "csv"     "geojson" "gpkg"    "json"    "pbf"     "shp"    
+      [1] "csv"     "geojson" "gpkg"    "json"    "pbf"     "shp"     "parquet"
 
 ---
 
@@ -63,5 +63,5 @@
       sort(unique(new_db$year))
     Output
        [1] 2001 2003 2004 2006 2008 2010 2011 2012 2013 2014 2015 2016 2017 2018 2019
-      [16] 2020 2021 2022 2023 2024
+      [16] 2020 2021 2022 2023 2024 2025
 

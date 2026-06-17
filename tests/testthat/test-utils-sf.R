@@ -72,10 +72,11 @@ test_that("Read gpkg", {
   expect_true(file.exists(fake_local))
 
   # With query
-  sq <- read_geo_file_sf(
-    fake_local,
-    q = "SELECT * from \"CNTR_LB_2024_4326.gpkg\" LIMIT 1"
-  )
+  lay <- as.vector(sf::st_layers(fake_local)[1, 1])[1]
+
+  qry <- paste0("SELECT * from \"", lay, "\" LIMIT 1")
+
+  sq <- read_geo_file_sf(fake_local, q = qry)
   expect_equal(sq, s[1, ])
 
   # Expect a message here with verbose being a large file > 20Mb
@@ -90,13 +91,10 @@ test_that("Read gpkg", {
     subdir = "fixme",
     verbose = FALSE
   )
-  expect_message(af <- read_geo_file_sf(file_local), "Reading large file")
+  expect_message(af <- read_geo_file_sf(file_local), "Reading a large file")
   # With query doesn't warn
-
-  q <- paste0(
-    "SELECT * from \"URAU_RG_100K_2021_4326.gpkg\" ",
-    "WHERE CNTR_CODE IN ('LU')"
-  )
+  lay <- as.vector(sf::st_layers(file_local)[1, 1])[1]
+  q <- paste0("SELECT * from \"", lay, "\" ", "WHERE CNTR_CODE IN ('LU')")
   expect_silent(af <- read_geo_file_sf(file_local, q = q))
 
   # From url doesn't warn

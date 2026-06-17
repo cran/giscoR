@@ -1,39 +1,36 @@
 #' Attribution for administrative and statistical GISCO data
 #'
 #' @description
-#' Get the legal text to be used for administrative and statistical data
-#' downloaded from GISCO, see section **Copyright information**.
+#' Get the legal text to use for administrative and statistical data
+#' downloaded from GISCO. See section **Copyright information**.
 #'
-#' For other datasets you may abide by the [Eurostat's general copyright notice
-#' and licence
+#' For other datasets you may follow the [Eurostat general copyright notice
+#' and license
 #' policy](https://ec.europa.eu/eurostat/web/main/help/copyright-notice).
 #'
 #' @family misc
 #' @encoding UTF-8
-#' @export
-#'
-#' @param lang character. Language (two-letter ISO code). See
+#' @param lang A character value with the language (two-letter ISO code). See
 #'   [countrycode::codelist] and **Details**.
-#' @param copyright logical `TRUE/FALSE`. Whether to display the copyright
-#'   notice or not on the console.
+#' @param copyright A logical value indicating whether to display the
+#'   copyright notice on the console.
 #'
 #' @return A string with the attribution to be used.
 #'
 #' @details
-#' Current languages supported are:
-#' * `"en"`: English.
-#' * `"da"`: Danish.
-#' * `"de"`: German.
-#' * `"es"`: Spanish.
-#' * `"fi"`: Finnish.
-#' * `"fr"`: French.
-#' * `"no"`: Norwegian.
-#' * `"sv"`: Swedish.
+#' Supported languages are:
+#' - `"en"`: English.
+#' - `"da"`: Danish.
+#' - `"de"`: German.
+#' - `"es"`: Spanish.
+#' - `"fi"`: Finnish.
+#' - `"fr"`: French.
+#' - `"no"`: Norwegian.
+#' - `"sv"`: Swedish.
 #'
 #' Please consider
-#' [contributing](https://github.com/rOpenGov/giscoR/issues) if you spot any
+#' [contributing](https://github.com/rOpenGov/giscoR/issues) if you spot a
 #' mistake or want to add a new language.
-#'
 #'
 #' # Copyright information
 #'
@@ -42,25 +39,24 @@
 #'
 #' **Administrative units**
 #'
-#' - [gisco_get_communes()]
-#' - [gisco_get_countries()]
-#' - [gisco_get_postal_codes()]
+#' - [gisco_get_communes()].
+#' - [gisco_get_countries()].
+#' - [gisco_get_postal_codes()].
 #'
 #' **Statistical units**
 #'
-#' - [gisco_get_census()]
-#' - [gisco_get_coastal_lines()]
-#' - [gisco_get_lau()]
-#' - [gisco_get_nuts()]
-#' - [gisco_get_urban_audit()]
+#' - [gisco_get_census()].
+#' - [gisco_get_coastal_lines()].
+#' - [gisco_get_lau()].
+#' - [gisco_get_nuts()].
+#' - [gisco_get_urban_audit()].
 #'
-#'
-#' ## Copyright Notice
+#' ## Copyright notice
 #'
 #' When data downloaded from GISCO is used in any printed or electronic
 #' publication, in addition to any other provisions applicable to the whole
-#' Eurostat website, data source will have to be acknowledged in the legend of
-#' the map and in the introductory page of the publication with the following
+#' Eurostat website, the data source must be acknowledged in the legend of
+#' the map and on the introductory page of the publication with the following
 #' copyright notice:
 #'
 #' ```{r, echo=FALSE, results='asis'}
@@ -77,7 +73,7 @@
 #' shall be used.
 #'
 #' If you intend to use the data commercially, please contact EuroGeographics
-#' for information regarding their licence agreements.
+#' for information about their license agreements.
 #'
 #' @examples
 #' gisco_attributions()
@@ -86,23 +82,25 @@
 #'
 #' gisco_attributions(lang = "XXX")
 #'
-#' # Get list of codes from countrycodes
+#' # Get the list of codes from countrycode.
 #' library(dplyr)
 #'
 #' countrycode::codelist |>
 #'   select(country.name.en, iso2c)
+#' @export
+#'
 gisco_attributions <- function(lang = "en", copyright = FALSE) {
   lang <- tolower(lang)
   if (copyright) {
     cli::cli_alert_info(
       "
-    COPYRIGHT NOTICE
+    Copyright notice
 
     When data downloaded from GISCO
     is used in any printed or electronic publication,
     in addition to any other provisions applicable to
-    the whole Eurostat website, data source will have
-    to be acknowledged in the legend of the map and in
+    the whole Eurostat website, the data source must
+    be acknowledged in the legend of the map and on
     the introductory page of the publication with the
     following copyright notice:
 
@@ -116,29 +114,27 @@ gisco_attributions <- function(lang = "en", copyright = FALSE) {
     used.
 
     If you intend to use the data commercially, please
-    contact EuroGeographics for information regarding
-    their licence agreements.
+    contact EuroGeographics for information about
+    their license agreements.
 
       "
     )
   }
 
-  # Display message
+  # Warn when the requested language is not supported.
   verbose <- !lang %in% c("en", "da", "de", "es", "fi", "fr", "no", "sv")
 
   make_msg(
     "warning",
     verbose,
-    "Language",
-    lang,
-    "not supported.",
+    paste0("{.arg lang} = {.val ", lang, "} is not supported."),
     "Switching to English."
   )
   make_msg(
     "info",
     verbose,
-    "Consider contributing:",
-    "{.url https://github.com/rOpenGov/giscoR/issues}"
+    "Consider contributing a translation:",
+    "{.url https://github.com/rOpenGov/giscoR/issues}."
   )
 
   attr <- switch(lang,

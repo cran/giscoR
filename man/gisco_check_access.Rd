@@ -3,7 +3,7 @@
 \encoding{UTF-8}
 \name{gisco_check_access}
 \alias{gisco_check_access}
-\title{Check access to GISCO API}
+\title{Check access to the GISCO geodata distribution}
 \usage{
 gisco_check_access()
 }
@@ -11,7 +11,7 @@ gisco_check_access()
 A logical.
 }
 \description{
-Check if \strong{R} has access to resources at
+Check if \R has access to resources at
 \url{https://gisco-services.ec.europa.eu/distribution/v2/}.
 }
 \examples{
